@@ -60,8 +60,8 @@ unverified circuit merely to keep moving.
 1. Repository inspection and native project skeletons — COMPLETE as starter workspace only.
 2. Mechanical coordinate system and provisional outlines — STARTED; dimensions are not fit-approved.
 3. Pod MCU/sensor logical interface contract — DRAFTED in hardware/sentry-pod/interface-contract.md.
-4. Native schematic capture from the interface contract — NEXT; exact physical footprints remain on hold.
-5. Keyfob MCU and motor interface contract — NOT STARTED.
+4. Keyfob MCU/actuator logical interface contract — DRAFTED in hardware/pocket-keyfob/interface-contract.md.
+5. Native schematic capture from both interface contracts — NEXT; exact physical footprints remain on hold.
 6. Power/charger and actuator circuit blocks — provisional design work in parallel, with battery/power holds preserved.
 7. PCB footprint mapping, placement and routing — after physical pad/connector geometry is verified.
 8. Enclosure iteration against actual board and component envelopes.
