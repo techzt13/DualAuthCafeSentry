@@ -204,7 +204,7 @@
   )
 )
   )
-  (text "POCKET KEYFOB — C3 CONTROLLER AND MOTOR SWITCH" (at 36 24 0) (effects (font (size 2 2))) (uuid "7bc00000-0000-4000-8000-000000000001"))
+  (text "POCKET KEYFOB — C3 CONTROLLER AND MOTOR SWITCH" (at 36 24 0) (effects (font (size 2 2))) (uuid "7bc00000-0000-4000-8000-000000000113"))
   (text "U1 is the evaluation controller only; keep the S3 alternative open until owner O-12 closes." (at 36 31 0) (effects (font (size 1 1))) (uuid "7bc00000-0000-4000-8000-000000000002"))
   (symbol (lib_id "Keyfob:C3Zero_Contacts") (at 145 120 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "7bc00000-0000-4000-8000-000000000003")
     (property "Reference" "U1" (at 145 93.33 0) (effects (font (size 1.15 1.15))))
