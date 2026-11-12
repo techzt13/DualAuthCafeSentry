@@ -1,6 +1,6 @@
 # Manufacturer-Verified Pinouts and Interface Holds
 
-Revision: 0.2 | Date: 2026-11-11 | Status: document verification; NOT a wiring release
+Revision: 0.3 | Date: 2026-11-12 | Status: document verification; NOT a wiring release
 
 Read the [evidence index](datasheet-index.md), [component register](component-register.csv)
 and [logical connection schedule](pinout.md) together. **V** means a documented
@@ -32,7 +32,7 @@ Received PCB revision and complete assembly envelope remain TBD.
 | 3 | GPIO13 | P: conditioned charging status | P: conditioned charging status |
 | 4 | GPIO12 | P: MPU INT | Unassigned |
 | 5 | GPIO11 | P: conditioned PN532 reset input | Unassigned |
-| 6 | GPIO10 | P: PN532 IRQ input | Unassigned |
+| 6 | GPIO10 | Selected PN5321 MINI host interface has no IRQ; NC | Unassigned |
 | 7 | GPIO9 | S: optional protected tether sense | Unassigned |
 | 8 | GPIO8 | S: optional protected tether drive | Unassigned |
 | 9 | GPIO7 | S: multifunction button to ground | P: button to ground |
@@ -150,20 +150,21 @@ interface by assuming a compatible variant
 ## 2. Pod sensor and NFC interfaces
 
 <a id="module-headers"></a>
-### 2.1 What remains unverified at module level
+### 2.1 Evaluation module interfaces now represented in the Pod schematic
 
-| Assembly | Established interface | Physical connector/pinout hold |
+These are practical prototype candidates, not owner-frozen component selections. The physical modules and revisions received by the builder must be checked before wiring.
+
+| Assembly | Evaluation candidate and documented interface | Remaining physical/electrical hold |
 | --- | --- | --- |
-| Project PN532 module and antenna | S: I2C; V: IC host address 0x24 | Manufacturer/MPN/revision, VCC, level shifting, pull-ups, IRQ/reset header positions, coil contacts and antenna connector all TBD |
-| Project GY-521 | S: MPU-6050 I2C; P: AD0 low for 0x68 | Actual maker/revision, regulator, pull-ups, terminal order/pitch and mounting drawing TBD |
-| Elechouse PN532 V3 reference | Guide rev. B: switch 1 ON / switch 2 OFF for I2C; integral antenna | Not selected; no qualified numbered header/coil drawing. Conflicting logic-voltage claims must be resolved before wiring. |
-| Joy-IT SEN-MPU6050 reference | 8 named contacts: VCC, GND, SCL, SDA, XDA, XCL, AD0, INT; 2.54 mm pitch stated | Not selected or proven identical to GY-521. Names are not a footprint numbering order; PCB revision/drawing TBD. |
+| NFC module | ELECHOUSE PN5321 MINI SKU NFC_EX_MINI, hardware V2; I2C address 0x24; 3.3 V logic; silkscreen names GND, 5V/3V3, RST, SCK, MISO, TX/MOSI/SDA, RX/SS/SCL | Current v1.1 online manual and earlier downloaded v1.5 record differ; cable contact numbering, mating connector family and actual module revision must be confirmed. Host connector has no IRQ. |
+| NFC antenna | Included ferrite-backed 10 x 25 mm antenna option; 0.2 mm stated thickness; 100 mm lead | Actual lead/connector revision and antenna drawing/installation tolerances remain TBD. Keep the project's 10 mm battery and piezo separation. |
+| IMU | Adafruit MPU-6050 breakout product 3886; 1 x 6 header and STEMMA QT; VIN, 3Vo, GND, SCL, SDA, INT | O-04 remains open; no owner selection. Exact fitted revision/header height, board tolerances and received-unit inspection remain TBD. |
+| GY-521 reference | MPU-6050-family interface required by the specification | No unique manufacturer is selected; Adafruit 3886 is a separate evaluation candidate, not silently treated as the generic GY-521. |
 
-For the Joy-IT reference, the manufacturer specifies 3.3-5 V **input supply**
-and 3.3 V **logic**; the manual warns against 5 V I2C pull-ups. SCL/SDA are
-the main bus, XCL/XDA the auxiliary bus, AD0 selects address and INT is the
-interrupt. Do not generalize this supply range to the bare MPU-6050 or another
-GY-521 ([SRC-25](datasheet-index.md#src-25)).
+**PN5321 MINI I2C host signals (use silkscreen names, not cable colour/order):** GND; 5V/3V3 supply; active-low RST; SCK and MISO unused in I2C; TX/MOSI/SDA becomes SDA; RX/SS/SCL becomes SCL. The host header does not expose IRQ, so S3 GPIO10 / P15-6 is deliberately NC and firmware polling is required. The v1.1 online manual describes onboard 3.3 V I2C pull-ups; earlier v1.5 project evidence describes unpopulated pull-up footprints. Carrier pull-ups remain DNP until the received board is inspected.
+
+**Adafruit 3886 six-pin header:** 1 VIN; 2 3Vo (regulator output, do not feed); 3 GND; 4 SCL; 5 SDA; 6 INT. The official board source shows a 10 kΩ AD0 pull-down by default and a solder-jumper option to 3.3 V, yielding 0x68 by default and 0x69 when high. The breakout includes its own I2C level shifting and 10 kΩ pull-ups; do not add carrier pull-ups without calculating the combined bus resistance. STEMMA QT uses GND, VIN, SDA and SCL.
+
 
 <a id="pn532"></a>
 ### 2.2 PN532/C1 IC, HVQFN40 / SOT618-1
@@ -192,7 +193,7 @@ module header or a complete bare-IC circuit.
 | 20, 21, 22 | N.C. | No connection |
 | 23 | PVDD | Pad supply, 1.6-3.6 V; host-interface reference |
 | 24 | P30 / UART_RX, I/O | Debug UART alternative; no application connection |
-| 25 | P70_IRQ, I/O | P: ready IRQ to Pod GPIO10 if exposed/compatible |
+| 25 | P70_IRQ, I/O | The IC has P70_IRQ, but the selected module does not expose IRQ; poll at host |
 | 26 | RSTOUT_N, output | Reset indication only; never drive as reset |
 | 27 | NSS / P50_SCL / HSU_RX, I/O | S: I2C SCL from Pod GPIO5 |
 | 28 | MOSI / SDA / HSU_TX, I/O | S: I2C SDA to/from Pod GPIO4 |
