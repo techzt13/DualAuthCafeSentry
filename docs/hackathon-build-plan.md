@@ -1,7 +1,7 @@
 # Hackathon Build Plan — Dual-Auth Cafe Sentry
 
 Date: 2026-11-12
-Status: IMPLEMENTATION PLAN — PCB/CAD design authorised; no native designs created yet
+Status: IMPLEMENTATION IN PROGRESS — native starter files exist; first Pod electrical interface contract drafted
 
 ## Objective
 
@@ -57,16 +57,17 @@ unverified circuit merely to keep moving.
 
 ## Milestone order
 
-1. Repository inspection and native project skeletons.
-2. Mechanical coordinate system, board outlines and interface drawings.
-3. Component-envelope library and placement.
-4. Schematic capture and pin/net review.
-5. PCB placement and routing.
-6. Enclosure iteration against the actual PCB.
-7. ERC, DRC, CAD geometry and fit checks.
-8. BOM, Gerbers, drill, STEP/STL and drawings.
-9. Firmware integration, assembly instructions and bench test plan.
-10. Physical build and controlled testing by the owner.
+1. Repository inspection and native project skeletons — COMPLETE as starter workspace only.
+2. Mechanical coordinate system and provisional outlines — STARTED; dimensions are not fit-approved.
+3. Pod MCU/sensor logical interface contract — DRAFTED in hardware/sentry-pod/interface-contract.md.
+4. Native schematic capture from the interface contract — NEXT; exact physical footprints remain on hold.
+5. Keyfob MCU and motor interface contract — NOT STARTED.
+6. Power/charger and actuator circuit blocks — provisional design work in parallel, with battery/power holds preserved.
+7. PCB footprint mapping, placement and routing — after physical pad/connector geometry is verified.
+8. Enclosure iteration against actual board and component envelopes.
+9. ERC, DRC, CAD geometry and fit checks.
+10. BOM, Gerbers, drill, STEP/STL, drawings, firmware, assembly instructions and bench test plan.
+11. Physical build and controlled testing by the owner.
 
 ## Status language
 
