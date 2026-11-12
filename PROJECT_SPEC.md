@@ -79,3 +79,36 @@ It combines two independent authentication methods:
   - Keep top lid wall thickness **≤1.5mm** directly over the PN532 antenna coil.
   - Keep LiPo battery and piezo buzzer **≥10mm away** from the PN532 coil to prevent magnetic/RF detuning.
   - Include an acoustic sound vent directly over the piezo buzzer and a reinforced top loop for a carabiner clip.
+
+
+---
+
+## 6. Hackathon build implementation amendment (2026-11-12)
+
+The required project deliverables include editable PCB designs and editable
+CAD designs, not merely a component research report or breadboard concept.
+The project must progress to a manufacturable prototype package for both the
+Sentry Pod and Pocket Keyfob.
+
+- Required electronics deliverables: native KiCad schematic and PCB projects,
+  verified connector/pin assignments, BOM, Gerbers, drill files, and fabrication
+  notes for each custom board.
+- Required mechanical deliverables: native parametric FreeCAD enclosure and
+  assembly models for both units, dimensioned drawings, and STEP/STL exports.
+- Required integration deliverables: PCB/enclosure fit checks, mounting,
+  battery and connector access, NFC antenna keepout, piezo acoustic opening,
+  motor mounting, cable routing and assembly instructions.
+- Existing dimensions are starting constraints, not a reason to stop CAD.
+  The Sentry Pod length direction is at least approximately 55 mm; 30 mm width
+  and 16 mm height remain provisional. The Keyfob 35 x 25 x 12 mm target is
+  also provisional and may be adjusted to achieve a buildable assembly.
+- Unknown component details must be labelled and managed as provisional
+  design inputs. They should not prevent independent work on board outlines,
+  mechanical envelopes, interface placement and parametric enclosure structure.
+- Manufacturer correspondence is not a prerequisite to begin schematic,
+  PCB or CAD design. Use published documentation and engineering judgement;
+  record assumptions and validate the resulting design before fabrication.
+
+This amendment establishes the hackathon implementation scope. It does not
+claim that any current candidate circuit is safe, tested, frozen or ready to
+manufacture, and it does not authorise automatic purchasing.
