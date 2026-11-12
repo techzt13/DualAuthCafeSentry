@@ -1,16 +1,18 @@
 # Last Worked On - Dual-Auth Cafe Sentry
 
-Date: 2026-11-12 (G1 candidate research complete; O-01 decided; O-02 to O-15 pending)
+Date: 2026-11-12 (G1 candidate research complete; O-01 decided; O-02 evaluation direction decided; O-03 to O-15 pending)
 Package revision: 0.3
 Project stage: G0 design basis complete; G1 component-evidence registers
 complete; G1 candidate research complete; **G1 exit gate (physical component
-freeze) OPEN and BLOCKED** pending owner decisions O-02 to O-15 and evidence
+freeze) OPEN and BLOCKED** pending owner decisions O-03 to O-15 and evidence
 Next stage: owner decisions and supplier evidence within G1, not G2 or G3
 
 **PCB/schematic creation: not started. CAD enclosure creation: not started.
 Firmware and manufacturing exports: not started. Nothing purchased or ordered.
 O-01 Option A (enlarge Pod) is an owner-approved specification direction only;
 it is not a final dimension, fit approval or authorisation to begin CAD.
+O-02 Option A (BQ25185 at 4.1 V) is approved for evaluation only; it does not
+authorise purchase, design, construction, battery connection or testing.
 Hardware safety, physical fit and manufacturing readiness: NOT APPROVED.**
 
 Before the next task, read [PROJECT_SPEC.md](PROJECT_SPEC.md),
@@ -23,9 +25,8 @@ been changed by any task recorded here.
 
 The G1 candidate research task is **complete as documentation**. The
 **physical component freeze is BLOCKED**. Nothing is selected, purchased or
-marked FROZEN. No battery and charger pairing is approved. O-01 Option A is
-the sole owner decision recorded; all other recommendations remain awaiting
-owner decisions.
+marked FROZEN. No battery and charger pairing is approved. O-01 Option A and O-02 Option A (evaluation only) are the only owner
+directions recorded; all other recommendations remain awaiting owner decisions.
 
 | Item | Current value |
 | --- | --- |
@@ -37,7 +38,7 @@ owner decisions.
 | Revision 0.3 rows | 11 appended G1 candidates, all `Reference only`, `CANDIDATE_OWNER_DECISION`, `REFERENCE_NOT_SELECTED` |
 | `freeze_status` | HOLD_CIRCUIT 44, HOLD_IDENTITY 40, REFERENCE_NOT_SELECTED 25, NOT_DESIGNED 8, HOLD_SELECTION 4, HOLD_REVISION_ENVELOPE 1, FROZEN 0 |
 | Numeric dimension rows | 22 partial, drawing-scoped rows (14 from revision 0.2, 8 new); 100 rows have no numeric dimensions |
-| Controlled IDs | SRC-01..53, D-01..22, R-01..39 (all open), T-01..24, O-01 recorded; O-02..15 open |
+| Controlled IDs | SRC-01..53, D-01..22, R-01..39 (all open), T-01..24, O-01 and O-02 recorded; O-03..15 open |
 
 ## 2. Repository and Git state
 
@@ -462,5 +463,7 @@ review and explicit human authorisation.
   SRC-30..53, D-22, R-34..39 and O-01..15 added; evidence folder manifest
   created; no selection, purchase or design-stage work.
 - **2026-11-12, revision 0.4:** owner selected O-01 Option A (enlarge Pod);
-  owner-decisions and mechanical-feasibility documents updated. No other
-  decision, purchase, component freeze or design-stage authorisation.
+  owner-decisions and mechanical-feasibility documents updated.
+- **2026-11-12, revision 0.5:** owner selected O-02 Option A (evaluate BQ25185
+  at 4.1 V only); owner-decisions and power-recommendation documents updated.
+  No purchase, design, build, battery connection, test or component freeze authorised.
