@@ -1,6 +1,6 @@
 # Dual-Auth Cafe Sentry - Pinout and Connection Schedule
 
-Revision: 0.2 | Date: 2026-11-11 | Status: logical interface allocation, not wiring release
+Revision: 0.3 | Date: 2026-11-12 | Status: logical interface allocation, not wiring release
 
 Read with [architecture and evidence labels](architecture.md) and
 [power architecture](power-architecture.md). Package-specific source maps and
@@ -27,8 +27,8 @@ Basis: Waveshare S3 schematic [SRC-02](architecture.md#src-02) and Espressif
 | 7 | P15-9 | `P_BUTTON_N` | Input with pull-up; switch closes to ground | S; active low; debounce and gesture policy TBD |
 | 8 | P15-8 | `P_TETHER_DRIVE` | Static high when continuity monitoring enabled, through protection | S, optional; safe/current-limited during boot and short circuits |
 | 9 | P15-7 | `P_TETHER_SENSE` | Input with pull-down; high = closed logical loop | S, optional; external bias/filter/protection TBD |
-| 10 | P15-6 | `P_NFC_IRQ_N` | Input from PN532 P70_IRQ, active-low readiness | P; route if exposed and level-compatible; no assumed pull-up value |
-| 11 | P15-5 | `P_NFC_RESET_N` | Conditioned control of PN532 RSTPD_N | P; reset input, not RSTOUT_N; no injection into an unpowered module |
+| 10 | P15-6 | NC for PN5321 MINI candidate | No exposed IRQ on this module's host connector; firmware polls I2C reader | P; do not assign this GPIO to a nonexistent connector signal |
+| 11 | P15-5 | `P_NFC_RESET_CTL` | Active-high MCU command through NPN stage to active-low module RST | P; GPIO high asserts reset; power rail remains held pending sequencing review |
 | 12 | P15-4 | `P_IMU_INT` | Input from MPU-6050 INT | P; configure active-high data-ready initially; output mode/pulls verified with module |
 | 13 | P15-3 | `P_CHARGE_STATUS_N` | Conditioned 3.3 V charge-active input | P; not direct connection to a 5 V charger STAT pin |
 | 21 | Onboard U1 DIN | RGB data | Board-installed status LED | V; reserved; supply/logic discrepancy in D-16 |
