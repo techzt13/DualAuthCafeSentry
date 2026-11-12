@@ -568,7 +568,7 @@ pending verification.
 ## 15. O-03/O-05 deeper driver research — 2026-11-12
 
 Expanded [docs/g1-piezo-driver-compatibility.md](docs/g1-piezo-driver-compatibility.md)
-to revision 0.2 following direct inspection of the full Diodes PAM8904E
+to revision 0.3 following direct inspection of the full Diodes PAM8904E
 datasheet (DS41667 Rev. 4-2, July 2023), the March 2025 EVB guide and the
 Same Sky CPT-2475-92T datasheet (dated 2024-09-11).
 
@@ -633,3 +633,39 @@ Next research actions:
    known.
 
 No local CAD/PCB or hardware work was started. No components were ordered.
+
+
+## 16. Current follow-up documents — 2026-11-12
+
+Created [docs/g1-piezo-manufacturer-questions.md](docs/g1-piezo-manufacturer-questions.md)
+with a complete technical question set for Diodes Incorporated and Same Sky.
+It covers driver/transducer compatibility, differential voltage, mode limits,
+frequency sweep, waveform/duty/on-time, current maxima, capacitor derating,
+EMI/thermal/layout, and guaranteed SPL data at 2.8/4.0/4.2 kHz.
+
+**Correspondence status: NOT SENT.** No manufacturer reply is recorded.
+The question set is prepared for later authorised correspondence; do not
+describe the pairing as manufacturer-confirmed.
+
+Updated [docs/g1-piezo-driver-compatibility.md](docs/g1-piezo-driver-compatibility.md)
+to revision 0.3:
+- Added an indicative 508.1 mA Pod peak-current arithmetic scenario
+  (existing 493.9 mA screen plus 14.2 mA typical PAM8904E differential
+  3x/47 nF/3.2 kHz datum). This is explicitly not a worst-case or validated
+  current. It flags battery headroom: the scenario is 8.1 mA above the
+  Renata pack's stated 500 mA non-continuous rating.
+- Added the transducer frequency-response-graph warning: its response is
+  not flat over the requested sweep, and exact SPL at 2.8/4.2 kHz is not
+  guaranteed by the graph.
+- PAM8904E remains the only integrated driver found in this research pass
+  with a published load rating adequate on paper; it is not selected.
+- O-03/O-05/D-07/D-18 remain OPEN; no component freeze or physical work
+  authorisation.
+
+Updated owner decisions to revision 0.8 and linked both the technical report
+and manufacturer question set. All files remain documentation-only.
+
+Exact next research step: complete a deeper alternative-sounder and discrete
+driver architecture screen, then reconcile manufacturer questions and
+current/thermal/EMI calculations. No purchase, schematic, PCB, construction,
+battery connection or physical test is authorised.
