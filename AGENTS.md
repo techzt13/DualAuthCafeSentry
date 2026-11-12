@@ -128,3 +128,32 @@ All deliverables must be:
 - Documented.
 - Validated where tooling permits.
 - Suitable for independent engineering review.
+
+
+## Hackathon implementation mandate (2026-11-12)
+
+The project owner has explicitly confirmed that the hackathon deliverables include
+working, editable PCB and CAD designs. This mandate supersedes earlier G1/G2/G3
+wording that prohibited or deferred schematic, PCB and CAD work.
+
+- Start electrical and mechanical co-design now. Do not wait for manufacturer
+  correspondence or a formal commercial-product qualification process.
+- Produce actual native KiCad projects for the Sentry Pod and Pocket Keyfob,
+  and actual native parametric FreeCAD models for both enclosures and their
+  integrated assemblies. Drawings, screenshots and prose alone are not deliverables.
+- Use documented parts where possible. Where a choice is not closed, select a
+  practical prototype candidate, label it PROVISIONAL, record the assumption,
+  and design replaceable interfaces where practical.
+- Keep a clear distinction between a design that is drafted, one that passes
+  ERC/DRC or CAD checks, one that has been fabricated, and one that has been
+  physically tested. Never claim validation that has not occurred.
+- Manufacturer contact is optional and only for a genuinely blocking question;
+  it is not a project gate.
+- Continue to respect component voltage/current/temperature limits and LiPo
+  charging precautions. This is a hackathon prototype, not a commercial
+  certification programme, but unsafe electrical assumptions are not acceptable.
+- Do not place orders or claim physical testing has happened unless the owner
+  explicitly asks and the relevant action actually occurs.
+- Keep the editable source files, generated exports, BOM, assembly instructions
+  and validation reports in the repository. Update LAST-WORKED-ON.md after each
+  meaningful milestone.
