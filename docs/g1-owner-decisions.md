@@ -1,6 +1,6 @@
 # G1 Decisions Requiring Owner Approval
 
-Revision: 0.5 | Date: 2026-11-12 | Status: PARTIALLY DECIDED; O-01 and O-02 recorded; O-03/O-05 evaluation direction recorded; O-04 and O-06 to O-15 remain open
+Revision: 0.6 | Date: 2026-11-12 | Status: PARTIALLY DECIDED; O-01 and O-02 recorded; O-03/O-05 evaluation direction recorded; O-04 and O-06 to O-15 remain open
 
 Each item is a choice the project owner must make before the component
 freeze can proceed. O-01 and O-02 have been decided by the owner as recorded below;
@@ -179,3 +179,4 @@ BLOCKED.
 | 0.3 | 2026-11-12 | First issue: fifteen owner decisions and four authorisations arising from G1 candidate research |
 | 0.4 | 2026-11-12 | Recorded owner approval of O-01 Option A only; O-02 to O-15 and A-1 to A-4 remain open |
 | 0.5 | 2026-11-12 | Recorded O-02 Option A as BQ25185 4.1 V evaluation direction only; no purchase, design, build or battery connection authorised |
+| 0.6 | 2026-11-12 | Recorded O-03/O-05 Direction A for evaluation only and 10 cm as proposed SPL distance; no piezo/driver selection or physical test authorised |
