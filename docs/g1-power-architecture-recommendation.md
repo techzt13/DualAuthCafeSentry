@@ -1,9 +1,11 @@
 # G1 Power Architecture Recommendation
 
-Revision: 0.3 | Date: 2026-11-12 | Status: recommendation for owner decision; NOT approved
+Revision: 0.4 | Date: 2026-11-12 | Status: BQ25185 4.1 V selected for evaluation by owner under O-02; architecture NOT approved
 
-**This is a paper recommendation. No circuit has been drawn, built or
-measured, and no power architecture is approved.** It extends, and does not
+**O-02 owner direction:** evaluate the TI BQ25185 at its 4.1 V setting.
+This is not a component freeze or approval to purchase, design, build, connect
+a cell, or use any battery/charger pairing. This remains a paper recommendation:
+no circuit has been drawn, built or measured, and no power architecture is approved. It extends, and does not
 replace, the [power architecture](power-architecture.md). Decisions D-03 and
 D-04 remain OPEN. Evidence is in the [datasheet index](datasheet-index.md);
 the battery and charger comparison is in the
@@ -181,3 +183,4 @@ board rework.
 | Revision | Date | Change |
 | --- | --- | --- |
 | 0.3 | 2026-11-12 | First issue: evidence-based options and a recommended evaluation architecture; nothing approved |
+| 0.4 | 2026-11-12 | Recorded owner O-02 direction to evaluate BQ25185 at 4.1 V only; power architecture and all battery pairings remain unapproved |
