@@ -1,10 +1,10 @@
 # G1 Decisions Requiring Owner Approval
 
-Revision: 0.5 | Date: 2026-11-12 | Status: PARTIALLY DECIDED; O-01 and O-02 recorded, O-03 to O-15 remain open
+Revision: 0.5 | Date: 2026-11-12 | Status: PARTIALLY DECIDED; O-01 and O-02 recorded; O-03/O-05 evaluation direction recorded; O-04 and O-06 to O-15 remain open
 
 Each item is a choice the project owner must make before the component
 freeze can proceed. O-01 and O-02 have been decided by the owner as recorded below;
-O-03 to O-15 remain open. Recommendations are engineering preferences on
+O-03/O-05 have an evaluation direction only; O-04 and O-06 to O-15 remain open. Recommendations are engineering preferences on
 the documents in the [datasheet index](datasheet-index.md), not approvals.
 Existing decisions D-01 to D-22 are in the
 [decision log](design-decisions.md).
@@ -20,9 +20,9 @@ Detail: [component shortlist](g1-component-shortlist.md),
 | --- | --- | --- | --- | --- | --- |
 | O-01 | Sentry Pod size, NFC separation or battery size | With the smallest documented PN532 antenna (10 x 25) and a 200 to 250 mAh pack, the 10 mm separation does not fit inside 45 x 30 x 16 in any axis-aligned placement tested | (a) Enlarge the Pod to at least about 55 long; (b) keep the size and allow a smaller separation for a ferrite-backed antenna, proven by test first; (c) keep size and separation with a pack below 200 mAh | **OWNER DECISION: Option (a) selected.** Enlarge the Pod; retain the 10 mm separation and 200–250 mAh capacity target. Approximately 55 mm is a lower bound only, not a final dimension or fit approval. | D-13, R-15, R-35 |
 | O-02 | Charger IC family | Neither specified family (MCP73831, TP4056) keeps its maximum at or below 4.200 V, and neither has both a power path and a cell-temperature input. Five of seven packs state no tolerance above 4.2 V | (a) Approve a power-path charger such as TI BQ25185 at its 4.1 V setting; (b) keep MCP73831 and obtain each pack maker's written charge-voltage tolerance, with separate temperature and load-disconnect circuits; (c) keep TP4056 after resolving its internal tolerance conflict | **OWNER DECISION: Option (a) selected for further evaluation only.** Evaluate TI BQ25185 at its 4.1 V setting; this does not approve a battery pairing, circuit, purchase, construction or connection to a cell. | D-04, R-02, R-05 |
-| O-03 | Sound level target and piezo driver | No externally driven piezo of 25 mm or less was found that documents 105 dB; the loudest verified part is 92 dB at 10 cm and 24 mm in diameter; the specified single-transistor driver cannot reach that part's rated drive voltage | (a) Define the 105 dB distance and accept a boosted driver and a 24 mm part; (b) lower the target to what a smaller part documents; (c) approve a self-driven sounder or a larger body | Define the measuring distance first (D-18), then choose between (a) and (b) with measured data | D-07, D-18, R-08 |
+| O-03 | Sound level target and piezo driver | No externally driven piezo of 25 mm or less was found that documents 105 dB; the 24 mm reference candidate is documented at 92 dB at 10 cm; the specified single-transistor driver does not establish the required drive | (a) Define 105 dB at 10 cm and evaluate a boosted driver with a 24 mm part; (b) lower the target to documented/measured performance; (c) evaluate a self-driven sounder or larger body | **OWNER DIRECTION: Option A for evaluation only.** Use 10 cm as the proposed measurement distance; retain the 24 mm reference piezo and investigate a compatible boosted driver. Weighting, level statistic, duration, waveform and achieved SPL remain open; no component is selected. | D-07, D-18, R-08 |
 | O-04 | IMU module and lifecycle | "GY-521" names no maker; the identifiable Adafruit 3886 was out of stock; MPU-6050 is reported obsolete by its maker (unverified lead) | (a) Approve Adafruit 3886 as the MPU-6050 module; (b) accept an unbranded GY-521 and measure every received board; (c) approve evaluation of a current-production IMU, which changes the specified part and firmware | (a) for the prototype, with (c) raised as a supply risk for anything beyond it | D-17, R-30 |
-| O-05 | Piezo driver IC | A boosted driver such as Diodes PAM8904 replaces the specified 2N2222 and 1 kohm arrangement | (a) Approve evaluation of a boosted driver; (b) keep the transistor driver and accept the resulting level | Decide together with O-03 | D-07 |
+| O-05 | Piezo driver IC | A boosted driver replaces the specified 2N2222 and 1 kohm arrangement; the PAM8904's documented 15 nF load limit is below the CPT-2475-92T's nominal 21 nF capacitance | (a) Evaluate a boosted driver compatible with the selected piezo; (b) retain the transistor driver and accept its measured level | **OWNER DIRECTION: Option A for evaluation only**, jointly with O-03. PAM8904 is an unqualified research lead, not an approved match to the CPT-2475-92T. | D-07 |
 | O-06 | Keyfob size or construction | The 35 x 25 x 12 target fails with any separate charger board and is marginal without one | (a) Authorise a custom carrier PCB stage; (b) enlarge the Keyfob; (c) both | (c), after a Zero board's assembled height has been measured | D-13, R-16 |
 | O-07 | Battery capacity ranges | The best-documented Pod pack is 240 mAh minimum, 17 wide (not "502030"); the best-documented Keyfob pack is 150 / 155 mAh; the only pack with an NTC is 205 / 215 mAh and 37 long | Confirm whether the named 502030 size and the 150 to 200 mAh range are requirements or guidance | Treat them as capacity requirements and let the pack shape follow evidence | D-05 |
 
@@ -78,6 +78,61 @@ currents and enclosure conditions.
 O-02 is recorded as an owner direction to evaluate the BQ25185. D-04, the
 power architecture, all battery/charger pairings and the physical component
 freeze remain OPEN or NOT APPROVED as applicable.
+
+## 1.3 Owner direction recorded — O-03/O-05 (2026-11-12)
+
+The owner chose **Direction A for evaluation only**: retain the 24 mm
+Same Sky CPT-2475-92T as the reference piezo candidate and investigate a
+boosted driver that is electrically compatible with that transducer and can
+produce the required 2.8–4.2 kHz sweep. The proposed SPL measurement distance
+is **10 cm**. This is not final approval of the 105 dB target, its measurement
+method, the piezo, a driver IC, a circuit or a component pairing.
+
+The CPT-2475-92T is documented at 92 dB at 10 cm, rated at 10 Vp-p and
+nominally 21 nF. It is not documented as achieving 105 dB. The Diodes PAM8904
+is a research lead only: its manufacturer specifies a maximum 15 nF load,
+below the piezo's nominal 21 nF. Do not assume this driver can operate that
+piezo; obtain written manufacturer confirmation or investigate a different
+driver. No voltage increase may be inferred to produce a predictable SPL
+increase.
+
+**Required technical checks before any component selection:**
+
+1. Confirm the piezo's full datasheet conditions, capacitance tolerance,
+   voltage limits, frequency response and permitted drive waveform across
+   2.8–4.2 kHz; obtain manufacturer clarification on operation away from
+   its 4 kHz rated point.
+2. Screen boosted-driver candidates against the piezo's capacitance (including
+   tolerance), supply range, output topology and peak-to-peak voltage,
+   frequency/duty input limits, startup/shutdown behaviour, protection,
+   package and external-component requirements. Resolve the PAM8904 load
+   mismatch explicitly.
+3. Calculate driver input current and battery peak demand at worst-case
+   supply and alarm conditions; include boost losses, capacitor ripple,
+   startup current and interaction with the processor/radio/NFC loads.
+4. Check switching noise and EMI coupling into NFC, IMU, ESP-NOW and audio
+   control; define grounding, routing, decoupling and any output clamp or
+   protection only after the selected IC's application guidance is reviewed.
+5. Define the acoustic acceptance method: dB weighting, peak versus average
+   statistic, tone/sweep pattern, duty cycle, measurement tolerance,
+   microphone orientation, distance reference point and final enclosure/
+   mounting condition. D-18 remains OPEN.
+6. Obtain evidence for the 105 dB target from the exact transducer/driver
+   combination. Manufacturer-rated SPL or calibrated controlled testing is
+   required; extrapolation from voltage or a different sounder is insufficient.
+7. Assess piezo, driver and enclosure temperature at the maximum allowed
+   alarm duration; define a safe alarm timeout and controlled acoustic test
+   procedure before testing.
+8. Recheck the 24 mm piezo, driver package, boost capacitors, acoustic port,
+   lid and antenna keepouts in the enlarged Pod envelope. No CAD or circuit
+   construction is authorised by this evaluation direction.
+
+**Explicitly not authorised:** purchase, supplier order, schematic/PCB design,
+circuit construction, battery connection, high-voltage piezo testing or
+acoustic exposure testing. Any later physical test requires the relevant
+authorisation, independent electrical review and controlled hearing-safety
+arrangements. O-03 and O-05 remain OPEN; G1 physical component freeze remains
+BLOCKED.
 
 ## 2. Decisions within the specification
 
