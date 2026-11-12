@@ -50,8 +50,9 @@ Repository: `techzt13/DualAuthCafeSentry` on GitHub (public), branch `master`.
 | Commit | Date | Content |
 | --- | --- | --- |
 | `13863c9` | 2026-11-11 | G0 eight-document design basis, revision 0.1, 75-ID register; fixed baseline for validation |
-| `13eb171` | 2026-11-12 | Revision 0.2 deliverables (111-row registers, datasheet index, verified pinouts and related revisions); committed by the repository owner during recovery and preserved unchanged |
-| Commit containing this file | 2026-11-12 | Completion handoff, recovery records and whitespace-only readability corrections |
+| `13eb171` | 2026-11-12 | Revision 0.2 deliverables (111-row registers, datasheet index, verified pinouts and related revisions); existing recovery commit preserved unchanged |
+| `577067c` | 2026-11-12 | Completion handoff, recovery records and whitespace-only readability corrections; confirmed on the live remote during follow-up |
+| Evidence-record follow-up | 2026-11-12 | This handoff only: saved validation/Git review output and corrected the distinction between 97 rows without numeric dimensions and 87 rows whose status is exactly TBD |
 
 Empty local directories (`cad/`, `hardware/`, `firmware/`, `manufacturing/`,
 `scripts/`, `docs/datasheets/`, `docs/reports/`) contain no files and are not
@@ -74,7 +75,7 @@ tracked by Git. Nothing was placed in them.
 | [docs/development-roadmap.md](docs/development-roadmap.md) | Completed G1 evidence work distinguished from the still-open G1 exit gate; all 24 acceptance tests retained |
 | [LAST-WORKED-ON.md](LAST-WORKED-ON.md) | This handoff |
 
-Changes made in the final 2026-11-12 session (after `13eb171`):
+Changes committed in `577067c` on 2026-11-12 (after `13eb171`):
 
 - [LAST-WORKED-ON.md](LAST-WORKED-ON.md): rewritten as this complete handoff.
 - [docs/datasheet-index.md](docs/datasheet-index.md): completion-review line,
@@ -85,6 +86,9 @@ Changes made in the final 2026-11-12 session (after `13eb171`):
   [docs/dimension-register.csv](docs/dimension-register.csv) and
   [docs/engineering-risks.md](docs/engineering-risks.md): whitespace-only
   readability fix (section 5.3). No value changed.
+
+The subsequent evidence-record follow-up changes only this handoff. All four
+deliverables and their source data remain byte-identical to `577067c`.
 
 ## 4. Why the earlier run reported "Main pass failed"
 
@@ -113,7 +117,7 @@ evidence-access holds.
 | First run (recovery) | As first written | FAIL: 2 of 7565 checks (roadmap "Duplicate/missing IDs" and "Wrong ID set") |
 | Second run | Roadmap pattern fixed, baseline pinned, GPIO matching strengthened | PASS: 7590 checks |
 | With `--sources --handoff` | Same | PASS: 7779 checks |
-| Final run, after readability fix and this handoff | Same | PASS: 8005 checks, exit 0 (count rises with the longer handoff's extra lines and links) |
+| Run recorded in `577067c`, after readability fix | Same | PASS: 8005 checks, exit 0; independently reproduced during evidence follow-up (section 5.5) |
 
 Validator corrections and their justification:
 
@@ -195,6 +199,92 @@ NFC read-range, acoustic, haptic, thermal or runtime test has been performed
 or is claimed. All PASS results above are documentation-consistency checks
 against recorded sources, not hardware qualification.
 
+### 5.5 Saved execution and Git review evidence - 2026-11-12
+
+The following output was obtained by rerunning the unchanged validator, not
+copied from a completion claim. Input snapshot: clean `master` at
+`577067c9713df7be93c05ec7a4c40ae64eecaeb1`. The command is in section 5.1.
+Validator SHA-256:
+`4404d5746a7a04984ba84c2f642ac8b0aab7af275b703e5d2f5a8ff3f0e0a5ea`.
+
+```text
+Source PDFs: 14 signature/parser/page-count/SHA-256 checks completed.
+PASS: 8005 checks; 111 matching register rows; 75 original IDs retained.
+PASS: 14 drawing-qualified partial rows; all remaining numeric dimensions TBD.
+PASS: 276 local Markdown/CSV links and anchors; document formatting and 12-file allowed scope.
+PASS: S3/C3 contact maps, PN532/MPU pin coverage, I2C notation and enclosure/voltage arithmetic.
+No hardware, ERC/DRC, CAD-fit or manufacturing qualification is implied.
+
+Validator exit code: 0
+```
+
+An additional read-only CSV audit parsed both complete files, checked
+byte-identical `QUOTE_ALL`/LF round-trips and matching ID order, and recomputed:
+
+```text
+component-register.csv: rows=111, fields=30, round-trip=PASS
+dimension-register.csv: rows=111, fields=24, round-trip=PASS
+Matching ID order: PASS
+No numeric dimensions: 97; partial numeric rows: 14; dimension_status exactly TBD: 87
+Repository filesystem PDFs: 0; HEAD tracked PDFs: 0
+Source inventory: 22 PDFs total = 14 primary + 8 derived extracts; no new downloads
+```
+
+Audited file SHA-256 values (unchanged by this handoff correction):
+
+| File | SHA-256 |
+| --- | --- |
+| [component-register.csv](docs/component-register.csv) | `2cc8d7a4b3c41bf9af833d7d90996afbdab261523f5e01cba66cc749cf86b0ff` |
+| [dimension-register.csv](docs/dimension-register.csv) | `1701f6d0c38d4c4732f267ccfe478ec4c276f7885fb9691ee14acdc1d8395515` |
+
+The 14 primary PDF hashes/page counts matched the ledger in
+[datasheet-index.md](docs/datasheet-index.md). No PDF was downloaded again.
+This checks retained evidence integrity, not current availability of every
+external URL. Known blocked sources remain blocked/TBD. The local link count
+includes empty future-work directories; those directories are not tracked
+and their links are not claimed to resolve on GitHub.
+
+Git commands and observed results before this follow-up edit:
+
+```text
+$ git status --short --branch --untracked-files=all
+## master...origin/master
+$ git diff --check
+(no diagnostics; exit 0)
+$ git diff --check 13863c939cae64e06590eb81724b75ade7a83eb5 HEAD
+(no diagnostics; exit 0)
+$ git diff --numstat 13863c939cae64e06590eb81724b75ade7a83eb5 HEAD
+413 106 LAST-WORKED-ON.md
+14 1 docs/architecture.md
+112 76 docs/component-register.csv
+296 0 docs/datasheet-index.md
+40 4 docs/design-decisions.md
+10 5 docs/development-roadmap.md
+112 0 docs/dimension-register.csv
+9 6 docs/engineering-risks.md
+36 8 docs/mechanical-requirements.md
+9 3 docs/pinout.md
+56 1 docs/power-architecture.md
+375 0 docs/verified-pinouts.md
+$ git ls-remote --exit-code origin refs/heads/master
+577067c9713df7be93c05ec7a4c40ae64eecaeb1 refs/heads/master
+```
+
+Review covered the full task's 12-file scope, current document contents and
+the recovery patches since `13eb171`. The 23 component and 25 dimension
+CSV-cell changes since `13eb171` were confirmed whitespace-only, as was the
+R-16 text change. Source maps, power conflicts, conditional fit assumptions,
+HOLD/reference distinctions and all 75 baseline identities were preserved.
+The cached C3 schematic was visually rechecked: contact 15 is GPIO18/D-,
+contact 16 is GPIO19/D+. No new engineering selection was made.
+
+The follow-up identified one prose count error that the existing checker
+does not cover: section 9.2 said 87 rows had no numeric dimensions. There
+are 97: 87 with status exactly `TBD`, plus ten other nonnumeric status rows.
+Only this handoff was corrected; the CSV data and validator were not changed.
+The earlier log records were also rechecked: refinement exit 0 at event-log
+line 2062, followed by the model connection timeout at line 2071.
+
 ## 6. Research PDFs: local cache versus GitHub
 
 **In the repository and on GitHub: 0 PDFs.** `git ls-files '*.pdf'` is empty.
@@ -203,8 +293,8 @@ datasheets are copyrighted, and the package policy
 ([architecture.md](docs/architecture.md) section 9) is to link to, not
 republish, manufacturer documents.
 
-**Local only, on this Mac in this Copilot session's storage (not backed up or
-synchronized):**
+**Local only, on this Mac in this Copilot session's storage (not included in
+the repository or its Git synchronization; backup status not verified):**
 `/Users/zacktudor/.copilot/session-state/2c446fbc-cda8-45b4-9d42-75911398d217/files/component-freeze-review/`
 
 There are 14 cached primary PDFs. Their page counts and SHA-256 hashes are in
@@ -339,8 +429,9 @@ Rules applied throughout this task:
 
 ### 9.2 Dimensions
 
-- 87 rows have no numeric dimensions. The 14 numeric rows exclude installed
-  envelopes (connectors, leads, tabs, adhesive, swelling, moving parts).
+- 97 rows have no numeric dimensions: 87 have status exactly `TBD`, and ten
+  have other nonnumeric statuses. The 14 numeric rows exclude complete
+  installed envelopes (connectors, leads, tabs, adhesive, swelling, moving parts).
 - Zero boards: 23.5 x 18 mm PCB outline only. Assembled height, USB-C
   protrusion and component heights on the received revision are TBD.
 - Numeric antenna keepouts (2.4 GHz ceramic antennas, NFC antenna) are TBD.
@@ -424,3 +515,7 @@ authorization.
 - **2026-11-12:** `13eb171` recorded the deliverables. Final validation, the
   validator corrections, the whitespace-only readability fix and this handoff
   completed the documentation task. The physical freeze remains BLOCKED.
+- **2026-11-12, evidence follow-up after `577067c`:** independently reproduced
+  the validator pass and live remote match; saved actual output and Git review
+  evidence in section 5.5; corrected the nonnumeric-row count to 97. No register,
+  validator, component selection or design stage was changed.
