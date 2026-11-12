@@ -1,14 +1,16 @@
 # Last Worked On - Dual-Auth Cafe Sentry
 
-Date: 2026-11-12 (G1 candidate research completed; owner decisions pending)
+Date: 2026-11-12 (G1 candidate research complete; O-01 decided; O-02 to O-15 pending)
 Package revision: 0.3
 Project stage: G0 design basis complete; G1 component-evidence registers
 complete; G1 candidate research complete; **G1 exit gate (physical component
-freeze) OPEN and BLOCKED** pending owner decisions O-01 to O-15
+freeze) OPEN and BLOCKED** pending owner decisions O-02 to O-15 and evidence
 Next stage: owner decisions and supplier evidence within G1, not G2 or G3
 
 **PCB/schematic creation: not started. CAD enclosure creation: not started.
 Firmware and manufacturing exports: not started. Nothing purchased or ordered.
+O-01 Option A (enlarge Pod) is an owner-approved specification direction only;
+it is not a final dimension, fit approval or authorisation to begin CAD.
 Hardware safety, physical fit and manufacturing readiness: NOT APPROVED.**
 
 Before the next task, read [PROJECT_SPEC.md](PROJECT_SPEC.md),
@@ -21,8 +23,9 @@ been changed by any task recorded here.
 
 The G1 candidate research task is **complete as documentation**. The
 **physical component freeze is BLOCKED**. Nothing is selected, purchased or
-marked FROZEN. No battery and charger pairing is approved. Every
-recommendation is an engineering preference awaiting an owner decision.
+marked FROZEN. No battery and charger pairing is approved. O-01 Option A is
+the sole owner decision recorded; all other recommendations remain awaiting
+owner decisions.
 
 | Item | Current value |
 | --- | --- |
@@ -34,7 +37,7 @@ recommendation is an engineering preference awaiting an owner decision.
 | Revision 0.3 rows | 11 appended G1 candidates, all `Reference only`, `CANDIDATE_OWNER_DECISION`, `REFERENCE_NOT_SELECTED` |
 | `freeze_status` | HOLD_CIRCUIT 44, HOLD_IDENTITY 40, REFERENCE_NOT_SELECTED 25, NOT_DESIGNED 8, HOLD_SELECTION 4, HOLD_REVISION_ENVELOPE 1, FROZEN 0 |
 | Numeric dimension rows | 22 partial, drawing-scoped rows (14 from revision 0.2, 8 new); 100 rows have no numeric dimensions |
-| Controlled IDs | SRC-01..53, D-01..22, R-01..39 (all open), T-01..24, O-01..15 (all open) |
+| Controlled IDs | SRC-01..53, D-01..22, R-01..39 (all open), T-01..24, O-01 recorded; O-02..15 open |
 
 ## 2. Repository and Git state
 
@@ -403,7 +406,7 @@ handling of datasheets.
 
 ### 10.4 Mechanical
 
-- Pod: which of size, NFC separation or battery capacity gives way (O-01).
+- Pod: O-01 Option A selected; enlarged length lower bound about 55 mm, but full envelope and fit remain TBD.
 - Keyfob: whether a carrier stage or a larger body is authorised (O-06).
 - Piezo size against the sound-level target (O-03).
 - Battery under the processor board would cover the ceramic antenna (R-17).
@@ -418,7 +421,7 @@ handling of datasheets.
 
 ## 11. Exact next step
 
-**Obtain the owner's decisions O-01 to O-15 and authorisations A-1 to A-4.**
+**Obtain the owner's decisions O-02 to O-15 and authorisations A-1 to A-4.**
 No further selection work is possible without them. Present
 [docs/g1-owner-decisions.md](docs/g1-owner-decisions.md) to the owner, with
 the shortlist and the three analysis documents as support.
@@ -455,6 +458,9 @@ review and explicit human authorisation.
   connection timeout after `refine_registers.py` had succeeded; details are
   in [docs/datasheet-index.md](docs/datasheet-index.md) section 7 and in the
   previous revision of this file.
-- **2026-11-12, revision 0.3 (this commit):** G1 candidate research; 11
-  candidate rows; SRC-30..53, D-22, R-34..39 and O-01..15 added; evidence
-  folder manifest created; no selection, purchase or design-stage work.
+- **2026-11-12, revision 0.3:** G1 candidate research; 11 candidate rows;
+  SRC-30..53, D-22, R-34..39 and O-01..15 added; evidence folder manifest
+  created; no selection, purchase or design-stage work.
+- **2026-11-12, revision 0.4:** owner selected O-01 Option A (enlarge Pod);
+  owner-decisions and mechanical-feasibility documents updated. No other
+  decision, purchase, component freeze or design-stage authorisation.
