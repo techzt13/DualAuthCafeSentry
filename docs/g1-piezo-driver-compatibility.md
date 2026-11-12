@@ -187,6 +187,29 @@ sweep at an output waveform not exceeding the transducer's permitted drive.
 If that cannot be established, the project must compare a different piezo
 or a separately engineered discrete driver architecture.
 
+### 4.1 Initial battery-current planning implication
+
+The existing Pod peak-current screen in LAST-WORKED-ON.md is 493.9 mA
+using the PN532 IC maximum case, before the siren driver, LED and any
+unaccounted transients. Adding the PAM8904E datasheet's 14.2 mA typical
+differential 3x-mode current at 47 nF / 3.2 kHz gives an illustrative
+508.1 mA arithmetic scenario (493.9 + 14.2 mA).
+
+This is **not** a worst-case or validated system current: the 14.2 mA is a
+typical value, the actual transducer is 21 nF typical rather than 47 nF,
+operating voltage and mode are not frozen, and simultaneous load timing is
+unknown. It does show that the siren driver cannot be omitted from the
+battery budget. The illustrative figure already exceeds the Renata
+ICP521630PM-01's stated 500 mA non-continuous rating by 8.1 mA; that
+comparison is a warning only, not proof of a failure or a final battery
+selection. Other candidate packs have lower documented peak limits.
+
+Do not reduce this to a claim that the PAM8904E itself draws 14.2 mA in
+every mode. The data point applies to the stated differential 3x / 47 nF /
+3.2 kHz test condition. A proper budget needs a guaranteed maximum or
+manufacturer-confirmed current for the actual piezo and chosen mode, plus
+the processor/radio/NFC/IMU/LED coincidence profile and battery impedance.
+
 ## 5. Required checks before recommending a component
 
 1. Full PAM8904E datasheet and EVB guide have now been inspected. Remaining
@@ -205,7 +228,7 @@ or a separately engineered discrete driver architecture.
    input current, startup/inrush, reservoir-capacitor ripple and simultaneous
    ESP32 radio, NFC, IMU and LED loads. Compare the resulting pulse current
    with battery-maker discharge limits; those limits are not yet resolved.
-5. Check driver switching frequency and charge-pump transients for EMI
+5. Reconcile the added siren-driver current with the existing 493.9 mA Pod peak screen; do not assume the 14.2 mA typical datum is a maximum. Check driver switching frequency and charge-pump transients for EMI
    coupling into PN532 NFC, ESP32 radio and IMU. Review manufacturer layout
    guidance, return-current paths, decoupling and acoustic output routing.
 6. Confirm package and external capacitor footprints, capacitor height,
@@ -238,3 +261,4 @@ BLOCKED. This report changes no component-register row to selected or FROZEN.
 | --- | --- | --- |
 | 0.1 | 2026-11-12 | Initial paper screen of CPT-2475-92T, PAM8904 and PAM8904E; PAM8904E promoted as a promising evaluation candidate only |
 | 0.2 | 2026-11-12 | Inspected full PAM8904E datasheet and EVB guide; recorded mode limits, input-current figures, active package suffixes, external capacitors and alternative-driver search outcome |
+| 0.3 | 2026-11-12 | Added indicative 508.1 mA Pod peak-current scenario and documented battery-rating warning; no current or component approved |
