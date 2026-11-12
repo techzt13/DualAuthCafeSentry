@@ -5,7 +5,7 @@ Revision: 0.3 | Date: 2026-11-12 | Status: G1 candidates documented; owner decis
 This roadmap implements the [specification](../PROJECT_SPEC.md) under
 [AGENTS.md](../AGENTS.md). Dates, named reviewers, procurement lead times and
 stage durations are TBD. Do not infer a delivery schedule from the event name.
-**Only the documentation stage is in scope for the current task.**
+**Hackathon implementation is now in scope: editable PCB and CAD work must proceed in parallel with remaining design decisions.**
 The [component evidence package](datasheet-index.md) now records verified
 documents, unverified assemblies and source-access failures. This completes a
 G1 research/register work package, not the G1 exit gate; PCB/CAD remain on hold.
@@ -197,3 +197,66 @@ Document consistency/CSV/link checks are recorded in
 ERC: not run. DRC: not run. CAD recompute/interference: not run.
 Physical fit, LiPo safety, charging, RF, acoustic, haptic and runtime tests:
 not performed. No schematic, PCB, CAD enclosure or firmware was created.
+
+
+## 5. Hackathon execution override — PCB and CAD start now
+
+Owner-confirmed direction (2026-11-12): the hackathon requires actual PCB and
+CAD designs. This section supersedes earlier statements in this roadmap that
+made completion of every G1 owner decision, manufacturer response or G2 bench
+test a prerequisite to beginning all CAD/PCB work.
+
+### Workstream 1 — establish editable design files
+
+1. Create separate native KiCad projects for hardware/sentry-pod/ and
+   hardware/pocket-keyfob/.
+2. Create separate native FreeCAD parametric models for
+   cad/sentry-pod/ and cad/pocket-keyfob/, plus an integrated assembly.
+3. Define a common mechanical/electrical interface sheet: board outline,
+   mounting holes, connector positions, battery envelope, switch/button
+   positions, NFC antenna region, piezo opening and motor mount.
+4. Create a provisional component-envelope library. Each envelope records
+   exact part number, source, dimensions, confidence and whether it is a
+   placeholder.
+
+### Workstream 2 — Pod design
+
+1. Begin with the enlarged Pod envelope: length >= approximately 55 mm;
+   width 30 mm and height 16 mm remain provisional, not guaranteed to fit.
+2. Preserve the 10 mm NFC antenna-to-battery separation as the working
+   mechanical requirement and show its keepout explicitly in CAD and PCB.
+3. Place the S3-Zero, PN532 module/antenna, IMU, battery, piezo, charger/power
+   circuitry, USB-C and user controls.
+4. Draft the schematic and PCB around explicit connectors/interfaces so
+   provisional modules can be replaced without redesigning the whole system.
+5. PAM8904E remains the first boosted-driver candidate for study, not a
+   selected circuit. Keep its output network isolated from logic and antenna
+   areas; do not assume its higher-voltage modes are suitable for the piezo.
+
+### Workstream 3 — Keyfob design
+
+1. Create the Keyfob board and enclosure as a separate assembly.
+2. Start from the C3-Zero evaluation direction, with S3-Zero as an alternate
+   until the board choice is resolved.
+3. Include battery, charging/power interface, button, motor driver, motor
+   mount, USB-C access and antenna/radio keepouts.
+4. Treat 35 x 25 x 12 mm as provisional; enlarge if required for a real,
+   serviceable assembly.
+
+### Workstream 4 — review and release
+
+- Run KiCad ERC and DRC and record results; resolve all unintended errors.
+- Run FreeCAD recompute and geometry checks; inspect clearances and export
+  STEP/STL only from the verified model.
+- Cross-check PCB and enclosure dimensions, component heights, fastener
+  access, USB alignment, battery removal, NFC performance constraints and
+  acoustic/motor openings.
+- Generate BOM, Gerbers, drill files, assembly drawings and build instructions.
+- Mark outputs as DRAFT, REVIEWED, or RELEASED. Do not call a design
+  manufacturing-ready until its checks and review are complete.
+
+### Practical rule
+
+A missing manufacturer reply is not a reason to stop. A missing safety-critical
+electrical limit is a reason to keep that circuit block provisional or isolated,
+not a reason to stop designing unrelated board areas or the enclosure.
