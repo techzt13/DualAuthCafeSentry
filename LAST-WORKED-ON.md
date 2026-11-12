@@ -1,10 +1,10 @@
 # Last Worked On - Dual-Auth Cafe Sentry
 
-Date: 2026-11-12 (G1 candidate research complete; O-01 decided; O-02 evaluation direction decided; O-03 to O-15 pending)
+Date: 2026-11-12 (G1 candidate research complete; O-01/O-02 recorded; O-03/O-05 evaluation direction recorded; other owner decisions pending)
 Package revision: 0.3
 Project stage: G0 design basis complete; G1 component-evidence registers
 complete; G1 candidate research complete; **G1 exit gate (physical component
-freeze) OPEN and BLOCKED** pending owner decisions O-03 to O-15 and evidence
+freeze) OPEN and BLOCKED** pending owner decisions remaining owner decisions and evidence
 Next stage: owner decisions and supplier evidence within G1, not G2 or G3
 
 **PCB/schematic creation: not started. CAD enclosure creation: not started.
@@ -25,8 +25,9 @@ been changed by any task recorded here.
 
 The G1 candidate research task is **complete as documentation**. The
 **physical component freeze is BLOCKED**. Nothing is selected, purchased or
-marked FROZEN. No battery and charger pairing is approved. O-01 Option A and O-02 Option A (evaluation only) are the only owner
-directions recorded; all other recommendations remain awaiting owner decisions.
+marked FROZEN. No battery and charger pairing is approved. O-01 Option A, O-02 Option A (evaluation only), and O-03/O-05 Direction A
+(evaluation only; proposed SPL distance 10 cm) are recorded. Other owner
+decisions remain open; no physical component is selected or frozen.
 
 | Item | Current value |
 | --- | --- |
@@ -38,7 +39,7 @@ directions recorded; all other recommendations remain awaiting owner decisions.
 | Revision 0.3 rows | 11 appended G1 candidates, all `Reference only`, `CANDIDATE_OWNER_DECISION`, `REFERENCE_NOT_SELECTED` |
 | `freeze_status` | HOLD_CIRCUIT 44, HOLD_IDENTITY 40, REFERENCE_NOT_SELECTED 25, NOT_DESIGNED 8, HOLD_SELECTION 4, HOLD_REVISION_ENVELOPE 1, FROZEN 0 |
 | Numeric dimension rows | 22 partial, drawing-scoped rows (14 from revision 0.2, 8 new); 100 rows have no numeric dimensions |
-| Controlled IDs | SRC-01..53, D-01..22, R-01..39 (all open), T-01..24, O-01 and O-02 recorded; O-03..15 open |
+| Controlled IDs | SRC-01..53, D-01..22, R-01..39 (all open), T-01..24, O-01, O-02, O-03/O-05 evaluation direction recorded; O-04 and O-06..15 open |
 
 ## 2. Repository and Git state
 
@@ -196,7 +197,10 @@ are unchanged: Pod 45 x 30 x 16 mm, Keyfob 35 x 25 x 12 mm.
   6.80 mm deep charge receptacle does not fit the 4.5 to 5.0 mm left beside
   the pack.
 - No externally driven piezo of 25 mm or less was found that documents
-  105 dB.
+  105 dB. Owner has selected evaluation Direction A only: retain the 24 mm
+  reference piezo and investigate a compatible boosted driver; 10 cm is the
+  proposed SPL distance. CPT-2475-92T is documented at 92 dB/10 cm and 21 nF;
+  PAM8904's documented 15 nF maximum load does not establish compatibility.
 
 ## 6. Validation performed and actual results
 
@@ -467,3 +471,42 @@ review and explicit human authorisation.
 - **2026-11-12, revision 0.5:** owner selected O-02 Option A (evaluate BQ25185
   at 4.1 V only); owner-decisions and power-recommendation documents updated.
   No purchase, design, build, battery connection, test or component freeze authorised.
+
+
+## 13. Latest owner direction — O-03/O-05 (2026-11-12)
+
+**Evaluation direction only:** retain the 24 mm Same Sky CPT-2475-92T as the
+reference piezo and investigate a compatible boosted driver. The proposed
+105 dB measurement distance is 10 cm. This does not approve 105 dB as a final
+acceptance criterion, the piezo, a driver IC, a circuit or a component pairing.
+
+Important compatibility finding: CPT-2475-92T is nominally 21 nF; Diodes
+PAM8904 specifies a maximum 15 nF load. PAM8904 is therefore not a qualified
+match. Do not design around it without written manufacturer confirmation or
+a different piezo/driver combination. The piezo's documented SPL is 92 dB at
+10 cm; 105 dB remains unproven.
+
+Next technical checks:
+1. Verify the transducer's full voltage, waveform, capacitance tolerance and
+   response over the full 2.8–4.2 kHz sweep.
+2. Identify boosted drivers with adequate capacitive-load rating, output
+   topology, voltage, input frequency and protection; request manufacturer
+   confirmation for borderline loads.
+3. Calculate battery peak current, boost losses, decoupling and interaction
+   with radio/NFC/IMU loads.
+4. Review switching EMI, layout, output protection and thermal limits.
+5. Define D-18's weighting, peak/average statistic, duty, alarm duration,
+   sweep, tolerance and measurement geometry.
+6. Obtain evidence for actual SPL from the exact transducer/driver and final
+   enclosure; do not extrapolate SPL from voltage.
+7. Recheck Pod packaging including driver IC, boost capacitors, acoustic port,
+   antenna keepouts and mounting.
+8. Establish controlled test procedures and hearing-safety controls before
+   any physical test.
+
+**No purchase, schematic/PCB design, construction, battery connection or
+physical test is authorised.** O-03/O-05 and D-07/D-18 remain OPEN; G1
+physical component freeze remains BLOCKED.
+
+History update: O-03/O-05 Direction A and the 10 cm proposed distance were
+recorded as evaluation-only on 2026-11-12. No part is selected or frozen.
