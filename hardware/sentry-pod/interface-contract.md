@@ -1,6 +1,6 @@
 # Sentry Pod — MCU, NFC and IMU interface contract
 
-Revision: 0.2 | Date: 2026-11-12 | Status: DRAFT — logical schematic captured; not a wiring or fabrication release
+Revision: 0.3 | Date: 2026-11-12 | Status: DRAFT — low-voltage logic captured; not a wiring or fabrication release
 
 This document is the live interface contract for the first Sentry Pod KiCad schematic. It distinguishes verified module signal names from carrier-side net names and keeps the unfinished battery/power and acoustic circuits isolated.
 
@@ -104,7 +104,7 @@ No physical mating connector is fitted to the carrier PCB in this revision. The 
 - `sentry-pod.kicad_sym`: project symbol library.
 - `sym-lib-table`: project-local symbol library registration.
 
-This is a logical schematic draft. The selected modules remain provisional and there is no released physical connector order, no U1 footprint, no board placement/routing and no power circuit. Structural S-expression checks found balanced parentheses, no duplicate UUIDs and all instance library IDs embedded. KiCad/Eeschema is not installed in the execution environment, so no native KiCad parse, ERC or DRC has been run. No wiring, power-up, fabrication or physical fit is validated.
+This is a logical schematic draft. The reset conditioner is now electrically wired at the schematic level; the external modules remain provisional and have no released physical connector order, U1 has no carrier footprint, and there is no placement/routing or power circuit. Structural S-expression checks must be rerun after this revision. KiCad/Eeschema is not installed in the execution environment, so no native KiCad parse, ERC or DRC has been run. No board-level wiring, power-up, fabrication or physical fit is validated.
 
 ## 8. Evidence and revision history
 
@@ -119,3 +119,4 @@ Evidence:
 |---|---|---|
 | 0.1 | 2026-11-12 | Logical Pod MCU and sensor interface contract. |
 | 0.2 | 2026-11-12 | Records the captured schematic, PN5321 MINI host signal names/no-IRQ polling behavior, NPN reset inversion, Adafruit 3886 header mapping, pull-up and power holds. |
+| 0.3 | 2026-11-12 | Added the actual R1/R2/R3/Q1 reset-stage wires and reset-net labels to the native KiCad schematic; physical module and power holds remain. |
