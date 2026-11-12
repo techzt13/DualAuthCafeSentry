@@ -13,7 +13,8 @@ O-01 Option A (enlarge Pod) is an owner-approved specification direction only;
 it is not a final dimension, fit approval or authorisation to begin CAD.
 O-02 Option A (BQ25185 at 4.1 V) and O-03/O-05 Direction A (24 mm
 reference piezo plus compatible boosted-driver research; proposed SPL distance
-10 cm) are evaluation directions only. They do not authorise purchase, design,
+10 cm) are evaluation directions only. PAM8904E is now the leading paper-screen
+driver candidate only; its suitability remains unverified. They do not authorise purchase, design,
 construction, battery connection or physical testing. The 105 dB target and
 measurement method remain unapproved. Hardware safety, physical fit and
 manufacturing readiness: NOT APPROVED.**
@@ -74,6 +75,7 @@ Empty local directories (`cad/`, `hardware/`, `firmware/`, `manufacturing/`,
 | [docs/g1-battery-charger-compatibility.md](docs/g1-battery-charger-compatibility.md) | Charge-voltage, current, temperature and discharge comparison; no pairing approved |
 | [docs/g1-power-architecture-recommendation.md](docs/g1-power-architecture-recommendation.md) | Four options and a recommended evaluation architecture |
 | [docs/g1-mechanical-feasibility.md](docs/g1-mechanical-feasibility.md) | Packing screens of the candidates against both enclosure targets |
+| [docs/g1-piezo-driver-compatibility.md](docs/g1-piezo-driver-compatibility.md) | Manufacturer-data screen of CPT-2475-92T, PAM8904 and PAM8904E; no component selected |
 | [docs/g1-owner-decisions.md](docs/g1-owner-decisions.md) | Fifteen owner decisions O-01 to O-15 and four authorisations A-1 to A-4 |
 | [docs/datasheets/README.md](docs/datasheets/README.md) | Evidence policy, redistribution review and inventory of 61 local files |
 | [docs/datasheets/SHA256SUMS](docs/datasheets/SHA256SUMS) | SHA-256 of the 61 local files |
@@ -203,7 +205,7 @@ are unchanged: Pod 45 x 30 x 16 mm, Keyfob 35 x 25 x 12 mm.
   105 dB. Owner has selected evaluation Direction A only: retain the 24 mm
   reference piezo and investigate a compatible boosted driver; 10 cm is the
   proposed SPL distance. CPT-2475-92T is documented at 92 dB/10 cm and 21 nF;
-  PAM8904's documented 15 nF maximum load does not establish compatibility.
+  PAM8904's 15 nF limit is below the piezo's 21 nF nominal value. PAM8904E is a promising paper-screen candidate: 47 nF load rating, 1.5–5.5 V supply and 20 Hz–300 kHz input; its EVB guide states 16 Vp-p from 3 V with 47 nF. It remains unqualified pending exact datasheet, manufacturer and system checks.
 
 ## 6. Validation performed and actual results
 
@@ -386,8 +388,10 @@ handling of datasheets.
   2014 PKCELL drawing; connector, polarity and wire length.
 - **Charger:** owner approval of a non-specified family; package drawing not
   inspected; NTC part and network; strap values are worked examples only.
-- **Piezo and driver:** no 105 dB evidence; measuring distance undefined;
-  response over 2.8 to 4.2 kHz not read.
+- **Piezo and driver:** 10 cm is the proposed measurement distance, but 105 dB
+  remains unproven and D-18 method is open. PAM8904E passes an initial paper
+  screen only; actual load behaviour, output versus supply, permitted piezo
+  drive, power, EMI, thermal limits and exact package remain to be verified.
 - **Motor:** no continuous-duty data; start under a sagging rail.
 - **Switches and connectors:** dimensions not read from drawings; footprint
   equivalence of PCM12SMTR and MSK12C02 unchecked; tether not researched.
@@ -429,10 +433,20 @@ handling of datasheets.
 
 ## 11. Exact next step
 
-**Obtain the owner's decisions O-02 to O-15 and authorisations A-1 to A-4.**
-No further selection work is possible without them. Present
-[docs/g1-owner-decisions.md](docs/g1-owner-decisions.md) to the owner, with
-the shortlist and the three analysis documents as support.
+**Continue the O-03/O-05 paper investigation; do not ask the owner to perform
+hardware work.** First inspect the current full PAM8904E datasheet and package
+drawings, then obtain manufacturer clarification from Diodes and Same Sky on
+the driver/transducer load, drive waveform, frequency sweep and operation
+above the piezo's 10 Vp-p rated condition. Compare at least one alternative
+driver, build the battery-current/thermal/EMI paper budget, and keep D-18's
+acoustic measurement method open until the owner reviews a complete proposal.
+Use [docs/g1-piezo-driver-compatibility.md](docs/g1-piezo-driver-compatibility.md)
+as the starting point. The owner does not need to buy, wire, open or test
+anything now.
+
+Other O-04 and O-06 to O-15 decisions and A-1 to A-4 authorisations remain
+open. Do not treat this driver research as permission to begin design or
+physical testing.
 
 Then, in order, and only as far as the owner authorises:
 
@@ -513,3 +527,39 @@ physical component freeze remains BLOCKED.
 
 History update: O-03/O-05 Direction A and the 10 cm proposed distance were
 recorded as evaluation-only on 2026-11-12. No part is selected or frozen.
+
+
+## 14. Latest O-03/O-05 research update — PAM8904E (2026-11-12)
+
+Created [docs/g1-piezo-driver-compatibility.md](docs/g1-piezo-driver-compatibility.md)
+and linked it from the owner-decision document.
+
+Verified manufacturer-data screen:
+- Same Sky CPT-2475-92T: 24 mm x 7.5 mm, 10 Vp-p rated, 1–30 Vp-p
+  operating range, 92 dB at 10 cm under 4 kHz / 10 Vp-p / half-duty
+  square-wave conditions, and 14.7–27.3 nF capacitance at 120 Hz.
+- Diodes PAM8904: 15 nF maximum load; not a qualified match for the 21 nF
+  nominal reference piezo.
+- Diodes PAM8904E: 47 nF maximum load, 1.5–5.5 V supply, 20 Hz–300 kHz
+  input. The EVB guide states up to 16 Vp-p from 3 V with 47 nF. This makes
+  it the leading paper-screen candidate, not an approved match.
+- Important caution: the piezo's 10 Vp-p rating is below the EVB guide's
+  16 Vp-p heavy-load example. Its 1–30 Vp-p operating range does not by itself
+  prove safe long-duration operation at that waveform. Manufacturer
+  confirmation is required before any component recommendation or test.
+- 105 dB is not proven. The 92 dB datasheet figure is not labelled dBA.
+  The 10 cm distance remains proposed; D-18 is still open.
+
+Next: inspect current full PAM8904E datasheet and package drawing; request
+written confirmation from Diodes and Same Sky; screen an alternative driver;
+calculate power/current/thermal/EMI implications; and revisit acoustic
+acceptance criteria. No purchase, schematic, PCB, construction, battery
+connection or physical test is authorised.
+
+Research source URLs:
+- https://www.diodes.com/part/view/PAM8904E
+- https://www.diodes.com/assets/Evaluation-Boards/PAM8904E_EVB-User-Guide.pdf
+- https://www.sameskydevices.com/product/resource/cpt-2475-92t.pdf
+
+Commit sequence: report 89ee70c; owner-decision update 58193fb; handoff update
+pending verification.
