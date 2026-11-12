@@ -39,7 +39,7 @@ fit certification. The 55 mm figure is a calculated lower bound for one
 arrangement before all other parts, clearances, walls, antenna thickness,
 wires, connectors and acoustic requirements are accommodated. Width and
 height remain provisional and must be re-screened. No component is selected
-or frozen; no purchase, CAD, PCB or battery test is authorised by this choice.
+or frozen; no final fit approval or component freeze is implied. The owner has separately authorised starting provisional CAD and PCB co-design.
 
 **Consequences:** the original 45 mm Pod length is no longer the working
 length target; subsequent mechanical screening should start at 55 mm or more.
@@ -56,8 +56,7 @@ charger implementation, power-path architecture, carrier PCB, charging
 current, NTC network or component pairing.
 
 **Explicit limits of this decision:** no purchase or supplier order is
-authorised; no schematic, PCB or carrier design is authorised; no circuit may
-be built; and no battery may be connected to a charger or test setup under
+authorised; no final circuit or battery pairing is approved; provisional schematic and PCB design may proceed under the hackathon implementation mandate; and no battery may be connected to a charger or test setup under
 this decision. Independent electrical review and the evidence listed below
 remain mandatory before any battery-powered test.
 
@@ -93,8 +92,7 @@ The CPT-2475-92T is documented at 92 dB at 10 cm, rated at 10 Vp-p and
 nominally 21 nF. It is not documented as achieving 105 dB. The Diodes PAM8904
 is a research lead only: its manufacturer specifies a maximum 15 nF load,
 below the piezo's nominal 21 nF. Do not assume this driver can operate that
-piezo; obtain written manufacturer confirmation or investigate a different
-driver. No voltage increase may be inferred to produce a predictable SPL
+piezo; screen the available datasheet evidence and proceed with a provisional, reviewable circuit direction; manufacturer confirmation is optional, not a project gate. No voltage increase may be inferred to produce a predictable SPL
 increase.
 
 **Required technical checks before any component selection:**
@@ -128,9 +126,7 @@ increase.
    lid and antenna keepouts in the enlarged Pod envelope. No CAD or circuit
    construction is authorised by this evaluation direction.
 
-**Explicitly not authorised:** purchase, supplier order, schematic/PCB design,
-circuit construction, battery connection, high-voltage piezo testing or
-acoustic exposure testing. Any later physical test requires the relevant
+**Current implementation boundary:** provisional schematic, PCB and CAD design are authorised. Purchase, battery connection, energised circuit construction, high-voltage piezo testing and acoustic exposure testing are separate activities and are not implied by permission to design. Any later physical test requires the relevant
 authorisation, independent electrical review and controlled hearing-safety
 arrangements. O-03 and O-05 remain OPEN; G1 physical component freeze remains
 BLOCKED.
@@ -154,7 +150,7 @@ BLOCKED.
 | --- | --- | --- |
 | A-1 | Purchase of evaluation samples: one of each recommended pack, the NFC module, an IMU module, the piezo, both motors and both Zero boards. Nothing has been ordered | All measurements in section 4 |
 | A-2 | Written enquiries to Jauch, Renata, Elechouse, Waveshare and Top Power in the owner's name | Charge-voltage tolerance, pulse discharge, schematics, regulator identity, TP4056 tolerance |
-| A-3 | Start of a schematic and carrier-PCB stage | Any charger other than a module; O-06 |
+| A-3 | Start of schematic and carrier-PCB stage | OWNER AUTHORISATION RECORDED 2026-11-12: start provisional schematic and PCB design as required hackathon deliverables; unresolved circuits must remain clearly marked provisional. |
 | A-4 | Independent electrical review of the battery, charger and power-path proposal | Any battery-powered test |
 
 ## 4. Evidence that would close the open questions
@@ -183,3 +179,23 @@ BLOCKED.
 | 0.6 | 2026-11-12 | Recorded O-03/O-05 Direction A for evaluation only and 10 cm as proposed SPL distance; no piezo/driver selection or physical test authorised |
 | 0.7 | 2026-11-12 | Added PAM8904E as a promising boosted-driver research candidate; created compatibility report; no component selected or test authorised |
 | 0.8 | 2026-11-12 | Expanded driver evaluation after full PAM8904E datasheet and EVB review; PAM8904E remains evaluation-only; no selection or test authorised |
+
+
+## 6. Hackathon implementation status (2026-11-12)
+
+The owner has explicitly confirmed that the project is being built by the owner
+for a hackathon and requires PCB and CAD designs. This is the controlling
+implementation direction:
+
+- Provisional KiCad schematic/PCB design and FreeCAD CAD design may start now.
+- No manufacturer correspondence is required to unlock design work.
+- PAM8904E remains a paper-screen candidate only; use a clearly labelled
+  provisional driver block until its operating envelope is resolved.
+- Unresolved owner decisions are tracked, but do not block independent
+  mechanical modelling, board outlines, connector interfaces or non-critical
+  schematic blocks.
+- Design permission is not permission to energise a LiPo circuit, exceed
+  component ratings, order fabrication or claim a test has passed.
+
+The earlier A-3 gate is considered satisfied for starting provisional design.
+A-4 electrical review remains relevant before battery-powered testing.
