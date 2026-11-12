@@ -1,11 +1,11 @@
 # G1 Decisions Requiring Owner Approval
 
-Revision: 0.3 | Date: 2026-11-12 | Status: OPEN; no decision has been taken on the owner's behalf
+Revision: 0.4 | Date: 2026-11-12 | Status: PARTIALLY DECIDED; O-01 recorded, O-02 to O-15 remain open
 
 Each item is a choice the project owner must make before the component
-freeze can proceed. Nothing below is decided. The recommendation is an
-engineering preference on the documents in the
-[datasheet index](datasheet-index.md); it is not an approval.
+freeze can proceed. O-01 has been decided by the owner as recorded below;
+O-02 to O-15 remain open. Recommendations are engineering preferences on
+the documents in the [datasheet index](datasheet-index.md), not approvals.
 Existing decisions D-01 to D-22 are in the
 [decision log](design-decisions.md).
 
@@ -18,13 +18,33 @@ Detail: [component shortlist](g1-component-shortlist.md),
 
 | ID | Decision needed | Why it cannot be avoided | Options | Recommendation | Related |
 | --- | --- | --- | --- | --- | --- |
-| O-01 | Sentry Pod size, NFC separation or battery size | With the smallest documented PN532 antenna (10 x 25) and a 200 to 250 mAh pack, the 10 mm separation does not fit inside 45 x 30 x 16 in any axis-aligned placement tested | (a) Enlarge the Pod to at least about 55 long; (b) keep the size and allow a smaller separation for a ferrite-backed antenna, proven by test first; (c) keep size and separation with a pack below 200 mAh | (a), because it keeps both the safety-related separation and the capacity. The 55 figure is a lower bound, not a design | D-13, R-15, R-35 |
+| O-01 | Sentry Pod size, NFC separation or battery size | With the smallest documented PN532 antenna (10 x 25) and a 200 to 250 mAh pack, the 10 mm separation does not fit inside 45 x 30 x 16 in any axis-aligned placement tested | (a) Enlarge the Pod to at least about 55 long; (b) keep the size and allow a smaller separation for a ferrite-backed antenna, proven by test first; (c) keep size and separation with a pack below 200 mAh | **OWNER DECISION: Option (a) selected.** Enlarge the Pod; retain the 10 mm separation and 200–250 mAh capacity target. Approximately 55 mm is a lower bound only, not a final dimension or fit approval. | D-13, R-15, R-35 |
 | O-02 | Charger IC family | Neither specified family (MCP73831, TP4056) keeps its maximum at or below 4.200 V, and neither has both a power path and a cell-temperature input. Five of seven packs state no tolerance above 4.2 V | (a) Approve a power-path charger such as TI BQ25185 at its 4.1 V setting; (b) keep MCP73831 and obtain each pack maker's written charge-voltage tolerance, with separate temperature and load-disconnect circuits; (c) keep TP4056 after resolving its internal tolerance conflict | (a) | D-04, R-02, R-05 |
 | O-03 | Sound level target and piezo driver | No externally driven piezo of 25 mm or less was found that documents 105 dB; the loudest verified part is 92 dB at 10 cm and 24 mm in diameter; the specified single-transistor driver cannot reach that part's rated drive voltage | (a) Define the 105 dB distance and accept a boosted driver and a 24 mm part; (b) lower the target to what a smaller part documents; (c) approve a self-driven sounder or a larger body | Define the measuring distance first (D-18), then choose between (a) and (b) with measured data | D-07, D-18, R-08 |
 | O-04 | IMU module and lifecycle | "GY-521" names no maker; the identifiable Adafruit 3886 was out of stock; MPU-6050 is reported obsolete by its maker (unverified lead) | (a) Approve Adafruit 3886 as the MPU-6050 module; (b) accept an unbranded GY-521 and measure every received board; (c) approve evaluation of a current-production IMU, which changes the specified part and firmware | (a) for the prototype, with (c) raised as a supply risk for anything beyond it | D-17, R-30 |
 | O-05 | Piezo driver IC | A boosted driver such as Diodes PAM8904 replaces the specified 2N2222 and 1 kohm arrangement | (a) Approve evaluation of a boosted driver; (b) keep the transistor driver and accept the resulting level | Decide together with O-03 | D-07 |
 | O-06 | Keyfob size or construction | The 35 x 25 x 12 target fails with any separate charger board and is marginal without one | (a) Authorise a custom carrier PCB stage; (b) enlarge the Keyfob; (c) both | (c), after a Zero board's assembled height has been measured | D-13, R-16 |
 | O-07 | Battery capacity ranges | The best-documented Pod pack is 240 mAh minimum, 17 wide (not "502030"); the best-documented Keyfob pack is 150 / 155 mAh; the only pack with an NTC is 205 / 215 mAh and 37 long | Confirm whether the named 502030 size and the 150 to 200 mAh range are requirements or guidance | Treat them as capacity requirements and let the pack shape follow evidence | D-05 |
+
+## 1.1 Owner decision recorded — O-01 (2026-11-12)
+
+The owner selected **Option A: enlarge the Sentry Pod**. The design direction is
+to increase external length from 45 mm to **at least approximately 55 mm**,
+while retaining the 30 mm width and 16 mm height as provisional targets, the
+10 mm antenna-to-pack separation, and the 200–250 mAh battery-capacity target.
+
+This is a specification direction, not a finished enclosure dimension or a
+fit certification. The 55 mm figure is a calculated lower bound for one
+arrangement before all other parts, clearances, walls, antenna thickness,
+wires, connectors and acoustic requirements are accommodated. Width and
+height remain provisional and must be re-screened. No component is selected
+or frozen; no purchase, CAD, PCB or battery test is authorised by this choice.
+
+**Consequences:** the original 45 mm Pod length is no longer the working
+length target; subsequent mechanical screening should start at 55 mm or more.
+The 10 mm separation and capacity target are retained rather than relaxed.
+The Pod may need to grow further once the piezo, processor, IMU, NFC board,
+connectors and real clearances are included.
 
 ## 2. Decisions within the specification
 
@@ -69,3 +89,4 @@ Detail: [component shortlist](g1-component-shortlist.md),
 | Revision | Date | Change |
 | --- | --- | --- |
 | 0.3 | 2026-11-12 | First issue: fifteen owner decisions and four authorisations arising from G1 candidate research |
+| 0.4 | 2026-11-12 | Recorded owner approval of O-01 Option A only; O-02 to O-15 and A-1 to A-4 remain open |
