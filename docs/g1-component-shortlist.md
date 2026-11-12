@@ -1,6 +1,6 @@
 # G1 Component Shortlist
 
-Revision: 0.3 | Date: 2026-11-12 | Status: candidates for owner decision; NOTHING selected or frozen
+Revision: 0.4 | Date: 2026-11-12 | Status: candidates for owner decision; NOTHING selected or frozen
 
 **Every part here is a candidate. None is selected, substituted into the
 specification, purchased or frozen.** The physical component freeze remains
@@ -29,79 +29,42 @@ Distributor stock figures marked **L** came from search snapshots.
 
 | Candidate | Maker, order code | Size | Key facts | Evidence | Availability |
 | --- | --- | --- | --- | --- | --- |
-| **PN5321 MINI with ferrite-backed antennas** | Elechouse, SKU NFC_EX_MINI, hardware V2 | Board 25 x 16.4 x 4.4; antennas 10 x 25 and 40 x 50 on 100 mm leads, both supplied | NXP PN532 (PN5321 ordering family); 3.3 to 5.0 V input verified by the maker at both ends; 3.3 V logic; I2C selected by bridging one solder pad; 7-bit address 0x24; RSTPD_N on the connector; pull-up footprints unpopulated | D: datasheet rev. 1.5, September 2026 (SRC-43) | P: "367 in stock" |
-| PN532 NFC RFID Module V3 | Elechouse | 42.7 x 40.4 x 4 published claim | Integral antenna; wider than the Pod | D (SRC-21) | L: product page returned 404 |
-| PN532 breakout, product 364 | Adafruit | Page text 51 x 117.7 (L) | Integral antenna; far larger than the Pod | L | L: out of stock |
+| **PN5321 MINI with ferrite-backed antennas** | ELECHOUSE, SKU NFC_EX_MINI, hardware V2 | Board 25 x 16.4 x 4.4; supplied antennas 10 x 25 x 0.2 and 40 x 50 x 0.2; 100 mm leads | 13.56 MHz PN532; I2C/SPI/HSU selected by solder jumper; I2C address 0x24; I/O 3.3 V; current online manual input 2.7–5.5 V; active-low RST; no IRQ on host connector; current v1.1 manual says onboard 3.3 V I2C pull-ups | SRC-43 earlier rev.1.5 record; SRC-56 current online v1.1 docs | Not a purchase approval |
+| PN532 NFC RFID Module V3 | ELECHOUSE | 42.7 x 40.4 x 4 published claim | Integral antenna; not compatible with current width target | D (SRC-21) | Not selected |
+| PN532 breakout, product 364 | Adafruit | Page text 51 x 117.7 (L) | Integral antenna; far larger than Pod | L | L: out of stock |
 | Grove NFC, 113020006 | Seeed Studio | 25.43 x 20.35 board (L); antenna size not found | Separate antenna; default UART | L | L: unclear |
 | Gravity NFC, DFR0231-H | DFRobot | 110 x 50 (L) | Integral antenna | L | L |
 | PN532 NFC HAT, 16958 | Waveshare | Raspberry Pi HAT format; no numeric size found | Integral antenna | L | L |
 
-**Recommended candidate: Elechouse PN5321 MINI with the 10 x 25 antenna.**
-It is the only PN532 module found whose board and antenna are documented and
-small enough to consider.
+**Prototype candidate: ELECHOUSE PN5321 MINI with the 10 x 25 antenna.** It is the most compact documented PN532 option identified in the current research. This is not an owner component freeze.
 
-Facts from its datasheet (SRC-43):
+Current online documentation (SRC-56) identifies the I2C host signals by module silkscreen, not by a numbered conductor/cable map:
+- GND; 5V/3V3 supply; active-low RST; SCK and MISO unused in I2C.
+- TX/MOSI/SDA is SDA; RX/SS/SCL is SCL.
+- I2C address 0x24; 3.3 V I/O.
+- No IRQ is exposed on the host interface. The schematic now leaves ESP32-S3 GPIO10 / P15-6 NC and polls the reader.
+- The current v1.1 manual says onboard 3.3 V I2C pull-ups are present. An earlier downloaded v1.5 evidence record (SRC-43) describes unpopulated pull-up footprints and a different supply range. This is treated as a hardware/document revision discrepancy; no external pull-ups are populated until the received module is inspected.
 
-- Connector, 7-pin MX1.25: 1 RX/SS/SCL, 2 TX/MOSI/SDA, 3 MISO, 4 SCK, 5 RST
-  (to PN532 pin 38, RSTPD_N, an input), 6 supply labelled 5V, 7 GND.
-  100 ohm series resistors on host lines.
-- **RSTOUT_N is not routed. No IRQ signal is listed on the connector.**
-- Measured at 3.3 V with the 10 x 25 antenna: idle with RF off 17.9 mA;
-  4 Hz polling 23.5 mA mean, 84.6 mA maximum; continuous RF 84.4 mA mean;
-  PowerDown 0.372 mA. Maxima are 100 Hz samples and do not bound shorter
-  transients.
-- Stable read distance at 3.3 V, 10 x 25 antenna: 3.2 cm for an 85 x 54 card,
-  2.5 cm for a 25 mm round card, in free air.
+The manual publishes board dimensions 25 x 16.4 x 4.4 mm and antenna options 10 x 25 x 0.2 mm or 40 x 50 x 0.2 mm with a 100 mm lead. The DWG archive has not yet been opened, so these are not tolerance-qualified envelope dimensions. Connector mating family and cable conductor order must be checked against the received item; the schematic deliberately uses signal names instead of pretending a numbered cable map exists.
 
-Remaining uncertainties:
-
-- No schematic is published. The on-board regulator, level arrangement and
-  the exact PN532 ROM suffix are unknown.
-- The DWG drawing was downloaded but not opened. Antenna thickness, outline
-  tolerance and mounting features are TBD.
-- The maker's page says 2.7 to 5.5 V; its datasheet says 3.3 to 5.0 V.
-- The proposed `P_NFC_IRQ_N` connection on GPIO10 cannot be made with this
-  module. Polling would be required. This affects a proposal, not the
-  specification.
-- The maker's 4 Hz polling mean (23.5 mA) is a 72 % reduction from continuous
-  RF (84.4 mA), not the more than 80 % the specification requires. The
-  maker's polling scheme is not the project's; the saving must be measured
-  (risk R-26, test T-16).
-- Read distance through a 1.5 lid next to a battery is unmeasured.
-- The 10 mm separation from a 502030-class pack does not fit the Pod target
-  ([mechanical feasibility](g1-mechanical-feasibility.md)).
-
-Different-chip modules reported by delegated research (Elechouse
-ST25R3916B MINI V2, Elechouse PN7160 MINI, M5Stack Unit RFID2) would replace
-the specified PN532. They were not verified and are not recommended.
+The host I2C address 0x24 is already specified by the project. The manufacturer's published free-air read figures do not prove range through the finished 1.5 mm lid with the battery, piezo and nearby metal present. The project 10 mm nearest-surface battery and piezo separations remain applicable; antenna fit is still a major packaging constraint.
 
 <a id="imu"></a>
 ## 3. P-IMU: MPU-6050 module
 
 | Candidate | Maker, order code | Size | Key facts | Evidence | Availability |
 | --- | --- | --- | --- | --- | --- |
-| **MPU-6050 6-DoF sensor, product 3886** | Adafruit | 26.0 x 17.8 x 4.6 published claim; four 2.5 mm mounting holes | 3.3 V or 5 V logic support circuitry; STEMMA QT connectors; open PCB files | P (SRC-42); schematic details L | P: **out of stock** |
+| **MPU-6050 6-DoF sensor, product 3886** | Adafruit | Product page 26.0 x 17.8 x 4.6; official Eagle outline 25.40 x 17.78; four 2.5 mm mounting holes | STEMMA QT and 1 x 6 header; VIN 3–5 V, 3Vo output, GND, SCL, SDA, INT; level shifting and 10 kΩ I2C pull-ups; AD0 default low -> 0x68 | SRC-42 and newly inspected official board source SRC-54 | P: out of stock on 2026-11-12 |
 | SEN-MPU6050 | Joy-IT | 25 x 20 x 7 published claim | 3.3 to 5 V supply, 3.3 V logic, 8 contacts | D (SRC-25) | Not shown |
 | GY-521, generic | No single maker | Not documented | No controlled schematic or drawing | None | Widely listed; identity not controllable |
 | SEN-11028 | SparkFun | 25.5 x 15.2 (L) | No regulator (L) | L | L: retired |
 | SEN0142 | DFRobot | 14 x 21 (L) | Regulator and pull-ups on board (L) | L | L |
 
-**Recommended candidate: Adafruit 3886**, because its maker, product number
-and PCB files are identifiable. It is not a generic GY-521, so choosing it is
-an owner decision (O-04).
+**Prototype candidate: Adafruit 3886**, because its board source, product number and manufacturer are identifiable. It is a distinct breakout, not a generic GY-521. O-04 remains the owner decision; this candidate is only represented provisionally in the Pod schematic.
 
-Remaining uncertainties:
+The official six-pin header mapping from the Eagle source is: 1 VIN; 2 3Vo regulator output; 3 GND; 4 SCL; 5 SDA; 6 INT. The STEMMA QT connector uses GND, VIN, SDA and SCL. The source board includes a 10 kΩ AD0 pull-down by default and a solder jumper that connects AD0 to 3.3 V for address 0x69. The official guide says SCL/SDA are level-shifted and have 10 kΩ pull-ups. Do not connect 3Vo as an input and do not add another carrier pull-up pair until total bus pull-up resistance is checked.
 
-- Out of stock on 2026-11-12.
-- Delegated research read an archived TDK page that lists MPU-6050 as
-  **Obsolete** with ICM-42670-P as a non-interchangeable suggested alternate
-  (L; TDK's live page returned 403). A long-term supply risk exists for any
-  MPU-6050 module (decision D-17, risk R-30).
-- Pull-up values and rails, regulator and AD0 default were reported from the
-  maker's schematic by delegated research and not verified here. They matter
-  because the PN5321 MINI has no pull-ups fitted.
-- At 26.0 x 17.8 it does not fit the Pod module set
-  ([mechanical feasibility](g1-mechanical-feasibility.md) section 3.1).
+The official source geometry contains four 2.5 mm mounting holes at (2.54, 2.54), (22.86, 2.54), (2.54, 15.24), and (22.86, 15.24) mm in the Eagle board coordinate system. The product-page 4.6 mm thickness is not a controlled assembled maximum for the chosen header/cable configuration. O-04 and physical fit remain open.
 
 <a id="batteries"></a>
 ## 4. P-BATTERY and K-BATTERY: protected packs
