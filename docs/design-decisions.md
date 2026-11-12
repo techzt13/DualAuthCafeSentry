@@ -1,6 +1,6 @@
 # Dual-Auth Cafe Sentry - Design Decision Log
 
-Revision: 0.2 | Date: 2026-11-11 | Status: design basis; physical freeze blocked
+Revision: 0.3 | Date: 2026-11-12 | Status: design basis; physical freeze blocked
 
 The [project specification](../PROJECT_SPEC.md) remains unchanged.
 **No human engineering approval is implied by this log.**
@@ -354,12 +354,57 @@ reviewed cell/charger/source interface, complete constituent BOM and
 maximum-envelope evidence, followed by the existing verification gates.
 No PCB layout or CAD design is authorized by completion of the registers.
 
+<a id="d-22"></a>
+### D-22 - G1 candidates are recommendations, not selections
+
+**Status:** APPLIED-DOC for candidate records; every selection remains OPEN.
+**Owners:** project lead, electrical, mechanical, manufacturing. **Gate:** G1.
+
+G1 research produced a [component shortlist](g1-component-shortlist.md), a
+[battery and charger compatibility matrix](g1-battery-charger-compatibility.md),
+a [power architecture recommendation](g1-power-architecture-recommendation.md)
+and a [mechanical feasibility comparison](g1-mechanical-feasibility.md).
+Eleven candidates were added to both registers as reference-only rows with
+`selection_status` `CANDIDATE_OWNER_DECISION`. No existing row was changed
+and nothing is FROZEN.
+
+Rules applied:
+
+- A recommendation names the engineering preference on current documents.
+  It does not select, purchase or approve a part. The fifteen choices that
+  need the owner are listed as O-01 to O-15 in
+  [owner decisions](g1-owner-decisions.md); none has been taken here.
+- Several recommendations depart from the specification and therefore cannot
+  be adopted without approval: a charger outside the MCP73831 and TP4056
+  families (O-02), a boosted piezo driver (O-05), a Pod size, separation or
+  capacity change (O-01), and an identifiable IMU board instead of a generic
+  GY-521 (O-04).
+- Evidence class is stated per value: read from a downloaded document, read
+  from a maker page, or an unverified lead from delegated research. Leads do
+  not populate numeric register fields.
+- No battery and charger pairing is approved. The matrix records which
+  conditions pass on documents and which remain unresolved.
+- Manufacturer documents are held locally with SHA-256 fingerprints and are
+  not republished, because no redistribution right was found
+  ([evidence folder](datasheets/README.md)).
+
+New findings that bear on earlier decisions: D-03 (the regulator's reverse
+voltage limit rules out 3V3-pad injection on an unmodified board), D-04 and
+D-05 (the charge-voltage conflict extends to every fixed 4.2 V charger for
+one cell, and five of seven packs state no tolerance), D-07 (no 105 dB part
+found), D-13 (Pod target not achievable with the candidates found), D-17
+(lifecycle lead). Those decisions stay OPEN.
+
+**Closure:** owner decisions O-01 to O-15, the written supplier evidence and
+measurements listed in owner decisions section 4, and independent review.
+
 ## 5. Revision history
 
 | Revision | Date | Change | Approval status |
 | --- | --- | --- | --- |
 | 0.1 | 2026-11-11 | Initial eight-document engineering design basis; source verification, logical interfaces, risk register, feasibility analysis and staged roadmap | Documentation task completed subject to recorded checks; all hardware/behavior proposals remain unapproved |
 | 0.2 | 2026-11-11 | Extended component/evidence/dimension/pinout registers; preserved research after interruption; corrected C3 USB pad pair; added documented cell/charger and packaging conflicts | Documentation evidence only; physical freeze blocked, no substitutions or hardware approval |
+| 0.3 | 2026-11-12 | Added D-22 and linked the G1 candidate shortlist, compatibility matrix, power recommendation, mechanical comparison and owner-decision list | Recommendations only; no selection, purchase or hardware approval; physical freeze blocked |
 
 Completion review, 2026-11-12: recovered from a model-service connection timeout,
 preserved the 111-entry registers, corrected the session validator's titled

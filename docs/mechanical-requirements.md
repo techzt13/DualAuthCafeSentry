@@ -1,6 +1,10 @@
 # Dual-Auth Cafe Sentry - Mechanical Requirements
 
-Revision: 0.2 | Date: 2026-11-11 | Status: packaging requirements; physical freeze blocked
+Revision: 0.3 | Date: 2026-11-12 | Status: packaging requirements; physical freeze blocked
+
+Revision 0.3 note: the screening method below is applied to G1 candidate
+parts in [G1 mechanical feasibility](g1-mechanical-feasibility.md). No
+requirement, target or clearance in this document has changed.
 
 All dimensions are in **millimetres**. This is not a CAD model, tolerance
 release or fit certification. Future models must be native, parametric FreeCAD

@@ -1,6 +1,12 @@
 # Dual-Auth Cafe Sentry - Power Architecture
 
-Revision: 0.2 | Date: 2026-11-11 | Status: requirements; component pairing not approved
+Revision: 0.3 | Date: 2026-11-12 | Status: requirements; component pairing not approved
+
+Revision 0.3 note: G1 candidate evidence is in the
+[compatibility matrix](g1-battery-charger-compatibility.md) and the
+[power recommendation](g1-power-architecture-recommendation.md). Two points
+below are superseded by that evidence and are marked where they occur. The
+requirements in this document are otherwise unchanged.
 
 **LiPo charging, protection and power distribution are not approved for
 construction or manufacture.** Exact cells, protected packs, charger modules,
@@ -55,12 +61,20 @@ Sources: [SRC-01](architecture.md#src-01),
 - A regulated 3.3 V feed into the board's 3V3 pad is **not yet approved**.
   The onboard LDO output, reverse-current path, USB coexistence, power
   sequencing and C3's separately supplied RGB must be resolved first.
+  **Revision 0.3:** a mirror of the ME6217 data sheet states that VOUT must
+  not exceed VIN + 0.3 V ([SRC-36](datasheet-index.md#src-36)). On that
+  evidence this feed is not acceptable on an unmodified board whenever the
+  5 V net is unpowered. The canonical manufacturer document is still TBD.
 - The regulator's advertised current capability is not a board thermal or
   whole-system load guarantee. Add sensor/LED loads and measure transients.
 
 **P:** Prefer a regulated logic rail spanning the selected protected cell's
 usable voltage range, evaluating buck-boost conversion where needed. Connection
 to a Zero board remains conditional on a supported, verified isolation scheme.
+**Revision 0.3:** because of the limit above, the G1 recommendation instead
+feeds the board's 5 V pad from a power-path charger through an ideal diode
+and uses the onboard regulator. It is a recommendation for owner decision,
+not an approved design.
 If that cannot be achieved without board rework, obtain approval for rework or
 another power-interface/component strategy. Do not quietly remove an LDO or
 change the MCU board in this documentation phase.

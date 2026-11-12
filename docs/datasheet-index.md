@@ -1,6 +1,9 @@
 # Component Evidence and Datasheet Index
 
-Revision: 0.2 | Date: 2026-11-11 | Status: verification register; physical freeze BLOCKED
+Revision: 0.3 | Date: 2026-11-12 | Status: verification register; physical freeze BLOCKED
+
+Revision 0.3 adds G1 candidate evidence (SRC-30 to SRC-53) and the local
+[evidence folder](datasheets/README.md). No candidate is selected.
 
 Completion review: 2026-11-12. Existing source evidence was preserved; no
 component selection or specification was changed during recovery.
@@ -91,6 +94,12 @@ The completed revision 0.2 register contains **111 entries**: **54 Pod**,
 the dimension register covers the same 111 IDs. These are controlled records,
 not 111 separately purchased parts.
 
+Revision 0.3 appends **11 reference-only G1 candidate entries** to both
+registers, giving **122 entries**: 54 Pod, 43 Keyfob and **25 reference-only**.
+The 111 revision 0.2 rows are unchanged. Candidate rows carry
+`selection_status` `CANDIDATE_OWNER_DECISION` and `freeze_status`
+`REFERENCE_NOT_SELECTED`; they are not selections.
+
 Dimension axes follow each row's `dimension_scope`, not automatically the
 longest side or eventual assembly coordinates. BSC/basic dimensions are not
 maximum tolerance bounds. In particular, MCP73831 DFN uses drawing D=2.00
@@ -102,7 +111,8 @@ D/E/A maxima 6.1/6.1/1.0 exclude the drawing's permitted protrusions up to
 
 `SRC-01` through `SRC-22` preserve the original
 [architecture source IDs](architecture.md#src-01). New evidence uses
-`SRC-23` through `SRC-29`. Page numbers below are PDF page numbers unless
+`SRC-23` through `SRC-29`; G1 candidate evidence uses `SRC-30` through
+`SRC-53`. Page numbers below are PDF page numbers unless
 otherwise stated. No document is represented as a measurement of delivered
 hardware.
 
@@ -294,3 +304,79 @@ preservation is compared with fixed G0 commit
 Final validation results and the exact next action are recorded in
 [LAST-WORKED-ON.md](../LAST-WORKED-ON.md). A completed documentation/evidence
 task still does not close the physical component freeze.
+
+## 8. G1 candidate evidence - 2026-11-12
+
+Every document below was downloaded on 2026-11-12 and read, unless the row
+says otherwise. "Host" is **M** manufacturer, **D** distributor or retailer
+hosting the maker's document, **T** third-party mirror, **P** web page.
+Candidates are compared in the [component shortlist](g1-component-shortlist.md).
+**No candidate is selected.**
+
+### Power
+
+| ID | Source | Host | Revision, evidence and limitations |
+| --- | --- | --- | --- |
+| <a id="src-30"></a>SRC-30 | [TI BQ25185 data sheet](https://www.ti.com/lit/ds/symlink/bq25185.pdf) | M | SLUSF65B, October 2023, revised August 2026, 32 pages. Page 1 package; pages 5-8 ratings and electrical table (junction -40 to 125 deg C); page 16 Table 6-1 inspected as an image. Feature list says 4.02 V where Table 6-1 says 4.05 V. Package drawing pages not inspected. |
+| <a id="src-31"></a>SRC-31 | [TI BQ25180 data sheet](https://www.ti.com/lit/ds/symlink/bq25180.pdf) | M | SLUSE99C, September 2021, revised January 2023, 58 pages. Regulation 3.5 V + code x 10 mV, +/-0.5 %; DSBGA-8 1.6 x 1.1. Needs I2C configuration by firmware. |
+| <a id="src-32"></a>SRC-32 | [TI BQ2407x data sheet](https://www.ti.com/lit/ds/symlink/bq24074.pdf) | M | SLUS810N, September 2008, revised October 2021, 55 pages. Battery regulation 4.16 / 4.20 / 4.23 V at junction 0 to 125 deg C; BQ24079 4.059 / 4.100 / 4.141 V. |
+| <a id="src-33"></a>SRC-33 | [TI BQ25100 data sheet](https://www.ti.com/lit/ds/symlink/bq25100.pdf) | M | SLUSBV8C, August 2014, revised November 2014, 34 pages. 4.16 / 4.2 / 4.23 V; no power path. |
+| <a id="src-34"></a>SRC-34 | [TI LM66100 data sheet](https://www.ti.com/lit/ds/symlink/lm66100.pdf) | M | SLVSEZ8A, March 2019, revised June 2019, 23 pages. 1.5 to 5.5 V, 1.5 A, on-resistance table. |
+| <a id="src-35"></a>SRC-35 | [TI TPS63900](https://www.ti.com/lit/ds/symlink/tps63900.pdf), [TPS63802](https://www.ti.com/lit/ds/symlink/tps63802.pdf), [TPS7A02](https://www.ti.com/lit/ds/symlink/tps7a02.pdf) | M | SLVSET3D, SLVSEU9D, SBVS277C. Output-current capability only; not candidates under the recommended architecture. |
+| <a id="src-36"></a>SRC-36 | [Micro One ME6217 data sheet, Semikey mirror](https://cdn.semikey.com/upload/pdfs/7b/e4/7be455574826533ba0e2da975ad5acc2.pdf) | T | Sheet marked V02, www.microne.com.cn, 10 pages. Electrical table and the VOUT <= VIN + 0.3 V warning. **Third-party mirror**; canonical manufacturer copy and applicability to the fitted regulator are TBD. |
+
+### Batteries
+
+| ID | Source | Host | Revision, evidence and limitations |
+| --- | --- | --- | --- |
+| <a id="src-37"></a>SRC-37 | [Jauch LP502030JH+PCM](https://www.jauch.com/downloadfile/66ced1afd16e56368a3baa9709610e3a5/matd_246484_lp502030jhpcm2_wires_50mm.pdf); [LP402025JU+PCM](https://www.jauch.com/downloadfile/677e3528e2de71444db6cca90654e9171/matd_246483_20200507_140mah_-_lp402025ju_1s1p_2_wire_50mm.pdf); [LP851719JU+PCM](https://www.jauch.com/downloadfile/677e33c97ce2259996c3e0a625aa7071d/matd_237924_20200507_180mah_-_lp851719ju_1s1p_2_wire_50mm.pdf) | M | Jauch No. 246484 rev. 1.1 08/2024; No. 246483 rev. 1.2 12/2024; No. 237924 rev. 1.2. Two pages each. First two inspected as images, including the drawings. Charge voltage has no tolerance; no NTC; no connector. LP851719JU text only. |
+| <a id="src-38"></a>SRC-38 | [Renata ICP521630PM-01](https://www.renata.com/en-us/downloads/?product=icp521630pm-01&fileid=fb9cc7a6eec92dccb1aceb95d6); [ICP402025PC-01](https://www.renata.com/en-us/downloads/?product=icp402025pc-01&fileid=7c3ca5178ae13a0827c8eaa4b0); [ICP401835TPRT](https://www.renata.com/en-us/downloads/?product=icp401835tprt&fileid=98a7e2068a84661aff18656f05); [ICP402025PC-01 specification, Conrad-hosted](https://asset.conrad.com/media10/add/160267/c1/-/en/000252023DS01/datasheet-252023-renata-icp402025pc-1-non-standard-battery-rechargeable-prismatic-plug-lipo-37-v-155-mah.pdf) | M, M, M, D | One-page sheets V02 08/2019, V02 08/2019 and V01 11/2022; first two inspected as images. The 14-page specification is version 2.0, 2016-03-10, distributor-hosted, and is the only source of protection thresholds. ICP401835TPRT drawing is marked illustration only. |
+| <a id="src-39"></a>SRC-39 | [Varta 1/LPP 402025 CE PCM W product information, Anglia-hosted](https://www.anglia.com/registration/pcn_ptn/docs/pcn/PCN_VAR_56416201020_1.pdf) | D | VKB 56416 201 020, rev. 3, one page. OEM only, minimum 200 pieces. No pack dimensions. No manufacturer-hosted copy located. |
+| <a id="src-40"></a>SRC-40 | [PKCELL LP402025 with PCM, Adafruit-hosted](https://cdn-shop.adafruit.com/product-files/1317/C1515_-_Li-Polymer_402025_150mAh_3.7V_with_PCM.pdf); [Adafruit product 1317](https://www.adafruit.com/product/1317) | D, P | PKCELL QA.S.0228 edition A, valid 2014-07-28, 5 pages; page 5 drawing inspected as an image. Charge voltage has no tolerance. The retailer page notes a 2024 change to the pack; applicability of the 2014 drawing is unconfirmed. |
+| <a id="src-41"></a>SRC-41 | [ABLIC S-8261 series data sheet](https://www.ablic.com/en/doc/datasheet/battery_protection/S8261_E.pdf) | M | Rev. 5.5_00, 34 pages. Table 1 row S-8261AAJMD-G2JT2x and the accuracy limits. Used only to interpret the IC named in SRC-40. |
+
+### Modules
+
+| ID | Source | Host | Revision, evidence and limitations |
+| --- | --- | --- | --- |
+| <a id="src-42"></a>SRC-42 | Adafruit products [3886](https://www.adafruit.com/product/3886), [4410](https://www.adafruit.com/product/4410), [4755](https://www.adafruit.com/product/4755), [6091](https://www.adafruit.com/product/6091) | P | Pages read 2026-11-12: published dimensions, default charge rates and stock status. No drawing or schematic inspected; dimensions are published claims. |
+| <a id="src-43"></a>SRC-43 | [Elechouse PN5321 MINI datasheet](https://www.elechouse.com/wp-content/uploads/2024/07/Elechouse-Pn5321-Mini-Product-Manual-V1.pdf); [product page](https://www.elechouse.com/product/pn532-mini/); [DWG archive](https://www.elechouse.com/wp-content/uploads/2024/07/MINIV2_dimention.zip) | M, P, M | Datasheet rev. 1.5, September 2026, SKU NFC_EX_MINI, hardware V2, 15 pages, all read. DWG archive downloaded and hashed but **not opened**. No schematic published. Page and datasheet disagree on supply range. |
+| <a id="src-53"></a>SRC-53 | [Seeed Studio XIAO ESP32C3 wiki](https://wiki.seeedstudio.com/XIAO_ESP32C3_Getting_Started/) | P | Page read 2026-11-12: 21 x 17.8, 380 mA fast charge. Alternative-board lead only; no schematic inspected. The XIAO ESP32S3 page was fetched but not analysed. |
+
+### Actuators, switches and connectors
+
+| ID | Source | Host | Revision, evidence and limitations |
+| --- | --- | --- | --- |
+| <a id="src-44"></a>SRC-44 | [Same Sky CPT-2475-92T](https://www.sameskydevices.com/product/resource/cpt-2475-92t.pdf) | M | Dated 09/11/2024, 5 pages; page 2 drawing inspected as an image. Frequency-response page not analysed. |
+| <a id="src-45"></a>SRC-45 | [Diodes PAM8904](https://www.diodes.com/assets/Datasheets/PAM8904.pdf); [Diodes BAV16W / 1N4148W](https://www.diodes.com/assets/Datasheets/BAV16W_1N4148W.pdf) | M | DS37246 rev. 6-2, December 2023, 10 pages; DS30086 rev. 32-2, 5 pages. Package drawings not inspected. |
+| <a id="src-46"></a>SRC-46 | [Precision Microdrives 308-100](https://precisionmicrodrives.com/cdn/catalog_product/445ff874-bf32-474d-9e41-d7606db3b147/308-100-datasheet.pdf); [310-103](https://precisionmicrodrives.com/cdn/catalog_product/89437681-576e-46e1-97cf-5ae185adeb1c/310-103-datasheet.pdf) | M | R002-V012 and R002-V011, both 2021. 308-100 drawing V0013 on page 6 inspected as an image; 310-103 tables only. |
+| <a id="src-47"></a>SRC-47 | [Vybronics VC0834B011F](https://www.vybronics.com/wp-content/uploads/datasheet-files/Vybronics-VC0834B011F-datasheet.pdf) | M | A/2, 2026-10-15, 10 pages. Identity, rated and operating voltage read; other values not extracted. |
+| <a id="src-48"></a>SRC-48 | [onsemi MMBT2222LT1/D](https://www.onsemi.com/download/data-sheet/pdf/mmbt2222lt1-d.pdf) | M | Rev. 13, September 2026, 10 pages. Collector current ratings and SOT-23 package name. |
+| <a id="src-49"></a>SRC-49 | [Alps Alpine SKRPABE010](https://tech.alpsalpine.com/cms.media/product_spec_skrpabe010_en_c1c577738a.pdf); [SKSCLBE010](https://tech.alpsalpine.com/cms.media/product_spec_sksclbe010_en_f052c78d76.pdf) | M | Specifications dated 201707, 6 pages each. Ratings, temperature, and SKSCLBE010 force and travel read; drawings not inspected. |
+| <a id="src-50"></a>SRC-50 | [C&K PCM series catalogue page, Future Electronics-hosted](https://www1.futureelectronics.com/doc/C%20&%20K%20COMPONENTS/PCM12SMTR.pdf) | D | 2 pages, revision not printed. Contact rating, life and temperature. The maker's own PDF returned HTTP 403. |
+| <a id="src-51"></a>SRC-51 | [JST PH catalogue](https://www.jst-mfg.com/product/pdf/eng/ePH.pdf); [JST SH catalogue](https://www.jst-mfg.com/product/pdf/eng/eSH.pdf) | M | 5 and 4 pages, revision not printed. Page 1 of each inspected as an image; the text layer is not readable. Per-part header drawings not inspected. |
+| <a id="src-52"></a>SRC-52 | [GCT USB4125 drawing](https://gct.co/files/drawings/usb4125.pdf); [GCT USB4105 drawing](https://gct.co/files/drawings/usb4105.pdf) | M | USB4125 drawing revision A6, dated "20/11/25" as printed, inspected as an image. USB4105 ratings read from text; its outline not inspected. Both are marked confidential and not for copying. |
+
+### Leads not independently verified
+
+Delegated research reported the following. They are recorded so the work is
+not repeated, and are **not** evidence for any register value:
+TDK's archived product page listing MPU-6050 as obsolete; Murata PKM-series
+and TDK PS-series piezo figures; C&K PTS810 and PTS840 figures; Molex
+PicoBlade figures; DigiKey and Mouser status for Jauch, Renata, onsemi and
+GCT parts; Adafruit, SparkFun, Seeed, DFRobot and Waveshare PN532 and
+MPU-6050 board details other than the pages cited above.
+
+### Retrieval failures in this session
+
+- C&K (ckswitches.com) PCM and PTS810 PDFs: HTTP 403.
+- Murata PKM13EPYH4000-A0 specification: HTTP 403.
+- onsemi `mmbt2222alt1-d.pdf`: returned an HTML page; the `mmbt2222lt1-d.pdf`
+  path returned the PDF.
+- Seeed Studio wiki: TLS failure with the system `curl`; succeeded with a
+  different TLS client.
+- TDK MPU-6050 and PS-series pages remain blocked, as before.
+
+All 61 local files and their SHA-256 values are listed in the
+[evidence folder](datasheets/README.md). The 14 fingerprints in section 5 are
+unchanged.

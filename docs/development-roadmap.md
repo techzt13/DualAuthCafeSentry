@@ -1,6 +1,6 @@
 # Dual-Auth Cafe Sentry - Staged Development Roadmap
 
-Revision: 0.2 | Date: 2026-11-11 | Status: G1 evidence documented; physical freeze incomplete
+Revision: 0.3 | Date: 2026-11-12 | Status: G1 candidates documented; owner decisions pending; physical freeze incomplete
 
 This roadmap implements the [specification](../PROJECT_SPEC.md) under
 [AGENTS.md](../AGENTS.md). Dates, named reviewers, procurement lead times and
@@ -9,6 +9,10 @@ stage durations are TBD. Do not infer a delivery schedule from the event name.
 The [component evidence package](datasheet-index.md) now records verified
 documents, unverified assemblies and source-access failures. This completes a
 G1 research/register work package, not the G1 exit gate; PCB/CAD remain on hold.
+Revision 0.3: purchasable candidates are compared in the
+[component shortlist](g1-component-shortlist.md). G1 cannot exit until the
+[owner decisions](g1-owner-decisions.md) O-01 to O-15 are taken and the
+evidence listed there is obtained. Stages, gates and tests are unchanged.
 
 ## 1. Stage and dependency overview
 

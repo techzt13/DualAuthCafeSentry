@@ -1,6 +1,6 @@
 # Dual-Auth Cafe Sentry - Engineering Risks and Conflicts
 
-Revision: 0.2 | Date: 2026-11-11 | Status: open risk register; physical freeze blocked
+Revision: 0.3 | Date: 2026-11-12 | Status: open risk register; physical freeze blocked
 
 This register covers the conflicts identified from the complete
 [specification](../PROJECT_SPEC.md), manufacturer evidence and the
@@ -62,7 +62,24 @@ Gates are defined in the [roadmap](development-roadmap.md).
 | R-32 | Both / High | Generic component labels, IC-only dimensions, supplier document inconsistencies and missing tolerances can yield wrong footprints or unsafe substitutions. | Exact manufacturer/revision/MPN, schematic-to-footprint audit, physical inspection and review of all register TBDs. D-20. | EE, ME, MFG / G1-G4 |
 | R-33 | System / Medium | Unspecified SPL conditions, runtime, latency, environmental loads and acceptance rates prevent objective verification. Documentation may be mistaken for fabrication readiness. | Freeze measurable criteria; maintain reports and sign-offs. No ERC/DRC/CAD or hardware pass claim before those activities occur. D-18/D-01. | Lead, all disciplines / G1-G7 |
 
-## 4. Release policy
+## 4. Risks added by G1 candidate research
+
+Evidence is in the [component shortlist](g1-component-shortlist.md),
+[compatibility matrix](g1-battery-charger-compatibility.md),
+[power recommendation](g1-power-architecture-recommendation.md) and
+[mechanical feasibility](g1-mechanical-feasibility.md). Owner decision IDs
+(O-nn) are in [owner decisions](g1-owner-decisions.md).
+
+| ID | Unit / priority | Conflict and consequence | Required mitigation / closure evidence | Owner / gate |
+| --- | --- | --- | --- | --- |
+| R-34 | Both / Critical | Documented radio transmit peaks are 340 mA (S3) and 335 mA (C3). Every 150 to 200 mAh pack examined, and the Jauch 250 mAh pack, states a discharge limit below that peak (150 to 310 mA). Pod worst case from documents is 430 to 494 mA. Consequences: rail sag and reset during an alarm, protector trips, cell stress. | Pack makers' written pulse-discharge ratings; measured cell current during ESP-NOW transmit at the intended power; reviewed transmit-power limit and bulk capacitance, or a higher-rate cell. No battery-powered radio test before review. O-11. | EE, FW, safety / G1-G2 |
+| R-35 | Pod / High | With the smallest documented PN532 antenna (10 x 25) and a 200 to 250 mAh pack, the specified 10 mm separation does not fit inside 45 x 30 x 16 in any axis-aligned placement tested. The three requirements cannot all be met as written. | Owner decision O-01. If a smaller separation is considered, in-case read-range evidence with a ferrite-backed antenna comes first. No silent reduction. | ME, EE/RF, lead / G1 |
+| R-36 | Both / High | A mirrored data sheet for the regulator named on the Zero schematics forbids VOUT above VIN + 0.3 V, so external 3.3 V into the 3V3 pad is not acceptable on an unmodified board unless the canonical sheet says otherwise. Powering the 5 V pad from the battery instead energises the native USB-C VBUS pins; a USB-C source may refuse to start, and the pins are exposed. | Canonical ME6217 data and received-board leakage measurement; native port made service-only or enclosed; tested source behaviour with a pre-biased VBUS in all source combinations. O-09. | EE / G1-G2 |
+| R-37 | Both / Critical | Purchasable charger boards examined default to 1 A and cannot be set below 250 mA (bq25185 board) or 500 mA (bq24074 board) by jumper. Candidate packs allow 125 to 250 mA at most (30 mA below +15 deg C for one). Only the Renata 250 mAh pack's 250 mA maximum equals the lowest setting, with no margin for the charger's +/-10 % current accuracy; every other pack is exceeded. Only one candidate pack includes an NTC. | No charger board connected to a candidate pack as supplied. Charge current, voltage and temperature window set, reviewed and measured on a dummy load before any cell is attached. O-02. | EE, safety / G1-G2 |
+| R-38 | Both / Medium | Several candidates have supply or lifecycle exposure: Adafruit 3886 and 6091 out of stock on 2026-11-12; MPU-6050 reported obsolete, Renata packs non-stocked with long lead times, one Murata piezo end-of-life and P2N2222AG obsolete (all unverified leads). | Owner-confirmed sourcing and lifecycle for each part before freeze; second source where practical. O-04, O-11. | Sourcing, lead / G1 |
+| R-39 | System / Medium | Research documents cannot be republished, so the repository holds hashes and URLs only. Local copies and the validation script exist on one machine. URLs may change. | Keep [SHA256SUMS](datasheets/SHA256SUMS) current; re-download and compare before relying on a value; owner decision on a backed-up private store. O-15. | Documentation / G1-G7 |
+
+## 5. Release policy
 
 Safety-critical unknowns block battery-powered testing and release of the
 affected circuit. Use safe board-level USB/current-limited evaluation only
@@ -81,3 +98,11 @@ specification change.
 
 Revision 0.2 incorporates the [component evidence](datasheet-index.md) and
 updates existing risks; none is closed by document inspection alone.
+
+Revision 0.3 adds R-34 to R-39 from G1 candidate research. R-01 to R-33 are
+unchanged and remain open. New evidence bearing on them: R-02 and R-05 (see
+the compatibility matrix), R-08 (loudest verified piezo of 25 mm or less
+documents 92 dB at 10 cm), R-14 and R-15 (a 25 x 16.4 module with a separate
+10 x 25 antenna exists, but R-35 applies), R-16 (Keyfob screen), R-26 (the
+candidate module's maker measured a 72 % reduction at 4 Hz polling, below the
+80 % target, under its own polling scheme).

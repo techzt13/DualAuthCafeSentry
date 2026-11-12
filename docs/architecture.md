@@ -16,6 +16,12 @@ changed. No PCB or CAD files were created for this task.
 | [Datasheet index](datasheet-index.md) | Current manufacturer evidence, revisions, access limitations and freeze blockers |
 | [Dimension register](dimension-register.csv) | Per-part drawing scope, nominal/maximum dimensions and missing installed envelopes |
 | [Verified pinouts](verified-pinouts.md) | Manufacturer-specific board/IC contacts, distinct from proposed application wiring |
+| [G1 component shortlist](g1-component-shortlist.md) | Purchasable candidates per assembly, with evidence class and remaining uncertainty; nothing selected |
+| [G1 compatibility matrix](g1-battery-charger-compatibility.md) | Battery and charger limits compared; no pairing approved |
+| [G1 power recommendation](g1-power-architecture-recommendation.md) | Options and a recommended evaluation architecture for owner decision |
+| [G1 mechanical feasibility](g1-mechanical-feasibility.md) | Packing screens of the candidates against both enclosure targets |
+| [G1 owner decisions](g1-owner-decisions.md) | Choices and authorisations that only the project owner can make |
+| [Evidence folder](datasheets/README.md) | Inventory, source URLs and SHA-256 fingerprints of inspected documents |
 | [Pinout](pinout.md) | GPIO allocation, logical connections, interface and unused-pin requirements |
 | [Power architecture](power-architecture.md) | Charging, protection, power distribution and verification |
 | [Mechanical requirements](mechanical-requirements.md) | Packaging, assembly, placement, dimensional feasibility |
