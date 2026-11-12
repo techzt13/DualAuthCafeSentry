@@ -163,6 +163,47 @@ For now the comparison is:
 No second integrated IC is presented as a false equivalent. A further
 manufacturer/distributor search should be done before any component freeze.
 
+### 3.5 Alternative transducer screen
+
+Two additional externally driven parts were found, but neither improves the
+documented sound-level result for this project:
+
+| Part | Published evidence | Assessment |
+| --- | --- | --- |
+| VCC PT-PM24-0538-RK | 24 mm diameter, 5.2 mm max height, 90 dB at 10 cm, 3.8 kHz, 5 V; 5 mA | Compact and close to the sweep centre, but 2 dB below the Same Sky reference and does not approach 105 dB on published data |
+| Multitrack TFM-25 | 4.0 kHz ±0.5 kHz resonance; 80 dB(A) minimum at 10 cm, 9 Vp-p square wave; 9.5 nF ±30% at 1 kHz; 25 Vp-p allowable input | Smaller/lower capacitance, but much lower published SPL; no reason to replace the 24 mm Same Sky reference for the current goal |
+
+These are evidence leads only. They do not close O-03 and are not proposed
+selections. The TFM-25's stated 80 dB(A) is not directly comparable to the
+Same Sky unweighted/unspecified 92 dB figure.
+
+### 3.6 Discrete driver architecture screen
+
+Same Sky's technical article describes single-switch, buffer, half-bridge,
+full-bridge and resonant approaches. TI's reference article describes a
+TLV61046A boost converter feeding a transistor output stage, with a
+charge-pump/totem-pole arrangement for bipolar drive. These demonstrate that
+a discrete boost-plus-bridge architecture is technically possible, but they
+are not a ready-made design for this product.
+
+For this project:
+- A single transistor from the battery rail cannot provide a boosted
+  differential waveform; its output is limited by the supply.
+- A full bridge can theoretically place approximately twice the rail
+  voltage across a load, but does not by itself boost the rail.
+- A boost converter plus a suitable output bridge could provide higher
+  voltage, but adds inductor, switching node, high-voltage capacitors,
+  transistor/driver stages, protection, layout and EMI complexity.
+- A resonant-inductor approach is a poor first choice for a 2.8–4.2 kHz
+  sweep because the response depends strongly on the tuned frequency and
+  transducer capacitance; Same Sky's design article warns this approach is
+  frequency-specific and sensitive to capacitance variation.
+
+Conclusion: retain PAM8904E as the first integrated-driver evaluation
+candidate. Keep a boost-plus-bridge architecture as a fallback research
+branch only if Diodes/Same Sky cannot confirm a safe compatible drive
+condition. Do not start circuit design from the cited reference articles.
+
 ## 4. Current assessment
 
 | Question | Current answer |
@@ -170,6 +211,8 @@ manufacturer/distributor search should be done before any component freeze.
 | Does the PAM8904E pass an initial capacitive-load screen? | **Yes, provisionally:** 47 nF driver rating versus 27.3 nF maximum piezo datasheet capacitance |
 | Does the full datasheet give relevant current data? | Yes: typical 14.2 mA differential 3x / 47 nF / 3.2 kHz; not a maximum and not the exact piezo |
 | Is there a second verified integrated driver candidate? | No; the research pass did not find another compact part with a documented load rating adequate for this transducer |
+| Were alternate transducers screened? | Yes: VCC PT-PM24-0538-RK (90 dB at 10 cm) and TFM-25 (80 dB(A) minimum at 10 cm); neither meets the target |
+| Is a discrete driver fallback feasible in principle? | Yes, boost plus bridge is a known architecture, but it is not designed or qualified for this project |
 | Is the smallest package active? | Yes; PAM8904EGPR and EGPR-T are listed Active; 2 x 2 mm body, 0.80/0.65 mm maximum height |
 | Does it accept the required sweep frequency? | **Yes on input-frequency range:** 2.8–4.2 kHz is inside 20 Hz–300 kHz |
 | Does this prove correct output waveform/amplitude across the sweep? | No |
@@ -262,3 +305,4 @@ BLOCKED. This report changes no component-register row to selected or FROZEN.
 | 0.1 | 2026-11-12 | Initial paper screen of CPT-2475-92T, PAM8904 and PAM8904E; PAM8904E promoted as a promising evaluation candidate only |
 | 0.2 | 2026-11-12 | Inspected full PAM8904E datasheet and EVB guide; recorded mode limits, input-current figures, active package suffixes, external capacitors and alternative-driver search outcome |
 | 0.3 | 2026-11-12 | Added indicative 508.1 mA Pod peak-current scenario and documented battery-rating warning; no current or component approved |
+| 0.4 | 2026-11-12 | Added two alternate transducer screens and discrete boost/bridge fallback architecture assessment; no selection or design authorised |
