@@ -1,10 +1,10 @@
 # G1 Decisions Requiring Owner Approval
 
-Revision: 0.4 | Date: 2026-11-12 | Status: PARTIALLY DECIDED; O-01 recorded, O-02 to O-15 remain open
+Revision: 0.5 | Date: 2026-11-12 | Status: PARTIALLY DECIDED; O-01 and O-02 recorded, O-03 to O-15 remain open
 
 Each item is a choice the project owner must make before the component
-freeze can proceed. O-01 has been decided by the owner as recorded below;
-O-02 to O-15 remain open. Recommendations are engineering preferences on
+freeze can proceed. O-01 and O-02 have been decided by the owner as recorded below;
+O-03 to O-15 remain open. Recommendations are engineering preferences on
 the documents in the [datasheet index](datasheet-index.md), not approvals.
 Existing decisions D-01 to D-22 are in the
 [decision log](design-decisions.md).
@@ -19,7 +19,7 @@ Detail: [component shortlist](g1-component-shortlist.md),
 | ID | Decision needed | Why it cannot be avoided | Options | Recommendation | Related |
 | --- | --- | --- | --- | --- | --- |
 | O-01 | Sentry Pod size, NFC separation or battery size | With the smallest documented PN532 antenna (10 x 25) and a 200 to 250 mAh pack, the 10 mm separation does not fit inside 45 x 30 x 16 in any axis-aligned placement tested | (a) Enlarge the Pod to at least about 55 long; (b) keep the size and allow a smaller separation for a ferrite-backed antenna, proven by test first; (c) keep size and separation with a pack below 200 mAh | **OWNER DECISION: Option (a) selected.** Enlarge the Pod; retain the 10 mm separation and 200–250 mAh capacity target. Approximately 55 mm is a lower bound only, not a final dimension or fit approval. | D-13, R-15, R-35 |
-| O-02 | Charger IC family | Neither specified family (MCP73831, TP4056) keeps its maximum at or below 4.200 V, and neither has both a power path and a cell-temperature input. Five of seven packs state no tolerance above 4.2 V | (a) Approve a power-path charger such as TI BQ25185 at its 4.1 V setting; (b) keep MCP73831 and obtain each pack maker's written charge-voltage tolerance, with separate temperature and load-disconnect circuits; (c) keep TP4056 after resolving its internal tolerance conflict | (a) | D-04, R-02, R-05 |
+| O-02 | Charger IC family | Neither specified family (MCP73831, TP4056) keeps its maximum at or below 4.200 V, and neither has both a power path and a cell-temperature input. Five of seven packs state no tolerance above 4.2 V | (a) Approve a power-path charger such as TI BQ25185 at its 4.1 V setting; (b) keep MCP73831 and obtain each pack maker's written charge-voltage tolerance, with separate temperature and load-disconnect circuits; (c) keep TP4056 after resolving its internal tolerance conflict | **OWNER DECISION: Option (a) selected for further evaluation only.** Evaluate TI BQ25185 at its 4.1 V setting; this does not approve a battery pairing, circuit, purchase, construction or connection to a cell. | D-04, R-02, R-05 |
 | O-03 | Sound level target and piezo driver | No externally driven piezo of 25 mm or less was found that documents 105 dB; the loudest verified part is 92 dB at 10 cm and 24 mm in diameter; the specified single-transistor driver cannot reach that part's rated drive voltage | (a) Define the 105 dB distance and accept a boosted driver and a 24 mm part; (b) lower the target to what a smaller part documents; (c) approve a self-driven sounder or a larger body | Define the measuring distance first (D-18), then choose between (a) and (b) with measured data | D-07, D-18, R-08 |
 | O-04 | IMU module and lifecycle | "GY-521" names no maker; the identifiable Adafruit 3886 was out of stock; MPU-6050 is reported obsolete by its maker (unverified lead) | (a) Approve Adafruit 3886 as the MPU-6050 module; (b) accept an unbranded GY-521 and measure every received board; (c) approve evaluation of a current-production IMU, which changes the specified part and firmware | (a) for the prototype, with (c) raised as a supply risk for anything beyond it | D-17, R-30 |
 | O-05 | Piezo driver IC | A boosted driver such as Diodes PAM8904 replaces the specified 2N2222 and 1 kohm arrangement | (a) Approve evaluation of a boosted driver; (b) keep the transistor driver and accept the resulting level | Decide together with O-03 | D-07 |
@@ -45,6 +45,39 @@ length target; subsequent mechanical screening should start at 55 mm or more.
 The 10 mm separation and capacity target are retained rather than relaxed.
 The Pod may need to grow further once the piezo, processor, IMU, NFC board,
 connectors and real clearances are included.
+
+## 1.2 Owner decision recorded — O-02 (2026-11-12)
+
+The owner selected **Option A for further evaluation**: investigate the TI
+BQ25185 configured for its 4.1 V setting as the preferred charger-IC family.
+This is an evaluation direction only. It is not approval of a specific battery,
+charger implementation, power-path architecture, carrier PCB, charging
+current, NTC network or component pairing.
+
+**Explicit limits of this decision:** no purchase or supplier order is
+authorised; no schematic, PCB or carrier design is authorised; no circuit may
+be built; and no battery may be connected to a charger or test setup under
+this decision. Independent electrical review and the evidence listed below
+remain mandatory before any battery-powered test.
+
+**Consequences and remaining checks:**
+
+- Obtain the exact BQ25185 datasheet and inspect its package, strap/configuration
+details, 4.1 V regulation tolerance, input limits, power-path behaviour,
+thermal limits and NTC/fault behaviour.
+- Confirm the exact candidate battery's permitted charge voltage and current
+in writing; the 4.1205 V figure is a charger-document maximum, not proof of
+compatibility with every pack whose datasheet merely says “4.2 V”.
+- Establish the correct charge-current setting for the chosen pack and its
+temperature restrictions; no battery has yet been paired with this IC.
+- Resolve USB-C VBUS backfeed/isolation, the Zero-board regulator and system
+load behaviour while charging before any power architecture can be approved.
+- Recalculate charger dissipation and closed-case temperatures with actual
+currents and enclosure conditions.
+
+O-02 is recorded as an owner direction to evaluate the BQ25185. D-04, the
+power architecture, all battery/charger pairings and the physical component
+freeze remain OPEN or NOT APPROVED as applicable.
 
 ## 2. Decisions within the specification
 
@@ -90,3 +123,4 @@ connectors and real clearances are included.
 | --- | --- | --- |
 | 0.3 | 2026-11-12 | First issue: fifteen owner decisions and four authorisations arising from G1 candidate research |
 | 0.4 | 2026-11-12 | Recorded owner approval of O-01 Option A only; O-02 to O-15 and A-1 to A-4 remain open |
+| 0.5 | 2026-11-12 | Recorded O-02 Option A as BQ25185 4.1 V evaluation direction only; no purchase, design, build or battery connection authorised |
