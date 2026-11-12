@@ -40,6 +40,13 @@ https://www.sameskydevices.com/product/audio/buzzers/audio-transducers/cpt-2475-
 The 92 dB figure is a manufacturer-specified dB value; the retrieved
 datasheet does not state A-weighting. It must not be relabelled dBA.
 
+The datasheet's frequency-response graph is also relevant: it is not a
+flat response across the requested sweep, showing a broad dip around 2 kHz
+and a higher region around 4–5 kHz. The graph does not provide a numeric
+acceptance table at exactly 2.8 and 4.2 kHz, so no exact endpoint SPL should
+be inferred from it. This reinforces the need to obtain manufacturer response
+data or measure both sweep endpoints, not just 4 kHz.
+
 ## 3. Driver comparison
 
 ### 3.1 Diodes Incorporated PAM8904 — not a qualified match
