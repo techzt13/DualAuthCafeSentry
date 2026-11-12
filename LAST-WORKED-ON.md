@@ -2,20 +2,25 @@
 
 Date: 2026-11-12 (hackathon implementation authorised; PCB and CAD are required deliverables)
 Package revision: 0.3
-Project stage: G0 design basis complete; G1 candidate research complete;
-provisional PCB/CAD co-design STARTED by owner direction; component freeze
-and battery-powered validation remain open
-Next stage: create native KiCad projects and FreeCAD parametric assemblies
+Project stage: G0 design basis complete; G1 candidate research documented;
+native KiCad/FreeCAD starter workspace committed; Pod MCU/sensor interface
+contract drafted; actual schematic, routed PCB, generated CAD and validation
+remain in progress
+Next stage: translate the Pod interface contract into a native KiCad schematic,
+then establish the Keyfob interface contract and continue CAD co-design
 
-**PCB/schematic and CAD creation are now authorised and are required hackathon
-deliverables. Native KiCad and FreeCAD files must be created; none are yet
-claimed to exist. Firmware and manufacturing exports remain not started.
-Nothing purchased or ordered. O-01 enlarges the Pod to at least approximately
-55 mm length as a working lower bound; width 30 mm and height 16 mm remain
-provisional. O-02 BQ25185 at 4.1 V and O-03/O-05 Direction A remain evaluation
-choices, not frozen circuits. PAM8904E is the leading paper-screen driver
-candidate only. Battery connection, energised testing and fabrication orders
-remain separate and require their own review/approval.**
+**Native KiCad project files and a FreeCAD macro are present in the repository.
+The KiCad schematics are still empty starter sheets and the PCB files are
+outline-only; the FreeCAD macro has not been run in this environment. The new
+Pod interface contract is a logical pin/net design document, not a completed
+schematic or wiring release. Nothing is purchased, fabricated or physically
+tested. O-01 enlarges the Pod to at least approximately 55 mm length as a
+working lower bound; width 30 mm and height 16 mm remain provisional, with
+the current 19.3 mm CAD envelope itself only an arithmetic starting point.
+O-02 BQ25185 at 4.1 V and O-03/O-05 Direction A remain evaluation choices,
+not frozen circuits. PAM8904E is a paper-screen candidate only. Battery
+connection, energised testing and fabrication orders remain separate and
+require their own review/approval.**
 
 Before the next task, read [PROJECT_SPEC.md](PROJECT_SPEC.md),
 [AGENTS.md](AGENTS.md), this file and the relevant `docs/` files. Some session
@@ -811,3 +816,45 @@ FCStd/STEP/STL output has been generated or validated yet.
   replace the blank PCB outline with the component/connector placement.
 - Do not call these files a finished PCB or finished CAD assembly. They are
   native editable design starters and the first implementation milestone.
+
+
+## 20. Pod low-voltage interface contract — 2026-11-12
+
+Created `hardware/sentry-pod/interface-contract.md` (revision 0.1) as the
+first actual electrical-design translation of the verified pinout records.
+
+### Work completed
+
+- Mapped the Waveshare classic no-header ESP32-S3-Zero SKU 25081 P15 contacts
+  to the existing Pod logical nets, preserving the verified contact/GPIO
+  distinction.
+- Defined the Pod low-voltage interface boundary for shared I2C, PN532 IRQ
+  and reset, MPU-6050 interrupt, button, optional tether, audio logic control,
+  battery ADC and conditioned charge status.
+- Recorded the PN532 0x24 and MPU-6050 0x68 address plan and the requirement
+  to audit module pull-ups before adding carrier pull-ups.
+- Marked the S3 3V3 and shared USB VBUS/5V contacts as power-interface HOLDs.
+- Explicitly left physical module connector order, connector footprints,
+  Zero-board pad footprint, module supply/logic compatibility and unknown
+  pull-ups as TBD rather than inventing them.
+- Updated `docs/hackathon-build-plan.md` and `hardware/README.md` to reflect
+  the real implementation state instead of claiming that no native files
+  exist.
+
+### Validation and limitations
+
+This is a logical interface contract based on
+`docs/verified-pinouts.md`, `docs/pinout.md` and
+`docs/power-architecture.md`. It is not a native schematic, physical wiring
+release or footprint drawing. No KiCad ERC/DRC, electrical simulation,
+physical module inspection or hardware test was run. The Pod schematic and
+both PCB files remain starter-level; no fabrication order is permitted.
+
+### Next work
+
+1. Build a custom KiCad S3-Zero module interface symbol with verified P15
+   contact labels; do not assign its physical footprint until drawing
+   dimensions and contact geometry are checked.
+2. Add the Pod logical module interfaces and bus labels to the schematic.
+3. Continue the Keyfob interface contract and motor driver design.
+4. Resume FreeCAD co-design with actual carrier-board and connector envelopes.
