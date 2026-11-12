@@ -1,8 +1,10 @@
-# Dual-Auth Cafe Sentry — parametric enclosure starter generator
-# Run inside FreeCAD. Creates editable parametric Part::Feature solids.
-# All dimensions are millimetres. DRAFT geometry only; no fit validation.
+# Dual-Auth Cafe Sentry — parametric enclosure and component-envelope generator
+# Run inside FreeCAD 0.21+ (PartDesign primitives are native editable features).
+# All dimensions are millimetres. All component solids remain DRAFT envelopes,
+# not fit, RF, thermal, acoustic, or battery-safety validation.
 import FreeCAD as App
 import Part
+import PartDesign
 import Mesh
 import os
 
@@ -10,80 +12,133 @@ OUT = os.path.join(os.path.expanduser("~"), "DualAuthCafeSentry-CAD")
 if not os.path.isdir(OUT):
     os.makedirs(OUT)
 
-def add_box(doc, name, label, length, width, height, x=0, y=0, z=0):
-    obj = doc.addObject("PartDesign::Feature", name)
+def add_ref_box(doc, name, label, length, width, height, x, y, z, note):
+    obj = doc.addObject("Part::Box", name)
     obj.Label = label
-    obj.Shape = Part.makeBox(length, width, height, App.Vector(x, y, z))
-    obj.addProperty("App::PropertyLength", "Length", "Parameters")
-    obj.addProperty("App::PropertyLength", "Width", "Parameters")
-    obj.addProperty("App::PropertyLength", "Height", "Parameters")
+    obj.Length = length
+    obj.Width = width
+    obj.Height = height
+    obj.Placement = App.Placement(App.Vector(x, y, z), App.Rotation())
     obj.addProperty("App::PropertyString", "DesignStatus", "Project")
-    obj.Length, obj.Width, obj.Height = length, width, height
-    obj.DesignStatus = "DRAFT — provisional envelope, not fit checked"
+    obj.addProperty("App::PropertyString", "EvidenceNote", "Project")
+    obj.DesignStatus = "DRAFT REFERENCE ENVELOPE — not a released component"
+    obj.EvidenceNote = note
+    obj.ViewObject.Transparency = 72
     return obj
 
-def make_case(docname, outer_l, outer_w, outer_h, wall, base, lid_t, title):
-    doc = App.newDocument(docname)
-    base_body = add_box(doc, "LowerShellBlank", title + " lower shell blank",
-                        outer_l, outer_w, outer_h-lid_t, 0, 0, 0)
-    # Cavity is subtracted from the upper side of the lower shell.
-    cavity = Part.makeBox(outer_l-2*wall, outer_w-2*wall,
-                          outer_h-lid_t-base,
-                          App.Vector(wall, wall, base))
-    shell = doc.addObject("PartDesign::Feature", "LowerShell")
-    shell.Label = title + " lower shell — hollowed draft"
-    shell.Shape = base_body.Shape.cut(cavity)
-    shell.addProperty("App::PropertyLength", "Wall", "Parameters")
-    shell.addProperty("App::PropertyLength", "BaseThickness", "Parameters")
-    shell.addProperty("App::PropertyLength", "OuterLength", "Parameters")
-    shell.addProperty("App::PropertyLength", "OuterWidth", "Parameters")
-    shell.addProperty("App::PropertyLength", "OuterHeight", "Parameters")
-    shell.addProperty("App::PropertyString", "DesignStatus", "Project")
-    shell.Wall, shell.BaseThickness = wall, base
-    shell.OuterLength, shell.OuterWidth, shell.OuterHeight = outer_l, outer_w, outer_h
-    shell.DesignStatus = "DRAFT — verify clearances, joints, bosses and fit"
-    doc.removeObject(base_body.Name)
+def add_ref_cylinder(doc, name, label, radius, height, x, y, z, note):
+    obj = doc.addObject("Part::Cylinder", name)
+    obj.Label = label
+    obj.Radius = radius
+    obj.Height = height
+    obj.Placement = App.Placement(App.Vector(x, y, z), App.Rotation())
+    obj.addProperty("App::PropertyString", "DesignStatus", "Project")
+    obj.addProperty("App::PropertyString", "EvidenceNote", "Project")
+    obj.DesignStatus = "DRAFT REFERENCE ENVELOPE — not a released component"
+    obj.EvidenceNote = note
+    obj.ViewObject.Transparency = 68
+    return obj
 
-    lid = add_box(doc, "Lid", title + " lid",
-                  outer_l, outer_w, lid_t, 0, 0, outer_h-lid_t)
-    lid.addProperty("App::PropertyString", "DesignStatus", "Project")
-    lid.DesignStatus = "DRAFT — retention features and NFC wall not modelled"
+def add_parametric_case(doc, prefix, outer_l, outer_w, outer_h, wall, base, lid_t):
+    lower_h = outer_h - lid_t
 
-    # Reference keepout volumes are intentionally visible and separate.
-    # They must be replaced with the selected module and pack envelopes.
-    if docname == "SentryPod":
-        nfc = add_box(doc, "NfcKeepout", "NFC antenna region — placeholder keepout",
-                      25, 10, 1, wall+2, wall+2, base+5.3+10)
-        nfc.ViewObject.Transparency = 75
-        nfc.addProperty("App::PropertyString", "Note", "Project")
-        nfc.Note = "Placeholder only; exact antenna outline and position TBD"
-        battery = add_box(doc, "BatteryKeepout", "Battery envelope — placeholder keepout",
-                          31, 20.5, 5.3, wall, wall, base)
-        battery.ViewObject.Transparency = 75
-        battery.addProperty("App::PropertyString", "Note", "Project")
-        battery.Note = "Bare-cell reference envelope only; protected pack may be larger"
-    else:
-        board = add_box(doc, "McuBoardKeepout", "Zero module PCB envelope — placeholder",
-                        23.5, 18, 1.2, wall+1, wall+1, base+1)
-        board.ViewObject.Transparency = 70
-        board.addProperty("App::PropertyString", "Note", "Project")
-        board.Note = "Outline from Waveshare drawing; assembled height and contacts TBD"
-        motor = add_box(doc, "MotorKeepout", "Coin motor envelope — placeholder",
-                        10, 10, 2.1, outer_l-12-wall, outer_w/2-5, base+1)
-        motor.ViewObject.Transparency = 70
-        motor.addProperty("App::PropertyString", "Note", "Project")
-        motor.Note = "10 mm motor envelope reference only; exact selected part TBD"
-
+    shell_body = doc.addObject("PartDesign::Body", prefix + "LowerShellBody")
+    shell_body.Label = prefix + " lower shell — parametric Part Design"
+    outer = doc.addObject("PartDesign::AdditiveBox", prefix + "OuterBlank")
+    shell_body.addObject(outer)
+    outer.Label = "Outer blank"
+    outer.Length, outer.Width, outer.Height = outer_l, outer_w, lower_h
+    outer.Placement = App.Placement(App.Vector(0, 0, 0), App.Rotation())
     doc.recompute()
-    path = os.path.join(OUT, docname + ".FCStd")
-    doc.saveAs(path)
-    Part.export([shell, lid], os.path.join(OUT, docname + "_enclosure.step"))
-    Mesh.export([shell, lid], os.path.join(OUT, docname + "_enclosure.stl"))
+
+    cavity = doc.addObject("PartDesign::SubtractiveBox", prefix + "InteriorCavity")
+    shell_body.addObject(cavity)
+    cavity.Label = "Interior cavity — wall and base allowance"
+    cavity.Length = outer_l - 2 * wall
+    cavity.Width = outer_w - 2 * wall
+    cavity.Height = lower_h - base + 0.2
+    cavity.Placement = App.Placement(App.Vector(wall, wall, base), App.Rotation())
+    doc.recompute()
+
+    lid_body = doc.addObject("PartDesign::Body", prefix + "LidBody")
+    lid_body.Label = prefix + " lid — parametric Part Design"
+    lid = doc.addObject("PartDesign::AdditiveBox", prefix + "Lid")
+    lid_body.addObject(lid)
+    lid.Label = "Lid blank"
+    lid.Length, lid.Width, lid.Height = outer_l, outer_w, lid_t
+    lid.Placement = App.Placement(App.Vector(0, 0, lower_h), App.Rotation())
+    doc.recompute()
+
+    for obj in (shell_body, lid_body):
+        obj.addProperty("App::PropertyString", "DesignStatus", "Project")
+        obj.DesignStatus = "DRAFT — joint, bosses, tolerances, material and fit not resolved"
+    for obj in (outer, cavity, lid):
+        obj.Visibility = False
+    return shell_body, lid_body
+
+def export_doc(doc, objects, prefix):
+    doc.recompute()
+    fcstd = os.path.join(OUT, prefix + ".FCStd")
+    step = os.path.join(OUT, prefix + "_enclosure.step")
+    stl = os.path.join(OUT, prefix + "_enclosure.stl")
+    doc.saveAs(fcstd)
+    Part.export(objects, step)
+    Mesh.export(objects, stl)
+    print("Saved " + fcstd)
+    print("Exported DRAFT " + step + " and " + stl)
+
+def make_pod():
+    doc = App.newDocument("SentryPod")
+    shell, lid = add_parametric_case(doc, "Pod", 55.0, 30.0, 19.3, 1.5, 1.5, 1.5)
+
+    # Bare-cell reference envelope only; finished protected pack not selected.
+    add_ref_box(doc, "PodBatteryReference", "LP502030 bare-cell reference envelope",
+                31.0, 20.5, 5.3, 1.5, 1.5, 1.5,
+                "EEMB LP502030 bare cell maximum body only. It is not a selected protected pack; PCM, leads, connector, seals and expansion allowance are absent.")
+
+    # Proposed antenna envelope; location/size remains provisional.
+    add_ref_box(doc, "PodNfcAntennaReference", "NFC antenna placeholder / RF keepout",
+                25.0, 10.0, 1.0, 15.0, 10.0, 16.8,
+                "Placeholder only. Actual selected PN532 antenna, cable, coil boundary and RF tuning remain unknown. Preserve >=10 mm nearest-surface separation from battery as an owner requirement.")
+    export_doc(doc, [shell, lid], "SentryPod")
     return doc
 
-pod = make_case("SentryPod", 55, 30, 19.3, 1.5, 1.5, 1.5, "Sentry Pod")
-key = make_case("PocketKeyfob", 38, 28, 14, 1.5, 1.5, 1.5, "Pocket Keyfob")
+def make_keyfob():
+    # Height increased provisionally from 14.0 to 15.5 mm to create stack
+    # allowance for the C3 daughterboard, the carrier and reference battery.
+    doc = App.newDocument("PocketKeyfob")
+    shell, lid = add_parametric_case(doc, "Keyfob", 38.0, 28.0, 15.5, 1.5, 1.5, 1.5)
 
-print("DRAFT enclosure models saved to " + OUT)
-print("Pod: 55 x 30 x 19.3 mm; Keyfob: 38 x 28 x 14 mm.")
-print("These are starting envelopes only; inspect clearances and update from selected parts.")
+    # Carrier board envelope matches the current 33 x 23 mm PCB concept.
+    add_ref_box(doc, "KeyfobCarrierPcb", "Keyfob carrier PCB — provisional 33 x 23 x 1.6",
+                33.0, 23.0, 1.6, 2.5, 2.5, 7.0,
+                "Mechanical carrier envelope only. Module pad geometry, board stack-up, mounting features and clearances are not yet released.")
+
+    # Waveshare module board sits on carrier; this does not include USB-C or
+    # maximum component height, and no castellated footprint is inferred.
+    add_ref_box(doc, "C3ZeroModule", "Waveshare ESP32-C3-Zero module envelope",
+                23.5, 18.0, 1.2, 3.5, 4.5, 8.6,
+                "PCB outline only from Waveshare drawing. Castellated land width/length, received revision, USB overhang and component heights not fully dimensioned. Ceramic antenna zone must remain clear; exact region is not yet dimensioned.")
+
+    # Battery shape is a bare-cell reference to show the intended under-board
+    # stack; not the protected pack, which will be larger and may not fit.
+    add_ref_box(doc, "KeyfobBatteryReference", "LP401730 bare-cell reference envelope",
+                31.0, 17.5, 4.3, 3.5, 4.5, 1.8,
+                "EEMB LP401730 bare-cell drawing reference only; not a selected protected pack. PCM, leads, connector, seals, swelling and insulation are excluded. Do not compress the pouch.")
+
+    # Current motor in the schematic is a provisional 308-100 candidate.
+    add_ref_cylinder(doc, "KeyfobMotorReference", "Precision Microdrives 308-100 reference motor",
+                     4.0, 3.4, 31.3, 16.5, 8.6,
+                     "308-100 drawing envelope: 8 mm body diameter, 3.4 mm body length. Motor is not owner-frozen; candidate replacement and lead exit may change the envelope.")
+
+    export_doc(doc, [shell, lid], "PocketKeyfob")
+    return doc
+
+pod_doc = make_pod()
+keyfob_doc = make_keyfob()
+
+print("DRAFT parametric enclosure documents and envelope exports saved to " + OUT)
+print("Pod outside envelope: 55 x 30 x 19.3 mm.")
+print("Keyfob outside envelope: 38 x 28 x 15.5 mm (provisional height increase).")
+print("Keyfob carrier concept: 33 x 23 x 1.6 mm; C3 module and battery are reference envelopes only.")
+print("FreeCAD geometry has not been run or validated in this execution environment.")
