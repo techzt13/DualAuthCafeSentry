@@ -3,17 +3,19 @@
 Date: 2026-11-12 (hackathon implementation authorised; PCB and CAD are required deliverables)
 Package revision: 0.3
 Project stage: G0 design basis complete; G1 candidate research documented;
-native KiCad/FreeCAD starter workspace committed; Pod MCU/sensor interface
-contract drafted; actual schematic, routed PCB, generated CAD and validation
-remain in progress
-Next stage: translate the Pod interface contract into a native KiCad schematic,
-then establish the Keyfob interface contract and continue CAD co-design
+native KiCad projects and FreeCAD macro committed; Pod native schematic contains
+MCU/module interfaces and a wired provisional NFC reset stage; Keyfob schematic
+and routed PCB/CAD validation remain in progress
+Next stage: audit and extend the Keyfob schematic with a protected low-side motor
+driver, then continue Pod power/audio blocks and board/CAD integration
 
 **Native KiCad project files and a FreeCAD macro are present in the repository.
-The KiCad schematics are still empty starter sheets and the PCB files are
-outline-only; the FreeCAD macro has not been run in this environment. The new
-Pod interface contract is a logical pin/net design document, not a completed
-schematic or wiring release. Nothing is purchased, fabricated or physically
+The Pod schematic is no longer empty: it contains the ESP32-S3-Zero P15 logical
+interface, PN5321 MINI and Adafruit 3886 module interfaces, button, and a
+provisional MMBT3904 NFC reset circuit with R1/R2/R3 electrically wired by
+matching pin endpoints. The Keyfob schematic remains an empty starter sheet.
+Both PCB files remain outline-only. The FreeCAD macro has not been run in this
+environment. Nothing is purchased, fabricated or physically
 tested. O-01 enlarges the Pod to at least approximately 55 mm length as a
 working lower bound; width 30 mm and height 16 mm remain provisional, with
 the current 19.3 mm CAD envelope itself only an arithmetic starting point.
@@ -896,3 +898,52 @@ outline-only.
 3. Develop a provisional motor low-side driver and a separate Pod piezo
    driver block without connecting either to an unverified battery rail.
 4. Continue enclosure-to-board integration.
+
+
+## 22. Pod NFC reset circuit endpoint audit — 2026-11-12
+
+The live Pod schematic was inspected directly after an earlier status message
+incorrectly described the NFC reset network as unwired. The current file already
+contains the required wire geometry. The earlier diagnosis was stale/incorrect;
+no duplicate wires were added.
+
+Verified endpoint mapping in
+`hardware/sentry-pod/sentry-pod.kicad_sch`:
+
+| Component | Pin endpoint | Connected net |
+| --- | --- | --- |
+| R1 pin 1 | (237.38, 126) | P_NFC_RESET_CTL |
+| R1 pin 2 | (252.62, 126) | Q1 base through the routed wire |
+| R2 pin 1 | (237.38, 140) | GND |
+| R2 pin 2 | (252.62, 140) | Q1 base node; junction at (262.62, 137.46) |
+| Q1 pin 1 / base | (272.38, 137.46) | R1/R2 base node |
+| Q1 pin 2 / emitter | (272.38, 140) | GND |
+| Q1 pin 3 / collector | (272.38, 142.54) | Reset node through routed wire |
+| R3 pin 1 | (237.38, 154) | P_3V3_PERIPH_HOLD |
+| R3 pin 2 | (252.62, 154) | P_NFC_RESET_N / Q1 collector |
+
+The circuit is a low-side NPN reset sink: GPIO control through 10 kΩ base
+resistor, 100 kΩ base-emitter pull-down, 10 kΩ reset pull-up to the held
+peripheral rail. Q1 is provisionally MMBT3904, SOT-23; the schematic's
+pin-number mapping is base=1, emitter=2, collector=3. The peripheral rail
+remains intentionally unsourced, so the circuit must not be energised.
+
+This is an endpoint/connectivity inspection, not KiCad ERC, SPICE simulation,
+physical assembly or reset-timing validation. The complete schematic remains
+a draft; footprints, board layout, power architecture and ERC/DRC are not
+released.
+
+### Next implementation steps
+
+1. Build the Keyfob schematic's motor low-side switch with a default-OFF gate
+   or base bias, a flyback path across the motor, and a dedicated motor
+   connector; size the switch and suppression against the actual motor
+   datasheet, not an assumed GPIO current.
+2. Keep the motor rail as a named HOLD until the battery/regulator architecture
+   is internally reconciled.
+3. Add the Pod audio driver as a separately isolated provisional block; do not
+   choose a drive mode exceeding the piezo's 10 Vp-p rating.
+4. Continue CAD and PCB co-design only after exact module/connector footprints
+   are source-grounded.
+5. Run KiCad parser/ERC/DRC locally when available; do not claim these checks
+   have passed yet.
