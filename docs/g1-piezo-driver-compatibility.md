@@ -1,7 +1,7 @@
 # O-03/O-05 Piezo and Driver Compatibility Investigation
 
 Date: 2026-11-12
-Revision: 0.1
+Revision: 0.2
 Status: PAPER RESEARCH ONLY — no component selected, no circuit approved
 
 ## 1. Scope and owner direction
@@ -68,29 +68,102 @@ https://www.diodes.com/assets/Evaluation-Boards/PAM8904E_EVB-User-Guide.pdf
 | Input frequency | 20 Hz–300 kHz | Encompasses 2.8–4.2 kHz |
 | Output | Product page states up to 27 Vp-p from 4.5 V; 18 Vp-p from 3 V | Output depends on supply, charge-pump mode and load |
 | Heavy-load condition | EVB guide states up to 16 Vp-p from 3 V with 47 nF load | Use this as a conservative documented reference for a heavy load; do not assume 27 Vp-p under this condition |
-| Package options | Includes W-QFN2020-12 / U-QFN2020-12 options, as well as 3 x 3 mm options | A 2 x 2 mm package option exists, but package suffix, land pattern, height and assembly requirements must be checked |
+| Package options | W-QFN2020-12 (US) and U-QFN2020-12 (UX) are both listed Active; 2.00 x 2.00 mm body, maximum height 0.80 mm for US and 0.65 mm for UX | Small footprint is plausible. GPR (US) and GPR-T (UX) are the active orderable suffixes in the datasheet; verify lifecycle/availability at procurement time |
 | Protection/features | Automatic standby/wake; thermal shutdown, overcurrent, overvoltage and undervoltage protection stated by manufacturer | Useful safeguards, but do not replace external design review or system-level protection |
 
 The 47 nF maximum-load rating covers the transducer's datasheet capacitance
-range numerically. However, the transducer capacitance is specified at 120 Hz;
-its effective electrical behaviour at 2.8–4.2 kHz and at the driver's output
-waveform must be checked. Obtain and inspect the current full PAM8904E
-datasheet, recommended application circuit, capacitor requirements, pin
-configuration and operating-condition tables before any design decision.
+range numerically. The current manufacturer datasheet (DS41667 Rev. 4-2,
+July 2023) and March 2025 evaluation-board guide have now been inspected.
+The transducer capacitance is specified at 120 Hz; its effective electrical
+behaviour at 2.8–4.2 kHz and at the driver's output waveform still needs
+manufacturer confirmation. The EVB guide's external network uses 2.2 uF
+input decoupling (16 V), two 1 uF charge-pump capacitors (25 V), and a
+2.2 uF output capacitor (25 V). These are reference values, not a design
+approval; DC-bias derating, package, ESR, ripple and voltage margin must be
+checked for the final selected capacitors.
 
 The transducer's 10 Vp-p rating is lower than the PAM8904E EVB guide's
-16 Vp-p heavy-load example. Although the transducer datasheet lists a
-1–30 Vp-p operating range, that range alone does not prove the sounder is
-qualified for the driver's output waveform, alarm duration, temperature or
-mechanical mounting. Start any future review at or below the transducer's
-10 Vp-p rated condition unless the manufacturer confirms a higher continuous
-or pulsed operating condition in writing. No high-voltage test is authorised.
+16 Vp-p heavy-load example. The datasheet's 1–30 Vp-p operating range does
+not override its 10 Vp-p rated condition or prove suitability for a particular
+waveform, duty or alarm duration. The PAM8904E datasheet gives 1x/2x/3x
+charge-pump modes; at VIN=3.0 V its table lists VOUT of 3 V, 6 V and 9 V
+respectively (47 nF, 3.2 kHz conditions). In differential configuration the
+output swing must be interpreted from the full driver topology, not simply
+assumed equal to the VOUT rail. A conservative future study should begin by
+checking 1x mode across the complete battery range, because higher modes may
+exceed the piezo's 10 Vp-p rated condition. The manufacturer must confirm
+actual differential piezo voltage and permitted drive. No high-voltage test
+is authorised.
+
+### 3.3 Full-datasheet checks completed for PAM8904E
+
+The full Diodes DS41667 Rev. 4-2 datasheet was inspected, along with the
+March 2025 EVB guide.
+
+- Absolute maximum VIN is 6.0 V; VOUT absolute maximum is 15 V. The datasheet
+  explicitly warns not to use 3x mode at VIN >= 4.5 V and says VOUT must not
+  exceed 13.5 V in 3x mode.
+- 3x mode is only specified for VDD 1.5–4.5 V; 1x and 2x modes are listed
+  across 1.5–5.5 V. A single-cell battery charged to the proposed 4.1 V
+  ceiling is inside the stated 3x supply ceiling, but the entire cell
+  operating range, transients and charge-state extremes still need review.
+- At VIN=3.0 V, 47 nF and 3.2 kHz, typical operating input current is listed
+  as 4.3 mA in single-ended 3x mode and 14.2 mA in differential 3x mode.
+  These are typical datasheet values, not maximum-current guarantees and
+  not values measured with the 21 nF transducer. Use 14.2 mA as an initial
+  conservative planning reference for a differential 3x paper budget, not
+  as a verified worst case.
+- The 3x-mode start-up time is listed as typically 1.91 ms; shutdown delay
+  is typically 42 ms. Firmware alarm timing must account for this if the
+  mode is used.
+- The IC has short-circuit protection and thermal shutdown at a junction
+  temperature above 150 C. These are fault protections, not acceptable
+  operating-temperature targets.
+- The active 2 x 2 mm package order codes listed are PAM8904EGPR
+  (W-QFN2020-12, Type US, max height 0.80 mm) and PAM8904EGPR-T
+  (U-QFN2020-12, Type UX, max height 0.65 mm). The larger 3 x 3 mm
+  JPR/JER order codes are marked NRND in the datasheet. Do not use those
+  NRND options as the preferred new-design path.
+- The EVB reference circuit uses two 1 uF / 25 V charge-pump capacitors,
+  one 2.2 uF / 25 V output capacitor, and one 2.2 uF / 16 V input capacitor.
+  This external passive network and its placement consume more area than
+  the IC body alone.
+
+These findings strengthen PAM8904E as a candidate but do not establish a
+qualified pairing. The datasheet's 47 nF test condition is helpful, but
+manufacturer confirmation is still needed for this particular transducer's
+impedance and drive rating across the complete sweep.
+
+### 3.4 Alternative-driver screen
+
+The original PAM8904 is rejected for this reference transducer because its
+15 nF maximum load is below the transducer's 21 nF typical capacitance.
+A broad search for other compact, integrated boosted piezo drivers did not
+produce a second candidate with a manufacturer-verified capacitive-load
+rating adequate for the CPT-2475-92T. Do not promote an unrelated generic
+boost converter as a drop-in piezo driver: a discrete boost supply plus
+push-pull output stage is a different architecture requiring its own
+component-level voltage, current, EMI, fault and safety design.
+
+For now the comparison is:
+- PAM8904E: only integrated driver found in this research pass with a
+  published 47 nF load capability; first candidate for manufacturer review.
+- PAM8904: not qualified due to 15 nF load ceiling.
+- Discrete boost plus output bridge: possible fallback architecture, but
+  not yet researched sufficiently to recommend and likely larger/more
+  complex for the Pod.
+
+No second integrated IC is presented as a false equivalent. A further
+manufacturer/distributor search should be done before any component freeze.
 
 ## 4. Current assessment
 
 | Question | Current answer |
 | --- | --- |
 | Does the PAM8904E pass an initial capacitive-load screen? | **Yes, provisionally:** 47 nF driver rating versus 27.3 nF maximum piezo datasheet capacitance |
+| Does the full datasheet give relevant current data? | Yes: typical 14.2 mA differential 3x / 47 nF / 3.2 kHz; not a maximum and not the exact piezo |
+| Is there a second verified integrated driver candidate? | No; the research pass did not find another compact part with a documented load rating adequate for this transducer |
+| Is the smallest package active? | Yes; PAM8904EGPR and EGPR-T are listed Active; 2 x 2 mm body, 0.80/0.65 mm maximum height |
 | Does it accept the required sweep frequency? | **Yes on input-frequency range:** 2.8–4.2 kHz is inside 20 Hz–300 kHz |
 | Does this prove correct output waveform/amplitude across the sweep? | No |
 | Does it prove 105 dB at 10 cm? | No |
@@ -99,18 +172,20 @@ or pulsed operating condition in writing. No high-voltage test is authorised.
 | Is the piezo selected? | No — reference candidate only |
 | Is any schematic, PCB or physical test authorised? | No |
 
-**Research recommendation:** promote PAM8904E to the first boosted-driver
-candidate for further datasheet and application review. Retain at least one
-alternative driver candidate in the comparison until the full electrical,
-power, thermal, package and waveform checks are complete.
+**Research recommendation:** keep PAM8904E as the sole currently verified
+integrated-driver candidate for this piezo, but do not select it yet. The
+most important next technical gate is written confirmation from Diodes and
+Same Sky that the driver can safely operate the exact transducer across the
+sweep at an output waveform not exceeding the transducer's permitted drive.
+If that cannot be established, the project must compare a different piezo
+or a separately engineered discrete driver architecture.
 
 ## 5. Required checks before recommending a component
 
-1. Retrieve and inspect the current full PAM8904E datasheet and package
-   drawings. Confirm the exact orderable package, pinout, absolute maximum
-   ratings, output swing versus supply/load, charge-pump mode truth table,
-   capacitor values/ratings/ESR, startup, shutdown, fault behaviour and
-   thermal derating.
+1. Full PAM8904E datasheet and EVB guide have now been inspected. Remaining
+   work is to confirm exact orderable suffix and package land pattern, review
+   capacitor derating/ESR/ripple, and obtain written confirmation of output
+   swing versus supply/load for the actual transducer.
 2. Ask Diodes Incorporated to confirm whether the CPT-2475-92T is a suitable
    47 nF-class load, given that its 14.7–27.3 nF capacitance is specified at
    120 Hz. Ask for any restrictions on waveform, output voltage, frequency,
@@ -155,3 +230,4 @@ BLOCKED. This report changes no component-register row to selected or FROZEN.
 | Revision | Date | Change |
 | --- | --- | --- |
 | 0.1 | 2026-11-12 | Initial paper screen of CPT-2475-92T, PAM8904 and PAM8904E; PAM8904E promoted as a promising evaluation candidate only |
+| 0.2 | 2026-11-12 | Inspected full PAM8904E datasheet and EVB guide; recorded mode limits, input-current figures, active package suffixes, external capacitors and alternative-driver search outcome |
