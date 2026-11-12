@@ -1,13 +1,15 @@
 # G1 Mechanical Feasibility Comparison
 
-Revision: 0.3 | Date: 2026-11-12 | Status: arithmetic screen with candidate parts; NOT a fit certification
+Revision: 0.4 | Date: 2026-11-12 | Status: arithmetic screen with candidate parts; NOT a fit certification; O-01 Option A recorded
 
 All dimensions are in **millimetres**. No CAD model exists and none was
 created. This applies the screening method of
 [mechanical requirements](mechanical-requirements.md#feasibility) to the G1
 candidates in the [component shortlist](g1-component-shortlist.md).
-**Neither enclosure target has been changed.** Target changes are proposals
-for the owner in [owner decisions](g1-owner-decisions.md).
+**O-01 has now been decided:** the Pod length direction is enlarged to at least
+approximately 55 mm, while 30 mm width and 16 mm height remain provisional.
+This is not a fit certification or final envelope. The Keyfob target is
+unchanged. See [owner decisions](g1-owner-decisions.md).
 
 ## 1. Method and limits
 
@@ -44,7 +46,7 @@ not fit. A screen that passes proves nothing about fit.
 | JST PH header, 2-way | Top entry mounted height 8, width 4.5; side entry about 4.8 high | Maker catalogue, reference dimensions | SRC-51 |
 | JST SH header, 2-way | Side entry about 2.95 high | Maker catalogue, reference dimensions | SRC-51 |
 
-## 3. Sentry Pod, target 45 x 30 x 16
+## 3. Sentry Pod, original screening target 45 x 30 x 16 (superseded in length by O-01)
 
 ### 3.1 Off-the-shelf module set
 
@@ -120,9 +122,14 @@ PCB removes about 5,412 mm3 of module volume. It does not change section 3.2
 or 3.3. A carrier is a schematic and layout task, which is outside this
 stage and needs separate authorisation.
 
-**Pod conclusion: the 45 x 30 x 16 target is not achievable with the
-candidates found.** The binding constraints are the pack-to-antenna
-separation and the piezo size, not the processor board.
+**Pod conclusion:** the original 45 x 30 x 16 target is not achievable with
+the candidates found. O-01 now directs an enlarged Pod with at least about
+55 mm external length; this only addresses the identified length/separation
+conflict in a lower-bound arrangement. It does **not** establish that a
+55 x 30 x 16 enclosure fits the complete candidate set. The piezo, processor,
+IMU, NFC board, wiring, connectors, acoustic vent, wall thickness and real
+clearances still require a new mechanical screen. The final Pod may need to
+be longer, wider or thicker.
 
 ## 4. Pocket Keyfob, target 35 x 25 x 12
 
@@ -199,3 +206,4 @@ None of these is adopted. Each changes a specified value or part.
 | Revision | Date | Change |
 | --- | --- | --- |
 | 0.3 | 2026-11-12 | First issue: packing screens for G1 candidates; both targets remain unproven; Pod target not achievable with candidates found |
+| 0.4 | 2026-11-12 | Recorded O-01 Option A: Pod length direction enlarged to at least about 55 mm; no fit certification; full envelope remains TBD |
