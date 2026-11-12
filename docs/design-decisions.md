@@ -112,16 +112,28 @@ timing while motion acquisition runs.
 <a id="d-07"></a>
 ### D-07 - Piezo driver and acoustic specification
 
-**Status:** OPEN; GPIO6/1 kohm nominal base resistor remain BASELINE.
+**Status:** OPEN; GPIO6 and the original transistor-driver arrangement remain
+the specification baseline. O-03/O-05 Direction A is an owner-selected
+evaluation direction only: retain a 24 mm reference piezo and investigate a
+compatible boosted driver. Proposed SPL distance: 10 cm; D-18 remains OPEN.
 **Owners:** electrical, acoustic/mechanical, safety reviewer. **Gates:** G1/G2/G6.
 
-The unspecified 2N2222 and passive piezo cannot establish voltage, current,
-105 dB performance or reproduction of all requested tones. Define SPL
-distance/weighting/mounting/duty before selecting a transducer. Determine a
-controlled charge/discharge waveform, clamp network and safe supply. Evaluate
-a different driver only as an approved design change if the baseline cannot
-meet requirements. Maximum siren duration and safe testing method are TBD.
-**Closure:** identified parts, electrical waveforms, thermal results and
+The reference Same Sky CPT-2475-92T is documented at 92 dB at 10 cm, rated
+10 Vp-p, and nominally 21 nF; it is not evidence of 105 dB performance.
+The Diodes PAM8904 specifies a 15 nF maximum load, so it is not an established
+match for this piezo. Treat it only as a research lead unless the manufacturer
+confirms compatibility or a different transducer/driver is investigated.
+Do not infer SPL from drive voltage.
+
+Technical evaluation must check piezo voltage/frequency/waveform limits;
+driver load and supply limits; battery peak current and boost losses; startup,
+shutdown, thermal and protection behaviour; EMI against NFC/IMU/radio; acoustic
+mounting and enclosure effects; and safe alarm duration. D-18 must define
+weighting, peak/average statistic, sweep, duty, tolerance and measurement
+geometry. No component or circuit is selected, and no purchase, schematic,
+PCB, construction or physical test is authorised.
+**Closure:** identified compatible parts, reviewed electrical design and
+waveforms, power/thermal/EMI results, approved D-18 acceptance method, and
 calibrated acoustic measurements in the final case.
 
 <a id="d-08"></a>
