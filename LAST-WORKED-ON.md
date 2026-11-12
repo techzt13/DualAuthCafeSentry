@@ -788,7 +788,7 @@ in this environment.
 - `cad/README.md`
 
 The macro creates editable FreeCAD documents for a Pod starting envelope
-55 x 30 x 18.3 mm and Keyfob starting envelope 38 x 28 x 14 mm, including
+55 x 30 x 19.3 mm and Keyfob starting envelope 38 x 28 x 14 mm, including
 lower shell, lid and translucent component-envelope placeholders. It saves
 FCStd and draft STEP/STL exports to the user's home directory when run in
 FreeCAD. FreeCAD is not installed in this execution environment, so no
