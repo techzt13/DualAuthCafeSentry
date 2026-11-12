@@ -1,6 +1,6 @@
 # Sentry Pod — MCU, NFC and IMU interface contract
 
-Revision: 0.3 | Date: 2026-11-12 | Status: DRAFT — low-voltage logic captured; not a wiring or fabrication release
+Revision: 0.4 | Date: 2026-11-12 | Status: DRAFT — low-voltage logic captured; not a wiring or fabrication release
 
 This document is the live interface contract for the first Sentry Pod KiCad schematic. It distinguishes verified module signal names from carrier-side net names and keeps the unfinished battery/power and acoustic circuits isolated.
 
@@ -120,3 +120,6 @@ Evidence:
 | 0.1 | 2026-11-12 | Logical Pod MCU and sensor interface contract. |
 | 0.2 | 2026-11-12 | Records the captured schematic, PN5321 MINI host signal names/no-IRQ polling behavior, NPN reset inversion, Adafruit 3886 header mapping, pull-up and power holds. |
 | 0.3 | 2026-11-12 | Added the actual R1/R2/R3/Q1 reset-stage wires and reset-net labels to the native KiCad schematic; physical module and power holds remain. |
+
+
+Revision 0.4 implementation note (2026-11-12): the native schematic now wires the optional R4/R5 pull-up positions to the intended SDA/SCL nets and the held 3.3 V peripheral rail. They remain DNP by default. The Pod reset conditioning network is also fully wired in the schematic. These repairs close missing logical wires only; no power source, module footprint, PCB net routing or ERC/DRC result is implied.
