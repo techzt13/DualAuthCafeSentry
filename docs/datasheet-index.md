@@ -2,6 +2,9 @@
 
 Revision: 0.2 | Date: 2026-11-11 | Status: verification register; physical freeze BLOCKED
 
+Completion review: 2026-11-12. Existing source evidence was preserved; no
+component selection or specification was changed during recovery.
+
 This extends, rather than replaces, the revision 0.1 design basis. Read the
 [component register](component-register.csv),
 [dimension register](dimension-register.csv) and
@@ -215,8 +218,8 @@ Both enclosure targets therefore remain unverified. See
 
 ## 5. Retrieval and interruption record
 
-On resume, the existing 75-row revision 0.1 register was intact; the three new
-register/index files had not been created. No background shell or delegated
+On the 2026-11-11 resume, the existing 75-row revision 0.1 register was intact;
+the three new register/index files had not been created. No background shell or delegated
 agent remained running. Fourteen cached source PDFs were checked by signature,
 parser, page count, visible identity and SHA-256, not by file existence alone.
 Relevant drawings were visually inspected where text extraction was ambiguous.
@@ -270,3 +273,24 @@ definitions, and obtain maximum installed envelopes and actual connector
 orientations. Obtain supplier confirmation for ambiguous revisions and source
 conflicts. Perform independent electrical/physical verification before release.
 No change to a component, capacity, enclosure size or clearance is implicit.
+
+## 7. Completion and recovery review - 2026-11-12
+
+The later "Main pass failed" was a Copilot model-service connection timeout
+(`ETIMEDOUT`) after five retries, not a failed CSV refinement. The saved
+refinement command completed with exit code 0 and reported 111 IDs preserved.
+The validation script was saved but had not run before the model failure.
+The log does not establish whether the timeout originated in local networking
+or upstream service/network conditions; earlier manufacturer retrieval failures
+are separate evidence-access holds.
+
+Recovery inspected all four deliverables and reused the 14 cached PDFs.
+The first validation run exposed a checker bug: its test-ID pattern required
+an ID-only cell and missed the roadmap's valid `T-01 GPIO / startup` style.
+The checker was corrected, not the 24 valid roadmap entries. Original-ID
+preservation is compared with fixed G0 commit
+`13863c939cae64e06590eb81724b75ade7a83eb5`, not a moving `HEAD`.
+
+Final validation results and the exact next action are recorded in
+[LAST-WORKED-ON.md](../LAST-WORKED-ON.md). A completed documentation/evidence
+task still does not close the physical component freeze.

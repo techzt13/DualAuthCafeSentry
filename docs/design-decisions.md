@@ -361,6 +361,11 @@ No PCB layout or CAD design is authorized by completion of the registers.
 | 0.1 | 2026-11-11 | Initial eight-document engineering design basis; source verification, logical interfaces, risk register, feasibility analysis and staged roadmap | Documentation task completed subject to recorded checks; all hardware/behavior proposals remain unapproved |
 | 0.2 | 2026-11-11 | Extended component/evidence/dimension/pinout registers; preserved research after interruption; corrected C3 USB pad pair; added documented cell/charger and packaging conflicts | Documentation evidence only; physical freeze blocked, no substitutions or hardware approval |
 
+Completion review, 2026-11-12: recovered from a model-service connection timeout,
+preserved the 111-entry registers, corrected the session validator's titled
+test-ID parsing and finished the [validation/handoff](../LAST-WORKED-ON.md).
+No hardware decision or source specification changed in this completion pass.
+
 No completed engineering design was overwritten. G0 began with an empty work
 log and no existing design documents, PCB or CAD models. Revision 0.2 preserves
 that completed design basis and extends only the related verification records.
