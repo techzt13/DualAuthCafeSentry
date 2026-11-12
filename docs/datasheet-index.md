@@ -1,8 +1,8 @@
 # Component Evidence and Datasheet Index
 
-Revision: 0.3 | Date: 2026-11-12 | Status: verification register; physical freeze BLOCKED
+Revision: 0.4 | Date: 2026-11-12 | Status: verification register; physical freeze BLOCKED
 
-Revision 0.3 adds G1 candidate evidence (SRC-30 to SRC-53) and the local
+Revision 0.4 adds inspected module-source and driver evidence (SRC-54 to SRC-56) and the local
 [evidence folder](datasheets/README.md). No candidate is selected.
 
 Completion review: 2026-11-12. Existing source evidence was preserved; no
@@ -342,6 +342,12 @@ Candidates are compared in the [component shortlist](g1-component-shortlist.md).
 | <a id="src-42"></a>SRC-42 | Adafruit products [3886](https://www.adafruit.com/product/3886), [4410](https://www.adafruit.com/product/4410), [4755](https://www.adafruit.com/product/4755), [6091](https://www.adafruit.com/product/6091) | P | Pages read 2026-11-12: published dimensions, default charge rates and stock status. No drawing or schematic inspected; dimensions are published claims. |
 | <a id="src-43"></a>SRC-43 | [Elechouse PN5321 MINI datasheet](https://www.elechouse.com/wp-content/uploads/2024/07/Elechouse-Pn5321-Mini-Product-Manual-V1.pdf); [product page](https://www.elechouse.com/product/pn532-mini/); [DWG archive](https://www.elechouse.com/wp-content/uploads/2024/07/MINIV2_dimention.zip) | M, P, M | Datasheet rev. 1.5, September 2026, SKU NFC_EX_MINI, hardware V2, 15 pages, all read. DWG archive downloaded and hashed but **not opened**. No schematic published. Page and datasheet disagree on supply range. |
 | <a id="src-53"></a>SRC-53 | [Seeed Studio XIAO ESP32C3 wiki](https://wiki.seeedstudio.com/XIAO_ESP32C3_Getting_Started/) | P | Page read 2026-11-12: 21 x 17.8, 380 mA fast charge. Alternative-board lead only; no schematic inspected. The XIAO ESP32S3 page was fetched but not analysed. |
+
+
+| <a id="src-54"></a>SRC-54 | [Adafruit MPU-6050 product 3886](https://www.adafruit.com/product/3886); [official guide pinouts](https://learn.adafruit.com/mpu6050-6-dof-accelerometer-and-gyro/pinouts); [official Eagle schematic and PCB source](https://github.com/adafruit/Adafruit-MPU6050-PCB) | P, M | Product page and guide read 2026-11-12; guide last edited 2026-09-30. Official Eagle board source at commit 7158d89fb3f02c66a11a58ae016f29490d770d93 inspected. Source outline 25.40 x 17.78 mm; four 2.5 mm mounting holes at (2.54,2.54), (22.86,2.54), (2.54,15.24), (22.86,15.24) mm in source coordinates. JP3: 1 VIN, 2 3.3 V output, 3 GND, 4 SCL, 5 SDA, 6 INT. STEMMA QT connectors: 1 GND, 2 VCC, 3 SDA, 4 SCL. Default AD0 10 kΩ to GND; 3.3 V solder-jumper option. Published assembly thickness 4.6 mm remains a product-page claim; mounted header and tolerance envelope are not controlled here. |
+| <a id="src-55"></a>SRC-55 | [Nexperia MMBT3904 product data sheet](https://assets.nexperia.com/documents/data-sheet/MMBT3904.pdf) | M | Product data sheet dated 2026-04-08; SOT23; NPN; Table 2 pin 1=B, 2=E, 3=C; 40 V VCEO, 200 mA maximum collector current. Used for the provisional PN532 reset sink, not for the piezo driver. |
+| <a id="src-56"></a>SRC-56 | [ELECHOUSE PN5321 MINI online documentation](https://www.elechouse.com/docs/pn5321-mini/); [current linked product manual](https://www.elechouse.com/wp-content/uploads/2024/07/Elechouse-Pn5321-Mini-Product-Manual-V1.pdf) | P, M | Current online documentation read 2026-11-12 and labels the English manual v1.1; documents 2.7–5.5 V input, 3.3 V I/O, signal names (not a cable conductor-number table), I2C address 0x24 and onboard 3.3 V pull-ups. It says the host connector has no IRQ. This differs from earlier downloaded project evidence in SRC-43 (rev. 1.5, 3.3–5.0 V and pull-up footprint wording); do not merge the two revisions or assume which matches a received board. |
+
 
 ### Actuators, switches and connectors
 
