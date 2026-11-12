@@ -568,7 +568,7 @@ pending verification.
 ## 15. O-03/O-05 deeper driver research — 2026-11-12
 
 Expanded [docs/g1-piezo-driver-compatibility.md](docs/g1-piezo-driver-compatibility.md)
-to revision 0.3 following direct inspection of the full Diodes PAM8904E
+to revision 0.4 following direct inspection of the full Diodes PAM8904E
 datasheet (DS41667 Rev. 4-2, July 2023), the March 2025 EVB guide and the
 Same Sky CPT-2475-92T datasheet (dated 2024-09-11).
 
@@ -669,3 +669,32 @@ Exact next research step: complete a deeper alternative-sounder and discrete
 driver architecture screen, then reconcile manufacturer questions and
 current/thermal/EMI calculations. No purchase, schematic, PCB, construction,
 battery connection or physical test is authorised.
+
+
+## 17. Alternate transducer and discrete driver screen — 2026-11-12
+
+Expanded the compatibility report to revision 0.4:
+- VCC PT-PM24-0538-RK: 24 mm, 5.2 mm high, 90 dB at 10 cm, 3.8 kHz,
+  5 V, 5 mA. It is compact but does not improve on the Same Sky 92 dB
+  reference or approach 105 dB.
+- Multitrack TFM-25: 80 dB(A) minimum at 10 cm, 9 Vp-p, 4.0 kHz ±0.5 kHz,
+  9.5 nF ±30% at 1 kHz, 25 Vp-p allowable input. Smaller capacitance but
+  materially lower documented sound level; not a better candidate for O-03.
+- Discrete boost plus bridge is technically possible, supported as a
+  general architecture by TI/Same Sky application literature. It adds
+  inductor, switching node, high-voltage passives, output bridge, EMI and
+  protection complexity. Resonant-inductor drive is not a good first option
+  for a 2.8–4.2 kHz sweep because it is frequency-specific and sensitive to
+  capacitance variation.
+- No alternate sounder found in this pass that meets 105 dB at 10 cm in a
+  24–25 mm body with verified conditions.
+
+The leading research path remains PAM8904E + CPT-2475-92T, but no safe
+voltage/duty/time operating point has been established. Manufacturer
+questions are prepared but NOT SENT. No second compact integrated driver
+has been verified.
+
+Exact next step: perform a final consistency pass on the O-03/O-05 report,
+owner decision and handoff; then await or obtain authorised manufacturer
+responses before making any component recommendation. No external enquiry
+has been sent, and no purchase, circuit design, build or test is authorised.
