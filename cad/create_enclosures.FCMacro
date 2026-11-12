@@ -52,12 +52,12 @@ def make_case(docname, outer_l, outer_w, outer_h, wall, base, lid_t, title):
     # They must be replaced with the selected module and pack envelopes.
     if docname == "SentryPod":
         nfc = add_box(doc, "NfcKeepout", "NFC antenna region — placeholder keepout",
-                      25, 10, 2, wall+2, wall+2, outer_h-lid_t-2)
+                      25, 10, 1, wall+2, wall+2, base+5.3+10)
         nfc.ViewObject.Transparency = 75
         nfc.addProperty("App::PropertyString", "Note", "Project")
         nfc.Note = "Placeholder only; exact antenna outline and position TBD"
         battery = add_box(doc, "BatteryKeepout", "Battery envelope — placeholder keepout",
-                          31, 20.5, 5.3, outer_l-31-wall, outer_w-20.5-wall, base+1)
+                          31, 20.5, 5.3, wall, wall, base)
         battery.ViewObject.Transparency = 75
         battery.addProperty("App::PropertyString", "Note", "Project")
         battery.Note = "Bare-cell reference envelope only; protected pack may be larger"
@@ -80,9 +80,9 @@ def make_case(docname, outer_l, outer_w, outer_h, wall, base, lid_t, title):
     Part.export([shell, lid], os.path.join(OUT, docname + "_enclosure.stl"))
     return doc
 
-pod = make_case("SentryPod", 55, 30, 18.3, 1.5, 1.5, 1.5, "Sentry Pod")
+pod = make_case("SentryPod", 55, 30, 19.3, 1.5, 1.5, 1.5, "Sentry Pod")
 key = make_case("PocketKeyfob", 38, 28, 14, 1.5, 1.5, 1.5, "Pocket Keyfob")
 
 print("DRAFT enclosure models saved to " + OUT)
-print("Pod: 55 x 30 x 18.3 mm; Keyfob: 38 x 28 x 14 mm.")
+print("Pod: 55 x 30 x 19.3 mm; Keyfob: 38 x 28 x 14 mm.")
 print("These are starting envelopes only; inspect clearances and update from selected parts.")
