@@ -563,3 +563,73 @@ Research source URLs:
 
 Commit sequence: report 89ee70c; owner-decision update 58193fb; handoff update
 pending verification.
+
+
+## 15. O-03/O-05 deeper driver research — 2026-11-12
+
+Expanded [docs/g1-piezo-driver-compatibility.md](docs/g1-piezo-driver-compatibility.md)
+to revision 0.2 following direct inspection of the full Diodes PAM8904E
+datasheet (DS41667 Rev. 4-2, July 2023), the March 2025 EVB guide and the
+Same Sky CPT-2475-92T datasheet (dated 2024-09-11).
+
+Additional verified findings:
+- PAM8904E absolute maximum VIN 6.0 V and VOUT 15 V. 3x mode is limited to
+  VDD 1.5–4.5 V; 1x and 2x modes are listed for 1.5–5.5 V. The datasheet
+  warns against 3x mode at VIN >=4.5 V and says VOUT must not exceed 13.5 V
+  in 3x mode.
+- At VIN 3.0 V, 47 nF and 3.2 kHz, typical input current: 4.3 mA in
+  single-ended 3x and 14.2 mA in differential 3x. These are typical,
+  not maxima, and not measured with the CPT-2475-92T.
+- Typical 3x start-up time 1.91 ms; typical shutdown delay 42 ms.
+- Active 2 x 2 mm order codes: PAM8904EGPR (W-QFN2020-12, max height
+  0.80 mm) and PAM8904EGPR-T (U-QFN2020-12, max height 0.65 mm).
+  The 3 x 3 mm JPR/JER variants are marked NRND.
+- EVB passive network: 2.2 uF / 16 V input capacitor, two 1 uF / 25 V
+  charge-pump capacitors and 2.2 uF / 25 V output capacitor. These parts,
+  placement and derating must be included in mechanical and electrical
+  feasibility.
+- Same Sky's frequency-response graph is not flat across the requested
+  sweep; it shows a broad dip near 2 kHz and higher response around 4–5 kHz.
+  Exact SPL at 2.8 and 4.2 kHz cannot be read as guaranteed numeric values.
+  The 92 dB rating is specified at 4 kHz, 10 cm, rated 10 Vp-p and half-duty
+  square wave; weighting is not stated.
+- No second compact integrated driver with a verified capacitive-load rating
+  adequate for this transducer was found in this research pass. PAM8904
+  remains disqualified as a match due to its 15 nF load limit. A discrete
+  boost plus output bridge is a distinct, more complex fallback architecture,
+  not a drop-in substitute.
+
+Current technical position:
+- PAM8904E is the only integrated driver candidate found so far with a
+  documented 47 nF load rating and a frequency input range that covers the
+  proposed sweep. It remains a research candidate, not selected.
+- The 47 nF rating is promising because the piezo is 21 nF typical and
+  27.3 nF maximum at 120 Hz. Frequency-dependent impedance and actual
+  output drive compatibility still require written manufacturer confirmation.
+- The piezo is rated 10 Vp-p, while the EVB guide demonstrates up to 16 Vp-p
+  from 3 V with 47 nF. Do not assume that output is safe for this transducer.
+  Investigate low charge-pump mode first on paper, and obtain explicit
+  manufacturer limits for waveform, duty and alarm duration.
+- 105 dB at 10 cm remains unproven; O-03/O-05/D-07/D-18 remain OPEN.
+  No purchase, schematic, PCB, construction, battery connection or test
+  authorised.
+
+Next research actions:
+1. Prepare manufacturer technical enquiries for Diodes and Same Sky asking
+   about the exact transducer/driver pairing, impedance at 2.8/4.0/4.2 kHz,
+   permitted differential voltage, waveform, duty, alarm duration, and SPL
+   response at both sweep endpoints. Do not claim these enquiries have been
+   sent; external correspondence requires an available authorised channel.
+2. Complete a documented paper input-current budget using the driver's
+   typical 14.2 mA differential 3x datum only as a reference point, not a
+   worst-case value. Add battery voltage range, driver mode, simultaneous
+   radio/NFC/IMU/LED loads and the unresolved battery pulse-current limits.
+3. Review charge-pump capacitor derating/ESR, thermal loss, 100 kHz switching
+   EMI and layout guidance against NFC/IMU/radio sensitivity.
+4. Compare a different sounder and a discrete driver architecture only if
+   manufacturer confirmation does not support this pairing.
+5. Keep the Pod packaging and acoustic acceptance criterion open until
+   external passive components, sounder response and D-18 test method are
+   known.
+
+No local CAD/PCB or hardware work was started. No components were ordered.
