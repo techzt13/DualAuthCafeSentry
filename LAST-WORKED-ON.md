@@ -858,3 +858,41 @@ both PCB files remain starter-level; no fabrication order is permitted.
 2. Add the Pod logical module interfaces and bus labels to the schematic.
 3. Continue the Keyfob interface contract and motor driver design.
 4. Resume FreeCAD co-design with actual carrier-board and connector envelopes.
+
+
+## 21. Keyfob low-voltage interface contract — 2026-11-12
+
+Created `hardware/pocket-keyfob/interface-contract.md` (revision 0.1).
+
+### Work completed
+
+- Recorded the C3-Zero (SKU 25452, ESP32-C3FH4, V2 schematic) as the
+  preferred evaluation controller, while preserving the S3-Zero alternative;
+  O-12 remains an owner decision and neither is frozen.
+- Mapped the C3 contact allocation for battery ADC, conditioned charge status,
+  motor control, button, onboard RGB, native USB and service UART.
+- Defined the motor-control boundary: GPIO drives only a transistor/driver
+  input; the motor is not connected directly to an MCU pin. Hardware OFF
+  bias, motor current, flyback path, PWM and duty limits remain to be designed.
+- Recorded 3V3 and shared USB VBUS/5V power holds and kept battery wiring
+  unreleased.
+- Updated the hardware README and hackathon plan to include both interface
+  contracts.
+
+### Validation and limitations
+
+The contract translates `docs/verified-pinouts.md` and `docs/pinout.md`.
+It is not a native schematic or wiring release. No motor datasheet-based
+driver values, physical footprints, ERC/DRC or hardware tests are claimed.
+The Keyfob schematic remains an empty starter sheet and its PCB remains
+outline-only.
+
+### Next work
+
+1. Convert both logical interface contracts into native KiCad schematic
+   symbols and labelled blocks.
+2. Inspect the exact Waveshare drawings to establish module pad geometry
+   before assigning footprints.
+3. Develop a provisional motor low-side driver and a separate Pod piezo
+   driver block without connecting either to an unverified battery rail.
+4. Continue enclosure-to-board integration.
