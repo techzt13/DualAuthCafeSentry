@@ -1,23 +1,21 @@
 # Last Worked On - Dual-Auth Cafe Sentry
 
-Date: 2026-11-12 (G1 candidate research complete; O-01/O-02 recorded; O-03/O-05 evaluation direction recorded; other owner decisions pending)
+Date: 2026-11-12 (hackathon implementation authorised; PCB and CAD are required deliverables)
 Package revision: 0.3
-Project stage: G0 design basis complete; G1 component-evidence registers
-complete; G1 candidate research complete; **G1 exit gate (physical component
-freeze) OPEN and BLOCKED** pending remaining owner decisions and evidence
-Next stage: owner decisions and supplier evidence within G1, not G2 or G3
+Project stage: G0 design basis complete; G1 candidate research complete;
+provisional PCB/CAD co-design STARTED by owner direction; component freeze
+and battery-powered validation remain open
+Next stage: create native KiCad projects and FreeCAD parametric assemblies
 
-**PCB/schematic creation: not started. CAD enclosure creation: not started.
-Firmware and manufacturing exports: not started. Nothing purchased or ordered.
-O-01 Option A (enlarge Pod) is an owner-approved specification direction only;
-it is not a final dimension, fit approval or authorisation to begin CAD.
-O-02 Option A (BQ25185 at 4.1 V) and O-03/O-05 Direction A (24 mm
-reference piezo plus compatible boosted-driver research; proposed SPL distance
-10 cm) are evaluation directions only. PAM8904E is now the leading paper-screen
-driver candidate only; its suitability remains unverified. They do not authorise purchase, design,
-construction, battery connection or physical testing. The 105 dB target and
-measurement method remain unapproved. Hardware safety, physical fit and
-manufacturing readiness: NOT APPROVED.**
+**PCB/schematic and CAD creation are now authorised and are required hackathon
+deliverables. Native KiCad and FreeCAD files must be created; none are yet
+claimed to exist. Firmware and manufacturing exports remain not started.
+Nothing purchased or ordered. O-01 enlarges the Pod to at least approximately
+55 mm length as a working lower bound; width 30 mm and height 16 mm remain
+provisional. O-02 BQ25185 at 4.1 V and O-03/O-05 Direction A remain evaluation
+choices, not frozen circuits. PAM8904E is the leading paper-screen driver
+candidate only. Battery connection, energised testing and fabrication orders
+remain separate and require their own review/approval.**
 
 Before the next task, read [PROJECT_SPEC.md](PROJECT_SPEC.md),
 [AGENTS.md](AGENTS.md), this file and the relevant `docs/` files. Some session
@@ -698,3 +696,66 @@ Exact next step: perform a final consistency pass on the O-03/O-05 report,
 owner decision and handoff; then await or obtain authorised manufacturer
 responses before making any component recommendation. No external enquiry
 has been sent, and no purchase, circuit design, build or test is authorised.
+
+
+## 18. Hackathon implementation direction — owner-confirmed 2026-11-12
+
+The owner clarified that this is a self-built hackathon project, not a
+manufacturer qualification exercise. The required deliverables include
+actual editable PCB and CAD designs. The owner confirmed the assistant should
+proceed on that basis.
+
+### Controlling direction
+
+- Start provisional schematic and PCB design now; do not wait for supplier
+  correspondence or closure of every G1 research question.
+- Start parametric enclosure CAD now and co-design it with the PCB.
+- Create separate Pod and Keyfob KiCad projects and FreeCAD models.
+- Manufacturer questions are optional and only for a genuinely blocking
+  technical issue. No enquiries have been sent.
+- Unknowns are managed as explicit provisional inputs, not blanket blockers.
+- Maintain sensible component limits and LiPo safety. Design permission does
+  not imply battery connection, energised testing or fabrication orders.
+
+### Actual current state
+
+- Native KiCad projects: NOT YET CREATED.
+- Native FreeCAD models: NOT YET CREATED.
+- PCB schematic/layout: NOT STARTED.
+- Enclosure parametric CAD: NOT STARTED.
+- Gerbers, drill files, STEP/STL and assembly drawings: NOT STARTED.
+- No components purchased; no physical testing claimed.
+
+### Immediate implementation sequence
+
+1. Inspect repository structure and existing project files before creating
+   anything; retain the established register and source evidence.
+2. Create the Pod and Keyfob KiCad project skeletons with project settings,
+   board outlines and interface/connectors.
+3. Create FreeCAD parametric Pod and Keyfob envelopes and a top-level assembly.
+4. Build a shared component-envelope/interface register and coordinate system.
+5. Place real component envelopes; mark placeholders and unknowns visibly.
+6. Draft the power, MCU, NFC, IMU, audio and haptic schematic blocks.
+7. Route boards only after footprint/pin mappings and schematic nets are checked.
+8. Iterate the enclosures against the actual PCB and component envelopes.
+9. Run ERC/DRC, geometry/clearance checks, export manufacturing files and
+   write full assembly instructions.
+
+### Working dimensions and design assumptions
+
+- Pod: start at >=55 mm external length; 30 mm width and 16 mm height are
+  provisional and may grow when actual packaging is modelled.
+- Keep the proposed 10 mm NFC antenna-to-battery separation as a CAD keepout.
+- Keyfob: 35 x 25 x 12 mm is a starting envelope, not an absolute limit.
+- PAM8904E: first integrated-driver paper candidate only; isolate it as a
+  provisional block until a drive mode within piezo limits is selected.
+- Charger/power path: BQ25185 4.1 V evaluation direction only; power design
+  remains provisional until the complete cell/charger/regulator path is
+  internally checked.
+
+### Repository references updated
+
+- AGENTS.md: hackathon implementation mandate.
+- PROJECT_SPEC.md: PCB/CAD deliverable amendment.
+- docs/development-roadmap.md: parallel PCB/CAD workstreams.
+- docs/g1-owner-decisions.md: provisional design authorisation recorded.
