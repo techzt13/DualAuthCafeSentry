@@ -4,16 +4,19 @@ Date: 2026-11-12 (G1 candidate research complete; O-01/O-02 recorded; O-03/O-05 
 Package revision: 0.3
 Project stage: G0 design basis complete; G1 component-evidence registers
 complete; G1 candidate research complete; **G1 exit gate (physical component
-freeze) OPEN and BLOCKED** pending owner decisions remaining owner decisions and evidence
+freeze) OPEN and BLOCKED** pending remaining owner decisions and evidence
 Next stage: owner decisions and supplier evidence within G1, not G2 or G3
 
 **PCB/schematic creation: not started. CAD enclosure creation: not started.
 Firmware and manufacturing exports: not started. Nothing purchased or ordered.
 O-01 Option A (enlarge Pod) is an owner-approved specification direction only;
 it is not a final dimension, fit approval or authorisation to begin CAD.
-O-02 Option A (BQ25185 at 4.1 V) is approved for evaluation only; it does not
-authorise purchase, design, construction, battery connection or testing.
-Hardware safety, physical fit and manufacturing readiness: NOT APPROVED.**
+O-02 Option A (BQ25185 at 4.1 V) and O-03/O-05 Direction A (24 mm
+reference piezo plus compatible boosted-driver research; proposed SPL distance
+10 cm) are evaluation directions only. They do not authorise purchase, design,
+construction, battery connection or physical testing. The 105 dB target and
+measurement method remain unapproved. Hardware safety, physical fit and
+manufacturing readiness: NOT APPROVED.**
 
 Before the next task, read [PROJECT_SPEC.md](PROJECT_SPEC.md),
 [AGENTS.md](AGENTS.md), this file and the relevant `docs/` files. Some session
