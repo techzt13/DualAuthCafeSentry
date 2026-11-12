@@ -1,6 +1,6 @@
 # Dual-Auth Cafe Sentry - Mechanical Requirements
 
-Revision: 0.1 | Date: 2026-11-11 | Status: packaging requirements and feasibility screen
+Revision: 0.2 | Date: 2026-11-11 | Status: packaging requirements; physical freeze blocked
 
 All dimensions are in **millimetres**. This is not a CAD model, tolerance
 release or fit certification. Future models must be native, parametric FreeCAD
@@ -35,23 +35,32 @@ permission to remove the 10 mm constraint.
 | Component / comparison | Verified manufacturer information | Still required |
 | --- | --- | --- |
 | Waveshare ESP32-S3-Zero | PCB outline 23.50 x 18.00; source drawing SRC-03 | Maximum assembled height above/below board, PCB thickness, USB overhang/centerline, solder envelope, keepout boundary and tolerance |
-| Waveshare ESP32-C3-Zero | PCB outline 23.50 x 18.00; source drawing SRC-06 | Same outstanding assembly measurements; C3 is not a smaller PCB in plan view |
+| Waveshare ESP32-C3-Zero | PCB outline 23.50 x 18.00; SRC-06 and directly inspected store drawing SRC-24 | Same outstanding assembly measurements; C3 is not a smaller PCB in plan view |
 | GY-521 assembly | No unique manufacturer/revision identified | Complete outline, height, mounting holes, connector pitch/pin order, regulator/LED and tolerances |
 | MPU-6050 IC | Nominal package 4 x 4 x 0.9, SRC-11 | This is **not** the GY-521 assembly envelope |
 | Selected PN532 module/antenna | TBD | Board/coil boundaries, component heights, mounting holes, RF keepout and connector envelope |
 | PN532 IC | Nominal 6 x 6 x 0.85 HVQFN40 body, SRC-09 | Cannot replace the module, antenna, crystal and matching network envelope |
-| Elechouse PN532 V3, **reference only** | Guide states 42.7 x 40.4 x 4 and rounded 43 x 41 x 4, SRC-21 | Actual purchased revision, connectors, tolerances and exact drawing; not selected |
+| Elechouse PN532 V3, **reference only** | Guide claims 42.7 x 40.4 x 4 and rounded 43 x 41 x 4, SRC-21; dimensions **unverified without a mechanical drawing** | Actual revision, connectors, tolerances, coil outline and exact drawing; not selected |
 | Pod battery pack | 502030 is only a specification size description | Exact cell/PCM, seal and lead geometry, connector, thermistor, swelling allowance |
-| EEMB LP502030 bare cell, **reference only** | Maximum stated cell dimensions 31 x 20.5 x 5.3, SRC-16 | Protection and finished-pack envelope; not selected |
+| EEMB LP502030 bare cell, **reference only** | Maximum body 31 x 20.5 x 5.3; drawing also specifies L1 <=32 and tab datums, SRC-16 | Protection, terminations and finished-pack envelope; not selected |
+| EEMB LP401730 bare cell, **reference only** | Maximum body 31 x 17.5 x 4.3; L1 <=32 plus tab datums, SRC-26 | Pack/PCM/connector/expansion envelope and charging compatibility; not selected |
+| Joy-IT SEN-MPU6050, **reference only** | Published 25 x 20 x 7 claim, SRC-25; no mechanical drawing located | Dimensions unverified; not proven identical to project GY-521 |
 | Keyfob battery pack | 150-200 mAh requirement only | All dimensions and construction TBD |
 | Passive piezo | No exact part selected | Diameter/outline, thickness, lead/pad arrangement, support/seal land, acoustic cavity and vent requirements |
 | Coin motor | No exact part selected | Diameter/outline, thickness, adhesive/pad, wire exit, vibration and retention requirements |
+| Vybronics VCLP1020B002L, **reference only** | Body diameter 10 +/-0.1, thickness 2.1 +/-0.1; separate nominal 0.15 tape and lead-exit features, SRC-27 | Complete installed/moving/lead envelope, tape tolerance and duty qualification; not selected |
+| SHOUHAN MSK12C02, **reference only** | Manufacturer-authored mirror gives foot span, body, posts and travel, SRC-28 | Canonical/current drawing and exact project equivalence TBD; body size alone excludes actuator/terminal motion |
 | Charger, regulators, protection, discrete drivers | Families/functions only | Full assembly/package envelopes, thermal lands, connector positions, footprint verification |
 | Buttons, slide switches, connectors and fasteners | No fully qualified mechanical parts | Supplier drawings, tolerances, actuator/mating travel, mounting and service clearance |
 
 The [component register](component-register.csv) is the part-by-part open-item
-list. A verified X/Y outline does not mean a part has a verified Z envelope or
-approved footprint.
+list; the [dimension register](dimension-register.csv) controls drawing scope
+and nominal/maximum numeric fields. Sources, revisions and failed retrievals
+are in the [datasheet index](datasheet-index.md). Published claims without a
+located manufacturer drawing remain unverified and are not numeric
+drawing-verified dimensions. Actual measured dimensions, if obtained later,
+must be labelled separately from manufacturer-controlled evidence.
+A verified X/Y outline does not mean a verified Z envelope or approved footprint.
 
 <a id="feasibility"></a>
 ## 3. Original target size feasibility
@@ -135,8 +144,9 @@ The C3 and S3 Zero boards have the same verified 23.5 x 18 outline. In a
 the width for an aligned board before supports and plugs; the remaining
 plan-view area is `32*22 - 23.5*18 = 281 mm2`.
 
-The 150-200 mAh battery, motor, charger/protector, regulator, button and switch
-are unsized. Any stacked battery/board strategy must meet:
+The actual 150-200 mAh finished battery, motor, charger/protector, regulator,
+button and switch remain unselected/unsized. Any stacked battery/board
+strategy must meet:
 
 ```text
 assembled board/carrier height + finished battery thickness
@@ -148,6 +158,20 @@ double-counts/non-counts overlapping regions. A separate USB-C charger module,
 the native board USB connector and the motor may dominate the residual
 space. The Pod's 250 mAh comparison cell is not a compliant Keyfob battery
 selection.
+
+The new unselected LP401730 cell drawing adds another hold: its **L1 <=32**
+datum reaches the full ideal cavity length before pack termination, clearance,
+protection or connector space. Its 31 mm body length is not the whole pack.
+Its tight charge-voltage limit also needs the independent
+[power review](power-architecture.md).
+
+For the unselected Vybronics motor, the maximum body diameter is 10.1.
+Straight board-plus-motor side-by-side screens give `23.5 + 10.1 = 33.6`
+along the 32 mm cavity length, or `18 + 10.1 = 28.1` across the 22 mm
+width. This flags stacking/alternative placement, not every possible
+three-dimensional arrangement. The motor also needs its lead-exit feature,
+25 +/-1 lead callout and adhesive; the 0.15 nominal tape lacks a stated
+tolerance, so adding it to body maximum does not prove an installed maximum.
 
 **Keyfob conclusion:** the bare board fits in plan view; the complete
 35 x 25 x 12 assembly remains **TBD**, with high risk from Z stack, ports,
@@ -291,3 +315,7 @@ Future validation must cover:
 Current result: dimensional arithmetic and source review only. No CAD
 interference check, tolerance simulation, physical fit test or manufacturing
 approval has been performed.
+
+Revision 0.2 adds drawing-qualified component records and reference-cell,
+motor and switch constraints. It does not change either target enclosure,
+the specified NFC clearances or the prohibition on beginning CAD in this task.

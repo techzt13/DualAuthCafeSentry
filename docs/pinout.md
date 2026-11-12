@@ -1,9 +1,11 @@
 # Dual-Auth Cafe Sentry - Pinout and Connection Schedule
 
-Revision: 0.1 | Date: 2026-11-11 | Status: logical interface allocation, not wiring release
+Revision: 0.2 | Date: 2026-11-11 | Status: logical interface allocation, not wiring release
 
 Read with [architecture and evidence labels](architecture.md) and
-[power architecture](power-architecture.md). **S** preserves the specification;
+[power architecture](power-architecture.md). Package-specific source maps and
+unresolved connector identities are in [verified pinouts](verified-pinouts.md).
+**S** preserves the specification;
 **V** is documented hardware; **P** is proposed; **TBD** blocks final wiring.
 
 All GPIO numbers are Espressif GPIO numbers, not physical header positions.
@@ -67,7 +69,7 @@ Pad numbers refer to the V2 schematic board symbol.
 | 3 | 7 | `K_MOTOR_PWM` | Driver control through base/gate network; external off bias |
 | 4 | 8 | `K_BUTTON_N` | Button to ground, pull-up input; verify wake behavior in selected sleep configuration |
 | 10 | 14 and onboard LED | RGB data | Board-installed LED; reserve; C3 V2 LED supply is the 5 V net |
-| 18 / 19 | 16 / 15 and USB | USB D- / D+ | Reserve for native USB, including if exposed on pads |
+| 18 / 19 | 15 / 16 and USB | USB D- / D+ | Reserve for native USB, including if exposed on pads |
 | 9 | 13 and BOOT | Boot strap/button | Reserve; do not use as remote-control button |
 | 21 / 20 | 18 / 17 | UART0 TX / RX | Service/debug; otherwise NC |
 
@@ -272,3 +274,7 @@ radio/USB/boot reservations identified. This does **not** close module supply,
 connector, pull-up, driver, battery, sleep or startup verification.
 ERC, DRC and electrical measurements have not been run because no project
 schematic or PCB has been created.
+
+Revision 0.2 corrects the C3 V2 USB contact pair: GPIO18/D- is contact 15,
+GPIO19/D+ is contact 16, as shown in SRC-05. Revision 0.1 had those two
+contact numbers reversed. All application GPIO assignments are unchanged.

@@ -1,6 +1,6 @@
 # Dual-Auth Cafe Sentry - System Architecture
 
-Revision: 0.1 | Date: 2026-11-11 | Status: design basis for independent review
+Revision: 0.2 | Date: 2026-11-11 | Status: design basis; physical component freeze blocked
 
 **Not a released schematic, PCB, enclosure design, or manufacturing approval.**
 The complete [project specification](../PROJECT_SPEC.md) and
@@ -13,6 +13,9 @@ changed. No PCB or CAD files were created for this task.
 | --- | --- |
 | [Architecture](architecture.md) | System partition, behavior, communications, source index |
 | [Component register](component-register.csv) | Part identity, dimensions, evidence, outstanding verification |
+| [Datasheet index](datasheet-index.md) | Current manufacturer evidence, revisions, access limitations and freeze blockers |
+| [Dimension register](dimension-register.csv) | Per-part drawing scope, nominal/maximum dimensions and missing installed envelopes |
+| [Verified pinouts](verified-pinouts.md) | Manufacturer-specific board/IC contacts, distinct from proposed application wiring |
 | [Pinout](pinout.md) | GPIO allocation, logical connections, interface and unused-pin requirements |
 | [Power architecture](power-architecture.md) | Charging, protection, power distribution and verification |
 | [Mechanical requirements](mechanical-requirements.md) | Packaging, assembly, placement, dimensional feasibility |
@@ -31,6 +34,10 @@ Evidence labels used throughout:
 Manufacturer IC data must not be substituted for breakout-board data. Published
 nominal outlines must not be treated as tolerance-controlled assembly envelopes.
 Reference-only parts in the register are **not selected substitutions**.
+The revision 0.2 registers preserve the original part IDs and add separate
+constituent roles. No project assembly is frozen; unknown parts and unresolved
+circuit groups still block a complete BOM. Documentation verification is not
+procurement, electrical-safety or physical-fit approval.
 
 ## 2. System boundary and unit separation
 
@@ -372,6 +379,12 @@ Checked 2026-11-11. Page/section references identify the evidence actually used.
 PDFs were inspected for research; this package links to, rather than republishes,
 manufacturer documents. Live pages may change; recheck the received revision
 before schematic/footprint approval.
+
+This is the retained G0 source index. The
+[current evidence ledger](datasheet-index.md) preserves these SRC-01..22 IDs
+and adds SRC-23..29, inspected document fingerprints and drawing/access status.
+Use that ledger and the per-part registers for current physical verification;
+the functional architecture is unchanged.
 
 | ID | Manufacturer document / link | Evidence and limitations |
 | --- | --- | --- |

@@ -1,6 +1,6 @@
 # Dual-Auth Cafe Sentry - Power Architecture
 
-Revision: 0.1 | Date: 2026-11-11 | Status: requirements and conditional topology
+Revision: 0.2 | Date: 2026-11-11 | Status: requirements; component pairing not approved
 
 **LiPo charging, protection and power distribution are not approved for
 construction or manufacture.** Exact cells, protected packs, charger modules,
@@ -88,6 +88,8 @@ approved charge rates.
 
 ## 3. Reference battery evidence - not a selection
 
+### 3.1 Pod-capacity LP502030 comparison
+
 The specification does not name a battery manufacturer. To test the meaning of
 "502030", the EEMB **LP502030 bare cell** was checked against its linked
 ZJQM-RD-SPC-H2305 specification, dated 2022-10-25
@@ -113,6 +115,47 @@ thermistor and swelling/service allowances are additional unknowns. The size
 code must not be interpreted as a guaranteed finished 5 x 20 x 30 mm envelope.
 The reference's 500 mA discharge limit also needs comparison with radio,
 piezo/boost and LED peaks before it could be selected.
+
+### 3.2 Keyfob-capacity LP401730 comparison
+
+EEMB **LP401730**, ZJQM-RD-SPC-H0510 dated 2019-04-23, is another
+**bare solder-tab cell**, not a selected protected pack
+([SRC-26](datasheet-index.md#src-26)).
+
+| Property | Manufacturer value for this reference only |
+| --- | --- |
+| Capacity / nominal voltage | 150 mAh nominal, 140 mAh minimum / 3.7 V |
+| Charge voltage | **4.200 +/-0.020 V** |
+| Maximum charge / termination current | 150 mA / 3 mA |
+| Maximum discharge current | 300 mA; application peak-load compatibility unproved |
+| Temperature | Charge 0-45 deg C; discharge -20 to 60 deg C |
+| Body maxima | 31 x 17.5 x 4.3 mm; drawing also has L1 <=32 and tab dimensions |
+
+Do not transfer LP502030's 0-20 deg C / 0.3 C charging rule to this cell;
+it is not stated in the inspected LP401730 table. Finished-pack protection,
+NTC, leads, polarity, connector and expansion limits remain TBD.
+
+### 3.3 Nominal 4.2 V does not establish charging compatibility
+
+| Reference | Documented regulation / limit | Comparison with LP401730 |
+| --- | --- | --- |
+| LP401730 | 4.200 +/-0.020 V charge limit | Upper limit **4.220 V** |
+| MCP73831-2 | Page 3 VREG 4.168 / 4.20 / **4.232 V**, at the stated test conditions | Upper value exceeds cell limit by **12 mV** |
+| TP4056 | Page 4 VFLOAT 4.158 / 4.2 / **4.242 V**, at 0-85 deg C | Upper value exceeds cell limit by **22 mV** |
+
+Sources: [SRC-13](datasheet-index.md#src-13),
+[SRC-14](datasheet-index.md#src-14), [SRC-26](datasheet-index.md#src-26).
+These candidate pairings cannot be approved by their nominal labels.
+Review complete temperature/tolerance/current/termination behavior and obtain
+manufacturer clarification or an explicitly selected compatible pairing.
+Neither software cutoff nor a pack protector is permission to exceed the
+normal charging limit.
+
+The original TP4056 REV_2.3 itself contains conflicting voltage accuracy:
+page 4 gives the +/-1% bounds above, while page 17 demo-board text states
+4.2 V +/-1.5%. This must be resolved with the manufacturer; do not select the
+more convenient statement or apply either to an unknown clone/module.
+No charger or battery substitution is made here.
 
 ## 4. Proposed functional power tree
 
@@ -228,6 +271,8 @@ Reference **IC** pin functions, not a selected module connector map:
 The MCP73831 DFN pin map differs from SOT-23-5. Follow the selected package's
 ground/thermal-pad and capacitor requirements exactly. Do not copy this
 reference table into an unselected footprint.
+Both complete package maps, including MCP73831 DFN EP9, are in
+[verified pinouts](verified-pinouts.md#chargers).
 
 ### 5.3 Pack and load protection
 
@@ -268,6 +313,16 @@ startup/stall current. Place the diode with cathode at motor positive and
 anode at the switching node. Add correctly rated local decoupling. A MOSFET
 or dedicated driver may be evaluated, but it is a proposal, not an automatically
 approved replacement for the specified transistor-driven approach.
+
+The unselected [Vybronics reference](datasheet-index.md#src-27) operates at
+2.5-3.5 V, with <=30 mA rated current at 3 V. Its <=80 mA starting-current
+test is at the stated starting-voltage condition, not a universal stall
+maximum at 3.5 V. Its 1 s on / 1 s off life test does not qualify indefinite
+continuous-alert duty. The project motor remains TBD.
+
+The unselected [SHOUHAN switch reference](datasheet-index.md#src-28) is
+rated 50 mA at 12 V DC. It does not establish that the unspecified project
+switch can carry radio/actuator peaks; enable-path switching remains conditional.
 
 For both outputs, hardware off bias must work while firmware is absent,
 resetting, flashing or asleep. Verify waveform clamps, switch dissipation,

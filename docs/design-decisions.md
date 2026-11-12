@@ -1,10 +1,11 @@
 # Dual-Auth Cafe Sentry - Design Decision Log
 
-Revision: 0.1 | Date: 2026-11-11 | Status: initial design review baseline
+Revision: 0.2 | Date: 2026-11-11 | Status: design basis; physical freeze blocked
 
 The [project specification](../PROJECT_SPEC.md) remains unchanged.
 **No human engineering approval is implied by this log.**
-Sources are indexed in [architecture](architecture.md#9-manufacturer-source-index);
+Sources are indexed in the [current datasheet ledger](datasheet-index.md) and
+the retained [architecture index](architecture.md#9-manufacturer-source-index);
 unselected items remain in the [component register](component-register.csv).
 
 ## 1. Decision control
@@ -325,11 +326,41 @@ selections. Resolve vendor-document inconsistencies with measurements and/or
 manufacturer clarification rather than guessing.
 **Closure:** complete component register/BOM traceability and independent review.
 
+<a id="d-21"></a>
+### D-21 - Evidence register is not a completed physical freeze
+
+**Status:** APPLIED-DOC for evidence controls; hardware selections remain OPEN.
+**Owners:** electrical, mechanical, manufacturing, project lead. **Gate:** G1.
+
+Retain the original component IDs and named specification families. Record
+separate unit-specific constituents and package-specific references, but do
+not substitute Joy-IT, EEMB, Elechouse, Vybronics, SHOUHAN, TDK or onsemi
+comparisons into the build. Exact MCU order pages do not establish delivered
+PCB revision, fitted BOM or complete installed envelope.
+
+Use the [dimension register](dimension-register.csv) only within its stated
+drawing scope. Manufacturer size claims without a mechanical drawing remain
+unverified; blocked sources and manufacturer-authored mirrors are disclosed.
+Unknown circuit/interface groups are not orderable BOM parts. No project
+assembly is FROZEN while these identity, drawing, power and fit holds remain.
+
+The [verified pinout review](verified-pinouts.md#c3-zero) corrected the C3
+USB pad pair in the earlier logical table; no application GPIO was changed.
+The LP401730/charger voltage-tolerance conflict and TP4056 internal source
+discrepancy require independent review, not a nominal-voltage assumption.
+
+**Closure:** supplier-controlled actual assembly identities/drawings,
+reviewed cell/charger/source interface, complete constituent BOM and
+maximum-envelope evidence, followed by the existing verification gates.
+No PCB layout or CAD design is authorized by completion of the registers.
+
 ## 5. Revision history
 
 | Revision | Date | Change | Approval status |
 | --- | --- | --- | --- |
 | 0.1 | 2026-11-11 | Initial eight-document engineering design basis; source verification, logical interfaces, risk register, feasibility analysis and staged roadmap | Documentation task completed subject to recorded checks; all hardware/behavior proposals remain unapproved |
+| 0.2 | 2026-11-11 | Extended component/evidence/dimension/pinout registers; preserved research after interruption; corrected C3 USB pad pair; added documented cell/charger and packaging conflicts | Documentation evidence only; physical freeze blocked, no substitutions or hardware approval |
 
-No completed engineering design was overwritten. The repository began this task
-with an empty work log and no existing design documents, PCB or CAD models.
+No completed engineering design was overwritten. G0 began with an empty work
+log and no existing design documents, PCB or CAD models. Revision 0.2 preserves
+that completed design basis and extends only the related verification records.

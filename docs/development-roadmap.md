@@ -1,11 +1,14 @@
 # Dual-Auth Cafe Sentry - Staged Development Roadmap
 
-Revision: 0.1 | Date: 2026-11-11 | Status: gated plan; hardware stages not started
+Revision: 0.2 | Date: 2026-11-11 | Status: G1 evidence documented; physical freeze incomplete
 
 This roadmap implements the [specification](../PROJECT_SPEC.md) under
 [AGENTS.md](../AGENTS.md). Dates, named reviewers, procurement lead times and
 stage durations are TBD. Do not infer a delivery schedule from the event name.
 **Only the documentation stage is in scope for the current task.**
+The [component evidence package](datasheet-index.md) now records verified
+documents, unverified assemblies and source-access failures. This completes a
+G1 research/register work package, not the G1 exit gate; PCB/CAD remain on hold.
 
 ## 1. Stage and dependency overview
 
@@ -43,10 +46,12 @@ completed before a representative assembled enclosure exists.
    PN532 module/antenna, finished battery packs, chargers, piezo, coin motor,
    transistors/diodes, switches and connectors. Keep all unknown register
    fields TBD until evidence exists.
-3. Obtain or measure maximum assembly envelopes, including protection PCBs,
-   USB overhang, component heights, headers, leads and mating plugs.
-   Reconcile source inconsistencies for the RGB LED, PN532 module dimensions
-   and module strap/voltage interfaces.
+3. Obtain manufacturer-controlled drawings and inspect actual maximum assembly
+   envelopes, including protection PCBs, USB overhang, heights, leads and mating
+   plugs. Use the [dimension register](dimension-register.csv); if no drawing
+   exists, keep manufacturer dimensions unverified and label any measurements
+   separately. Reconcile RGB, PN532 interface and TP4056 tolerance conflicts,
+   and the LP401730/charger voltage mismatch before selecting a pairing.
 4. Obtain approved human sourcing decisions before purchases; do not order
    cells, boards or fabrication services automatically.
 5. Resolve power/source arbitration on paper and with independently reviewed
