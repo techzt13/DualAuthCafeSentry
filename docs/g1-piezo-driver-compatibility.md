@@ -165,6 +165,11 @@ manufacturer/distributor search should be done before any component freeze.
 
 ### 3.5 Alternative transducer screen
 
+Manufacturer/distributor evidence:
+- VCC PT-PM24-0538-RK: https://www.digikey.co.uk/en/products/detail/visual-communications-company-vcc/PT-PM24-0538-RK/28009446
+- Multitrack TFM-25 datasheet: https://www.multitrack-buzzer.de/wp-content/gallery/external-driven-piezo-transducer/pdf/TFM-25.pdf
+
+
 Two additional externally driven parts were found, but neither improves the
 documented sound-level result for this project:
 
