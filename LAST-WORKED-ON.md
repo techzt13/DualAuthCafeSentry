@@ -759,3 +759,55 @@ proceed on that basis.
 - PROJECT_SPEC.md: PCB/CAD deliverable amendment.
 - docs/development-roadmap.md: parallel PCB/CAD workstreams.
 - docs/g1-owner-decisions.md: provisional design authorisation recorded.
+
+
+## 19. First native design workspace milestone — 2026-11-12
+
+Created the first editable hardware/CAD source workspace in GitHub.
+
+### KiCad starter projects created
+
+- `hardware/sentry-pod/sentry-pod.kicad_pro`
+- `hardware/sentry-pod/sentry-pod.kicad_sch`
+- `hardware/sentry-pod/sentry-pod.kicad_pcb`
+- `hardware/pocket-keyfob/pocket-keyfob.kicad_pro`
+- `hardware/pocket-keyfob/pocket-keyfob.kicad_sch`
+- `hardware/pocket-keyfob/pocket-keyfob.kicad_pcb`
+
+Both PCB files contain only a provisional Edge.Cuts outline and a draft label.
+Pod carrier outline: 49 x 24 mm. Keyfob carrier outline: 27 x 20 mm. These
+are initial packaging placeholders, not approved final board sizes. No
+footprints, nets, copper zones, routing or components are present. The
+schematic sheets are intentionally empty starter sheets; no electrical
+schematic is claimed complete. KiCad CLI/ERC/DRC validation has not been run
+in this environment.
+
+### FreeCAD parametric starter source created
+
+- `cad/create_enclosures.FCMacro`
+- `cad/README.md`
+
+The macro creates editable FreeCAD documents for a Pod starting envelope
+55 x 30 x 18.3 mm and Keyfob starting envelope 38 x 28 x 14 mm, including
+lower shell, lid and translucent component-envelope placeholders. It saves
+FCStd and draft STEP/STL exports to the user's home directory when run in
+FreeCAD. FreeCAD is not installed in this execution environment, so no
+FCStd/STEP/STL output has been generated or validated yet.
+
+### Important corrections and next implementation work
+
+- The mechanical requirements baseline originally says 45 x 30 x 16 mm; the
+  owner later selected an enlarged Pod direction of at least approximately
+  55 mm length. The 18.3 mm height is a calculated lower-bound starting
+  envelope from the reference cell plus separation and assumed walls, not a
+  proven fit. Continue parametric sizing rather than freezing these dimensions.
+- Keyfob 38 x 28 x 14 mm is a provisional increase from the 35 x 25 x 12 mm
+  target to make room for a 23.5 x 18 mm Zero module and assembly clearance.
+- Pod NFC antenna and battery boxes in the macro are visual placeholders only;
+  their placement must be revisited because the 10 mm nearest-surface gap,
+  piezo separation, actual antenna and protected-pack envelope must all be met.
+- First next task: install/use KiCad and FreeCAD locally to open the starter
+  files, confirm parser validity, then build the real Pod schematic blocks and
+  replace the blank PCB outline with the component/connector placement.
+- Do not call these files a finished PCB or finished CAD assembly. They are
+  native editable design starters and the first implementation milestone.
