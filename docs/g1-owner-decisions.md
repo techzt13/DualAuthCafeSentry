@@ -12,7 +12,8 @@ Existing decisions D-01 to D-22 are in the
 Detail: [component shortlist](g1-component-shortlist.md),
 [compatibility matrix](g1-battery-charger-compatibility.md),
 [power recommendation](g1-power-architecture-recommendation.md),
-[mechanical feasibility](g1-mechanical-feasibility.md).
+[mechanical feasibility](g1-mechanical-feasibility.md),
+[piezo/driver compatibility investigation](g1-piezo-driver-compatibility.md).
 
 ## 1. Decisions that change the specification
 
@@ -180,3 +181,4 @@ BLOCKED.
 | 0.4 | 2026-11-12 | Recorded owner approval of O-01 Option A only; O-02 to O-15 and A-1 to A-4 remain open |
 | 0.5 | 2026-11-12 | Recorded O-02 Option A as BQ25185 4.1 V evaluation direction only; no purchase, design, build or battery connection authorised |
 | 0.6 | 2026-11-12 | Recorded O-03/O-05 Direction A for evaluation only and 10 cm as proposed SPL distance; no piezo/driver selection or physical test authorised |
+| 0.7 | 2026-11-12 | Added PAM8904E as a promising boosted-driver research candidate; created compatibility report; no component selected or test authorised |
