@@ -963,3 +963,35 @@ The Keyfob battery/charger, K_3V3_MOTOR_HOLD, battery ADC and charge-status cond
 3. Complete the Keyfob PCB netlist and module land pattern from verified board drawings, then place C1/C2 and route only after the antenna keepout is known.
 4. Extend the FreeCAD models using the real PCB and component envelopes, then run FreeCAD and KiCad locally for geometry, ERC and DRC checks.
 5. Keep this file current after each committed design milestone. Do not describe either PCB/CAD model as validated or fabrication-ready until the checks are actually run.
+
+
+## 24. Pod power and audio design reviews — 2026-11-13
+
+Created two source-grounded design notes to move the Pod from abstract architecture toward actual schematic implementation without connecting unresolved battery or sound-drive rails.
+
+### Power-stage review
+
+- Added hardware/sentry-pod/power-stage-review.md.
+- Recorded the current TI BQ25185 Rev. B pin map and conservative 4.1 V / 500 mA input-limit setting: 130 kΩ from ILIM/VSET to ground.
+- Calculated a candidate 4.3 kΩ ISET value (~69.8 mA typical) only as a Renata ICP402025PC-01 evaluation screen; no cell/charger pairing is approved.
+- Added required IN, SYS and BAT bypass values, NTC requirement and open-drain status interface.
+- Corrected an important power-path assumption: BQ25185 SYS is a 4.5 V regulated output, not a 5 V source. An ideal diode does not boost it. The Zero shared USB VBUS/5V interface must remain HOLD until its actual input and regulator behaviour is verified.
+
+### Audio-stage review
+
+- Added hardware/sentry-pod/audio-stage-review.md.
+- Same Sky CPT-2475-92T is rated 92 dB minimum at 10 cm at 10 Vp-p, 4 kHz, half-duty square wave; its published rating is 13 dB below the proposed 105 dB criterion.
+- PAM8904E remains a candidate because its 47 nF load capability exceeds the transducer's 27.3 nF maximum capacitance figure, but only 1x mode is proposed for initial evaluation.
+- 2x/3x operation is not approved. The actual differential waveform must be measured and kept within 10 Vp-p.
+- No sound-level performance or 105 dB claim is made.
+
+### Validation status
+
+These are design reviews, not native wired circuits. The Pod power and audio schematic blocks are still to be drawn and source-checked. The power rails remain HOLD; no battery or charger is connected. No ERC/DRC, SPICE, acoustic, thermal or hardware test was run.
+
+### Next work
+
+1. Convert the Pod power-stage review into a dedicated, non-energised KiCad schematic block with explicit HOLD rails and exact BQ25185 pin mapping.
+2. Convert the audio review into an isolated PAM8904E 1x-mode evaluation block; keep output terminals separate and voltage-limited.
+3. Complete the Keyfob PCB netlist, module land pattern, capacitor placements and antenna keepout.
+4. Continue CAD integration, then validate the source projects locally in KiCad and FreeCAD.
