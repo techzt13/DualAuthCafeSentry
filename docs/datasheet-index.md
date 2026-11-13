@@ -1,9 +1,9 @@
 # Component Evidence and Datasheet Index
 
-Revision: 0.4 | Date: 2026-11-12 | Status: verification register; physical freeze BLOCKED
+Revision: 0.5 | Date: 2026-11-13 | Status: verification register; physical freeze BLOCKED
 
-Revision 0.4 adds inspected module-source and driver evidence (SRC-54 to SRC-56) and the local
-[evidence folder](datasheets/README.md). No candidate is selected.
+Revision 0.5 adds physical interface-footprint work based on SRC-43, SRC-54 and SRC-56 and the local
+[evidence folder](datasheets/README.md). No candidate is selected. The Pod board now contains provisional footprints and placements; these are not fabrication release.
 
 Completion review: 2026-11-12. Existing source evidence was preserved; no
 component selection or specification was changed during recovery.
