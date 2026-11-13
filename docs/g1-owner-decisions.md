@@ -140,7 +140,7 @@ BLOCKED.
 | O-10 | Behaviour while charging | Must the Pod be able to alarm while it is charging? | Yes; this is what makes a power path necessary. If no, Option B becomes viable | D-04, D-19 |
 | O-11 | Battery supplier | Pod: Renata ICP521630PM-01 or Jauch LP502030JH+PCM. Keyfob: Renata ICP402025PC-01 or Jauch LP402025JU+PCM | Renata for both, subject to the supplier confirming pulse-discharge capability, charge-voltage tolerance and protection thresholds in writing | D-05, R-34 |
 | O-12 | Keyfob processor | ESP32-C3-Zero or ESP32-S3-Zero | Keep C3 as the proposed option; decide after measuring both boards' sleep and beacon current | D-02 |
-| O-13 | Keyfob motor | 8 mm Precision Microdrives 308-100, or a 10 mm part if the Keyfob is enlarged | 308-100 for the current target | R-09 |
+| O-13 | Keyfob motor | 8 mm Precision Microdrives 308-100, or a 10 mm part if the Keyfob is enlarged | Not frozen. VCLP1020B002L is the preferred evaluation reference under the 44 mm case study; 308-100 remains an alternate. No final component approval. | R-09 |
 | O-14 | Battery connector | JST PH (2 mm) or JST SH (1 mm), and which side carries the plug | PH for the Pod, SH for the Keyfob; note AWG26 pack wires do not fit SH contacts | R-19 |
 | O-15 | Use of datasheets in the public repository | Keep documents local with hashes, or seek written permission to publish specific ones | Keep local. See the [evidence folder](datasheets/README.md) | D-22 |
 
