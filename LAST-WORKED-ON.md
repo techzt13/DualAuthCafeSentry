@@ -2,11 +2,11 @@
 
 Date: 2026-11-13
 Package revision: 0.5
-Project stage: native KiCad schematic and placement drafts exist for both devices. Pod schematic has S3-Zero, PN5321 MINI, Adafruit 3886, button and wired provisional NFC reset. Pod PCB has provisional S3-Zero, Adafruit 3886, PN532 host-pad, Q1/R1-R3 footprints and 49.5 x 28 mm outline; unrouted, charger/audio missing. Keyfob schematic has C3-Zero, button interfaces and IRLML6344/PMEG2010AEB motor driver. Keyfob PCB has upright C3-Zero footprint, 37 x 25 mm outline, motor driver passives and 22 assigned nets; unrouted, battery/charger missing. Keyfob uses VCLP1020B002L as preferred evaluation motor only (O-13 open); 44 x 30 x 15.5 mm case study. Pod case study is 72 x 34 x 29 mm. FreeCAD macro exists but has not been run.
+Project stage: both devices have native KiCad schematic and PCB placement drafts. The Pod has a main interface schematic plus separate standalone BQ25185 power and PAM8904E audio evaluation schematics; neither standalone block is yet integrated as hierarchical sheets or assigned to a routed PCB. The Pod PCB has S3-Zero, Adafruit 3886, PN532 host pads and NFC reset components on a 49.5 x 28 mm outline; it remains unrouted and has no power/audio placements. The Keyfob schematic contains C3-Zero, button, IRLML6344/PMEG2010AEB motor driver, bypass capacitors and explicit UART service labels. Its 37 x 25 mm PCB has a provisional upright C3-Zero footprint, motor driver passives and 24 assigned nets after this session's UART update; it remains unrouted and has no battery/charger stage. Keyfob uses VCLP1020B002L as an evaluation motor only (O-13 open); enclosure study 44 x 30 x 15.5 mm. Pod enclosure study 72 x 34 x 29 mm. FreeCAD macro exists but has not been run.
 
-**Important live-state correction:** the older milestone notes below are historical. The live Keyfob schematic is NOT empty: it contains U1 ESP32-C3-Zero logical contacts, J1 motor wire pads, Q1 IRLML6344 low-side MOSFET, R1 100 Ω gate resistor, R2 100 kΩ gate pull-down, D1 flyback diode, C1 100 nF, C2 10 µF and SW1 active-low button. During this work D1 was changed from 1N4148W to Nexperia PMEG2010AEB,115 (20 V, 1 A, SOD-523); the schematic diode pin mapping and draft PCB footprint were updated. This is a paper-level correction, not an ERC/DRC or hardware validation.
+**Important live-state correction:** the older milestone notes below are historical. The live Keyfob schematic contains U1 ESP32-C3-Zero logical contacts, J1 motor wire pads, Q1 IRLML6344 low-side MOSFET, R1 100 Ω gate resistor, R2 100 kΩ gate pull-down, D1 Nexperia PMEG2010AEB flyback diode, C1 100 nF, C2 10 µF and SW1 active-low button. This session added explicit K_UART_RX/K_UART_TX schematic labels to C3 contacts 17/18 and assigned matching PCB pads 17/18. The PCB's J1 value now matches the VCLP1020B002L evaluation reference. These are source edits, not ERC/DRC or hardware validation.
 
-Pod power and audio blocks are still not complete. Battery/charger pairings and all power rails remain HOLD. O-01 Pod enlargement and O-02/O-03/O-05 evaluation choices are not component approvals. Neither board is fabrication-ready; no physical parts are purchased, built or tested. CAD remains draft envelope geometry and no fit check is claimed.
+Battery/charger pairings and all power rails remain HOLD. The BQ25185 power and PAM8904E audio files are isolated evaluation schematics only; no unsafe or unverified power source has been connected. Neither PCB is fabrication-ready; no physical parts are purchased, built or tested. CAD remains draft envelope geometry and no fit check is claimed.
 
 Before continuing, read [PROJECT_SPEC.md](PROJECT_SPEC.md), [AGENTS.md](AGENTS.md), this file and relevant docs references. The repo is techzt13/DualAuthCafeSentry, branch master.
 
@@ -1183,3 +1183,18 @@ Precision Microdrives 308-100 remains an alternate: 8 mm x 3.4 mm, 94 mA maximum
 The Keyfob CAD envelope is enlarged from 42 x 30 x 15.5 mm to **44 x 30 x 15.5 mm** to provide clearance for the 10 mm motor. The motor body is now 10 x 2.1 mm with its 9 x 0.15 mm adhesive tape represented separately. The motor centre is at CAD (35.5,7.5), corresponding to PCB local (33,5); the body has 2 mm nominal clearance to the inner right wall and 1 mm nominal gap from the battery envelope. These are arithmetic clearances, not a fit check.
 
 Updated the Keyfob schematic J1 value/datasheet, CAD motor/tape solids, interface contract, PCB layout review, shortlist, project/mechanical dimensions and this handoff. No physical motor, battery, or enclosure test has been performed.
+
+
+## 34. Keyfob service UART nets completed — 2026-11-13
+
+Connected the C3-Zero service UART contacts through the schematic and carrier PCB:
+
+- C3 contact 17 / GPIO20 / UART0 RX is labelled `K_UART_RX`.
+- C3 contact 18 / GPIO21 / UART0 TX is labelled `K_UART_TX`.
+- PCB U1 pad 17 and pad 18 now carry the corresponding net assignments rather than remaining unassigned.
+- Updated the Keyfob interface contract to revision 0.3.
+- Corrected the PCB J1 fabrication-reference text to VCLP1020B002L so it agrees with the schematic and current motor evaluation reference.
+
+The contact functions are documented in the existing Waveshare V2 pin map. This is a text-level schematic/PCB edit only. No KiCad parser, ERC, DRC, routing, module land-pattern fit or hardware validation has been run.
+
+Next: complete the Keyfob PCB land pattern/antenna and button details, integrate the standalone Pod power/audio sheets, and continue placement/routing only where verified mechanical and electrical constraints permit.
