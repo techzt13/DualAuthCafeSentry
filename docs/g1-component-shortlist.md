@@ -1,6 +1,6 @@
 # G1 Component Shortlist
 
-Revision: 0.4 | Date: 2026-11-12 | Status: candidates for owner decision; NOTHING selected or frozen
+Revision: 0.5 | Date: 2026-11-13 | Status: candidates for owner decision; NOTHING selected or frozen
 
 **Every part here is a candidate. None is selected, substituted into the
 specification, purchased or frozen.** The physical component freeze remains
@@ -29,7 +29,7 @@ Distributor stock figures marked **L** came from search snapshots.
 
 | Candidate | Maker, order code | Size | Key facts | Evidence | Availability |
 | --- | --- | --- | --- | --- | --- |
-| **PN5321 MINI with ferrite-backed antennas** | ELECHOUSE, SKU NFC_EX_MINI, hardware V2 | Board 25 x 16.4 x 4.4; supplied antennas 10 x 25 x 0.2 and 40 x 50 x 0.2; 100 mm leads | 13.56 MHz PN532; I2C/SPI/HSU selected by solder jumper; I2C address 0x24; I/O 3.3 V; current online manual input 2.7–5.5 V; active-low RST; no IRQ on host connector; current v1.1 manual says onboard 3.3 V I2C pull-ups | SRC-43 earlier rev.1.5 record; SRC-56 current online v1.1 docs | Not a purchase approval |
+| **PN5321 MINI with ferrite-backed antennas** | ELECHOUSE, SKU NFC_EX_MINI, hardware V2 | Board 25 x 16.4 x 4.4; supplied antennas 10 x 25 x 0.2 and 40 x 50 x 0.2; 100 mm leads | 13.56 MHz PN532; I2C/SPI/HSU selected by solder jumper; I2C address 0x24; I/O 3.3 V; Rev. 1.5 says 3.3–5.0 V, default UART, I2C strap, no IRQ; online v1.1 says 2.7–5.5 V and onboard pull-ups | SRC-43 earlier rev.1.5 record; SRC-56 current online v1.1 docs | Not a purchase approval |
 | PN532 NFC RFID Module V3 | ELECHOUSE | 42.7 x 40.4 x 4 published claim | Integral antenna; not compatible with current width target | D (SRC-21) | Not selected |
 | PN532 breakout, product 364 | Adafruit | Page text 51 x 117.7 (L) | Integral antenna; far larger than Pod | L | L: out of stock |
 | Grove NFC, 113020006 | Seeed Studio | 25.43 x 20.35 board (L); antenna size not found | Separate antenna; default UART | L | L: unclear |
@@ -38,16 +38,16 @@ Distributor stock figures marked **L** came from search snapshots.
 
 **Prototype candidate: ELECHOUSE PN5321 MINI with the 10 x 25 antenna.** It is the most compact documented PN532 option identified in the current research. This is not an owner component freeze.
 
-Current online documentation (SRC-56) identifies the I2C host signals by module silkscreen, not by a numbered conductor/cable map:
+The Rev. 1.5 datasheet (SRC-43) gives a numbered host pin order: 1 SCL, 2 SDA, 3 MISO, 4 SCK, 5 RST, 6 supply, 7 GND. The optional 7-pin MX1.25 cable still needs continuity/orientation checking. Rev. 1.5 says default UART and requires bridging only the I2C solder pad for I2C. Current online v1.1 documentation (SRC-56) differs on supply range and pull-ups; inspect the received module revision.
 - GND; 5V/3V3 supply; active-low RST; SCK and MISO unused in I2C.
 - TX/MOSI/SDA is SDA; RX/SS/SCL is SCL.
 - I2C address 0x24; 3.3 V I/O.
 - No IRQ is exposed on the host interface. The schematic now leaves ESP32-S3 GPIO10 / P15-6 NC and polls the reader.
 - The current v1.1 manual says onboard 3.3 V I2C pull-ups are present. An earlier downloaded v1.5 evidence record (SRC-43) describes unpopulated pull-up footprints and a different supply range. This is treated as a hardware/document revision discrepancy; no external pull-ups are populated until the received module is inspected.
 
-The manual publishes board dimensions 25 x 16.4 x 4.4 mm and antenna options 10 x 25 x 0.2 mm or 40 x 50 x 0.2 mm with a 100 mm lead. The DWG archive has not yet been opened, so these are not tolerance-qualified envelope dimensions. Connector mating family and cable conductor order must be checked against the received item; the schematic deliberately uses signal names instead of pretending a numbered cable map exists.
+The manual publishes board dimensions 25 x 16.4 x 4.4 mm and antenna options 10 x 25 x 0.2 mm or 40 x 50 x 0.2 mm with a 100 mm lead. The DWG archive has not yet been opened, so these are not tolerance-qualified envelope dimensions. The 72 x 34 x 29 mm Pod packaging study now places the 10 x 25 mm coil with 10.5 mm battery-to-coil and 12.5 mm piezo-to-coil horizontal separation; in-case RF and read range remain unvalidated.
 
-The host I2C address 0x24 is already specified by the project. The manufacturer's published free-air read figures do not prove range through the finished 1.5 mm lid with the battery, piezo and nearby metal present. The project 10 mm nearest-surface battery and piezo separations remain applicable; antenna fit is still a major packaging constraint.
+The host I2C address 0x24 is already specified by the project. The manufacturer's published free-air read figures do not prove range through the finished 1.5 mm lid with the battery, piezo and nearby metal present. The project 10 mm nearest-surface battery and piezo separations remain applicable. The current CAD study meets the geometric spacing provisionally; RF performance through the finished enclosure remains a test hold.
 
 <a id="imu"></a>
 ## 3. P-IMU: MPU-6050 module
