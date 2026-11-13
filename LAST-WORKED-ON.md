@@ -995,3 +995,39 @@ These are design reviews, not native wired circuits. The Pod power and audio sch
 2. Convert the audio review into an isolated PAM8904E 1x-mode evaluation block; keep output terminals separate and voltage-limited.
 3. Complete the Keyfob PCB netlist, module land pattern, capacitor placements and antenna keepout.
 4. Continue CAD integration, then validate the source projects locally in KiCad and FreeCAD.
+
+
+## 25. Native Pod power and audio evaluation schematics — 2026-11-13
+
+Created two standalone, editable KiCad schematic blocks so the Pod power and sound circuits have real source files rather than only prose reviews:
+
+- hardware/sentry-pod/pod-power-stage.kicad_sch
+- hardware/sentry-pod/pod-audio-stage.kicad_sch
+
+### Power block
+
+- BQ25185 WSON-10 symbol uses the official pin map.
+- R1=130k programs the 4.1 V battery setting and 500 mA input limit per current TI Rev. B Table 6-1.
+- R2=4.3k is an evaluation-only current setting (~70 mA typical) based on the Renata pack candidate; it does not approve that pairing.
+- CIN=1uF, CSYS=10uF (0805 draft footprint), CBAT=1uF.
+- SYS, BAT, input, status, CE and TS/MR signals are labelled as HOLD. No battery, USB-C connector, thermistor or processor board is connected.
+
+### Audio block
+
+- PAM8904E W-QFN2020-12 Type US logical symbol uses the manufacturer pin map.
+- EN1 is held low; EN2 has a 100k default-OFF pull-down and is the 1x enable; DIN has a 100k default-low pull-down.
+- C1=2.2uF input, C2/C3=1uF charge-pump capacitors, C4=2.2uF output; values and effective capacitance remain to be checked.
+- Differential VO1/VO2 go to a separate two-pin piezo connector. The piezo terminals are not grounded.
+- C2 connects CP1 to CN1; C3 connects CP2 to CN2.
+- 1x mode is the only evaluation mode. 2x/3x are not approved; measure the differential waveform and keep it within the transducer's 10 Vp-p rating.
+
+### Validation status
+
+These are standalone schematic blocks, not yet hierarchical sheets integrated into the main Pod schematic or assigned to routed PCBs. All supply/control/output nets are HOLD. The custom symbols and wire endpoints have not been opened in KiCad or passed through ERC. No PCB footprints, routing, simulation, thermal test or acoustic measurement are claimed.
+
+### Next work
+
+1. Open both standalone Pod schematic blocks in KiCad and correct any parser/ERC issues.
+2. Integrate them into the main Pod project as hierarchical sheets only after pin/wire audits.
+3. Complete the Keyfob board netlist and module land pattern.
+4. Build the corresponding PCB placements and parametric enclosure fit checks, then run local ERC/DRC and FreeCAD validation.
