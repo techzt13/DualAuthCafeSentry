@@ -1127,3 +1127,22 @@ The previous rotated 90-degree C3-Zero layout was not a satisfactory packaging d
 - CAD battery envelope changed to Renata ICP402025PC-01 candidate dimensions 27.5 x 20.5 x 4.3 mm; pack leads/connector are not modelled.
 
 The exact antenna area, USB connector shell, recommended carrier pad dimensions and row datum still need confirmation against the physical module. The antenna notch and USB cutout are provisional. The plastic wall near the antenna requires RF testing. No FreeCAD or KiCad run, fit check, ERC/DRC, RF test or physical validation has occurred.
+
+
+## 31. Sentry Pod 3D packaging study expanded — 2026-11-13
+
+The earlier 55 x 30 x 19.7 mm Pod model represented only a battery-to-antenna lower-bound stack and did not include the board, modules or piezo. Replaced it with a larger **72 x 30 x 29 mm packaging-study envelope** and added reference solids to the FreeCAD macro:
+
+- 49.5 x 24 x 1.6 mm carrier PCB.
+- Renata ICP521630PM-01 protected-pack candidate, 31.5 x 17 x 5.7 mm.
+- Waveshare ESP32-S3-Zero module, 23.5 x 18 mm.
+- Adafruit 3886 IMU breakout, 26 x 17.8 x 4.6 mm.
+- Elechouse PN5321 MINI, 25 x 16.4 x 4.4 mm, underside of carrier.
+- 25 x 10 x 1 mm NFC antenna placeholder.
+- CPT-2475-92T 24 x 7.5 mm piezo reference.
+
+The proposed layout places the battery at the left end, PN532 module on the underside at the right end, MCU and IMU on the top side, the piezo above the left/centre area and the NFC coil at the right-hand lid region. Arithmetic gives 10.5 mm battery-to-coil and 12.5 mm piezo-to-coil horizontal separation. This is a clash-study hypothesis, not a physical fit or RF/acoustic validation.
+
+Created hardware/sentry-pod/packaging-review.md with the component stack and remaining checks. Updated PROJECT_SPEC.md and docs/mechanical-requirements.md to identify 72 x 30 x 29 mm Pod and 42 x 30 x 15.5 mm Keyfob as current packaging-study envelopes only; neither is a final owner-approved size.
+
+No FreeCAD run, STEP/STL generation, KiCad ERC/DRC, acoustic test, RF test or physical fit check has been performed. Pod PCB remains outline-only. The 105 dB sound target is not met by the current 92 dB piezo candidate.
