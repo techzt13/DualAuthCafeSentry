@@ -2,7 +2,7 @@
 
 Date: 2026-11-13
 Package revision: 0.4
-Project stage: native KiCad schematics are under active implementation; Pod schematic has MCU/module interfaces and a wired provisional NFC reset; Keyfob schematic now contains a provisional C3-Zero interface and protected motor-switch block. Both PCBs remain draft mechanical layouts without routed nets. FreeCAD macro exists but has not been run.
+Project stage: native KiCad schematics are under active implementation; Pod schematic has MCU/module interfaces and a wired provisional NFC reset; Keyfob schematic now contains a provisional C3-Zero interface and protected motor-switch block. The Keyfob PCB now has a provisional 2x9 C3-Zero castellated footprint, 22 assigned pad nets across U1 and the motor-driver passives, and draft C1/C2 footprints; it remains unrouted and the land pattern/antenna clearance are unverified. The Pod PCB remains outline-only. FreeCAD macro exists but has not been run.
 
 **Important live-state correction:** the older milestone notes below are historical. The live Keyfob schematic is NOT empty: it contains U1 ESP32-C3-Zero logical contacts, J1 motor wire pads, Q1 IRLML6344 low-side MOSFET, R1 100 Ω gate resistor, R2 100 kΩ gate pull-down, D1 flyback diode, C1 100 nF, C2 10 µF and SW1 active-low button. During this work D1 was changed from 1N4148W to Nexperia PMEG2010AEB,115 (20 V, 1 A, SOD-523); the schematic diode pin mapping and draft PCB footprint were updated. This is a paper-level correction, not an ERC/DRC or hardware validation.
 
@@ -1031,3 +1031,39 @@ These are standalone schematic blocks, not yet hierarchical sheets integrated in
 2. Integrate them into the main Pod project as hierarchical sheets only after pin/wire audits.
 3. Complete the Keyfob board netlist and module land pattern.
 4. Build the corresponding PCB placements and parametric enclosure fit checks, then run local ERC/DRC and FreeCAD validation.
+
+
+## 26. Keyfob carrier footprint and draft net assignment — 2026-11-13
+
+Created a custom KiCad footprint and assigned the first carrier-board nets.
+
+### New footprint
+
+- hardware/pocket-keyfob/footprints.pretty/C3Zero_Castellated_2x9.kicad_mod
+- Existing local footprint table already points to hardware/pocket-keyfob/footprints.pretty.
+- Footprint library ID: SentryKeyfob:C3Zero_Castellated_2x9.
+- Waveshare public documentation gives the module outline as 18.0 x 23.5 mm and shows 2.54 mm castellated contact pitch. The footprint uses 9 contacts per side and maps contacts 1–18 in the documented perimeter order.
+- The carrier land pads are provisionally 1.8 x 1.5 mm with row centres at ±8.1 mm. These pad dimensions and row-centre datum are not specified by the public dimension drawing; this is an editable engineering estimate and must be checked against the actual module before fabrication.
+
+### Keyfob PCB changes
+
+- Added U1 footprint at the existing rotated 23.5 x 18 mm module envelope position.
+- Added board net definitions and mapped U1 pins 1–5, 7 and 8 to the corresponding HOLD/control nets.
+- Assigned motor-driver nets to J1, Q1, D1, R1 and R2.
+- Added C1 100 nF (0603) and C2 10 µF (0805) draft bottom-side footprints, each connected between K_3V3_MOTOR_HOLD and K_GND.
+- Corrected the D1 SOD-523 courtyard and body outline to the smaller package envelope.
+- Renamed the controller 5V HOLD net consistently as K_5V_BOARD_HOLD.
+
+### Validation and limits
+
+A text-level S-expression balance check passed for the Keyfob schematic, PCB and custom footprint (balanced parentheses and closed strings). This is not a KiCad parser run. KiCad CLI and FreeCAD are not installed in the current execution environment. No ERC, DRC, copper routing, antenna keepout validation, module solder-fit, enclosure fit or electrical test has been run.
+
+The PCB is now a populated placement/net-assignment draft, not a finished routed board. The 33 x 23 mm carrier outline remains provisional. The antenna zone, USB-C overhang, board orientation and pad geometry must be verified against the actual module. SW1 still has no released footprint because the switch part is not frozen.
+
+### Next work
+
+1. Open the Keyfob project in KiCad, run ERC/DRC and inspect U1's pad order/orientation against the actual module.
+2. Establish the ceramic antenna keepout and USB overhang; move the motor and passives if required.
+3. Add the physical button footprint after the switch choice and mechanical location are resolved.
+4. Route the Keyfob PCB only after U1 and the antenna clearance are confirmed.
+5. Continue the Pod PCB from the new isolated power/audio schematics and verify all custom schematic symbols in KiCad.
