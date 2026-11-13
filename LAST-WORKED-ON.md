@@ -1050,7 +1050,7 @@ Created a custom KiCad footprint and assigned the first carrier-board nets.
 - Added U1 footprint at the existing rotated 23.5 x 18 mm module envelope position.
 - Added board net definitions and mapped U1 pins 1–5, 7 and 8 to the corresponding HOLD/control nets.
 - Assigned motor-driver nets to J1, Q1, D1, R1 and R2.
-- Added C1 100 nF (0603) and C2 10 µF (0805) draft bottom-side footprints, each connected between K_3V3_MOTOR_HOLD and K_GND.
+- Added C1 100 nF (0603) and C2 10 µF (0805) top-side draft footprints at PCB local y=11.5, each connected between K_3V3_MOTOR_HOLD and K_GND.
 - Corrected the D1 SOD-523 courtyard and body outline to the smaller package envelope.
 - Renamed the controller 5V HOLD net consistently as K_5V_BOARD_HOLD.
 
@@ -1102,3 +1102,12 @@ Inspected the official Waveshare pinout and dimension images. The earlier draft 
 - Pad size remains provisional 1.8 x 1.5 mm and must be checked against the actual module.
 
 The PCB net assignments remain attached to pad numbers and were not changed. The 90-degree module rotation is unchanged. No KiCad parser/ERC/DRC or physical solder-fit check has been run.
+
+
+## 29. Keyfob passives moved to top-side and footprint layers corrected — 2026-11-13
+
+Moved Q1, D1, R1, R2, C1 and C2 to F.Cu. The battery sits directly below the carrier board with only about 0.9 mm vertical clearance, so bottom-side component placement was a poor fit assumption. C1/C2 were also moved from the motor's draft body area to PCB local y=11.5, between the motor body and motor-wire pad region.
+
+Corrected footprint drawing layers to F.SilkS/F.Fab/F.CrtYd and adjusted the hand-drawn capacitor land pads to approximate standard 0603/0805 dimensions. The Keyfob CAD macro now places the same component envelopes above the carrier PCB.
+
+This is still a placement study. The C3 USB-C connector access envelope may conflict with the motor position, and the antenna keepout location must be checked against the received module. No local KiCad or FreeCAD validation has been run.
