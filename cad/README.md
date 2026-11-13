@@ -35,7 +35,7 @@ exec(open("/Users/REPLACE_WITH_MAC_USERNAME/Projects/DualAuthCafeSentry/cad/crea
 - The Keyfob C3-Zero is now modelled upright with a provisional 10 x 4.8 mm USB-C wall cutout and an 8 x 3.5 mm carrier-board antenna relief notch. Verify both against the actual module; the antenna-side plastic wall still needs RF testing.
 - The battery models are bare-cell reference envelopes, not protected packs.
 - The Pod antenna, battery, and Keyfob motor/module/driver envelopes are not verified fits.
-- The Keyfob carrier is 37 x 25 x 1.6 mm in the current PCB draft; the custom C3-Zero land pattern still has estimated pad size and row datum. The proposed Keyfob outer case is 42 x 30 x 15.5 mm.
+- The Keyfob carrier is 37 x 25 x 1.6 mm in the current PCB draft; the custom C3-Zero land pattern still has estimated pad size and row datum. The proposed Keyfob outer case is 44 x 30 x 15.5 mm.
 - All dimensions are millimetres. The current model is not a manufacturing release.
 
 ## Validation still required
@@ -48,6 +48,6 @@ exec(open("/Users/REPLACE_WITH_MAC_USERNAME/Projects/DualAuthCafeSentry/cad/crea
 6. Perform a physical fit check with printed parts and the actual PCB/components.
 7. Export STEP/STL only after the geometry is inspected and revisioned.
 
-Current packaging-study envelopes in the macro: Sentry Pod 72 x 34 x 29 mm; Pocket Keyfob 42 x 30 x 15.5 mm. The Pod model includes battery, 49.5 x 28 carrier, S3-Zero, Adafruit IMU, stacked PN532 module, antenna and piezo reference solids plus a USB-C wall cutout; the Keyfob model includes upright C3-Zero, antenna relief, USB-C cutout, protected-pack and motor/driver references.
+Current packaging-study envelopes in the macro: Sentry Pod 72 x 34 x 29 mm; Pocket Keyfob 44 x 30 x 15.5 mm. The Pod model includes battery, 49.5 x 28 carrier, S3-Zero, Adafruit IMU, stacked PN532 module, antenna and piezo reference solids plus a USB-C wall cutout; the Keyfob model includes upright C3-Zero, antenna relief, USB-C cutout, protected-pack and motor/driver references.
 
 No FCStd, STEP or STL file is claimed to have been generated or checked in this assistant environment.
