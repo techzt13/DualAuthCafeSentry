@@ -2,7 +2,7 @@
 
 Date: 2026-11-13
 Package revision: 0.5
-Project stage: both devices have native KiCad schematic and PCB placement drafts. The Pod has a main interface schematic plus separate standalone BQ25185 power and PAM8904E audio evaluation schematics; neither standalone block is yet integrated as hierarchical sheets or assigned to a routed PCB. The Pod PCB has S3-Zero, Adafruit 3886, PN532 host pads and NFC reset components on a 49.5 x 28 mm outline; it remains unrouted and has no power/audio placements. The Keyfob schematic contains C3-Zero, button, IRLML6344/PMEG2010AEB motor driver, bypass capacitors and explicit UART service labels. Its 37 x 25 mm PCB has a provisional upright C3-Zero footprint, motor driver passives and 24 assigned nets after this session's UART update; it remains unrouted and has no battery/charger stage. Keyfob uses VCLP1020B002L as an evaluation motor only (O-13 open); enclosure study 44 x 30 x 15.5 mm. Pod enclosure study 72 x 34 x 29 mm. FreeCAD macro exists but has not been run.
+Project stage: both devices have native KiCad schematic and PCB placement drafts. The Pod has a main interface schematic plus separate standalone BQ25185 power and PAM8904E audio evaluation schematics; neither standalone block is yet integrated as hierarchical sheets or assigned to a routed PCB. The Pod PCB has S3-Zero, Adafruit 3886, PN532 host pads and NFC reset components on a 49.5 x 28 mm outline; it remains unrouted and has no power/audio placements. The Keyfob schematic contains C3-Zero, button, IRLML6344/PMEG2010AEB motor driver, bypass capacitors and explicit UART service labels. Its 37 x 25 mm PCB has a provisional upright C3-Zero footprint, motor driver passives and 24 assigned pad-to-net connections after this session's UART update; it remains unrouted and has no battery/charger stage. Keyfob uses VCLP1020B002L as an evaluation motor only (O-13 open); enclosure study 44 x 30 x 15.5 mm. Pod enclosure study 72 x 34 x 29 mm. FreeCAD macro exists but has not been run.
 
 **Important live-state correction:** the older milestone notes below are historical. The live Keyfob schematic contains U1 ESP32-C3-Zero logical contacts, J1 motor wire pads, Q1 IRLML6344 low-side MOSFET, R1 100 Ω gate resistor, R2 100 kΩ gate pull-down, D1 Nexperia PMEG2010AEB flyback diode, C1 100 nF, C2 10 µF and SW1 active-low button. This session added explicit K_UART_RX/K_UART_TX schematic labels to C3 contacts 17/18 and assigned matching PCB pads 17/18. The PCB's J1 value now matches the VCLP1020B002L evaluation reference. These are source edits, not ERC/DRC or hardware validation.
 
@@ -1198,3 +1198,17 @@ Connected the C3-Zero service UART contacts through the schematic and carrier PC
 The contact functions are documented in the existing Waveshare V2 pin map. This is a text-level schematic/PCB edit only. No KiCad parser, ERC, DRC, routing, module land-pattern fit or hardware validation has been run.
 
 Next: complete the Keyfob PCB land pattern/antenna and button details, integrate the standalone Pod power/audio sheets, and continue placement/routing only where verified mechanical and electrical constraints permit.
+
+
+## 35. Keyfob schematic/PCB text audit — 2026-11-13
+
+Re-fetched the committed Keyfob KiCad source files after the UART edit and ran a text-level structural audit:
+
+- The schematic and PCB S-expressions both have balanced parentheses and closed quoted strings.
+- The schematic contains the new `K_UART_RX` and `K_UART_TX` labels.
+- PCB U1 pad 17 is assigned to `K_UART_RX`; pad 18 is assigned to `K_UART_TX`.
+- The PCB contains 24 non-NC pad-to-net assignments across the C3 module, motor connector, MOSFET, flyback diode, resistors, capacitors and button.
+- The J1 PCB value text now agrees with the VCLP1020B002L evaluation reference.
+- Corrected a stale coordinate comment in the FreeCAD macro: the motor centre corresponds to PCB local (33,5), translated by the carrier origin (2.5,2.5).
+
+This is a source-text consistency check only. It is not a KiCad parser, ERC, DRC, connectivity/netlist comparison, 3D geometry validation or physical test. KiCad CLI and FreeCAD remain unavailable in the current execution environment.
