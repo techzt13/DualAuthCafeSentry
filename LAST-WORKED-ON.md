@@ -1043,7 +1043,7 @@ Created a custom KiCad footprint and assigned the first carrier-board nets.
 - Existing local footprint table already points to hardware/pocket-keyfob/footprints.pretty.
 - Footprint library ID: SentryKeyfob:C3Zero_Castellated_2x9.
 - Waveshare public documentation gives the module outline as 18.0 x 23.5 mm and shows 2.54 mm castellated contact pitch. The footprint uses 9 contacts per side and maps contacts 1–18 in the documented perimeter order.
-- The carrier land pads are provisionally 1.8 x 1.5 mm with row centres at ±8.1 mm. These pad dimensions and row-centre datum are not specified by the public dimension drawing; this is an editable engineering estimate and must be checked against the actual module before fabrication.
+- The carrier land pads are provisionally 1.8 x 1.5 mm with row centres provisionally at ±7.62 mm (15.24 mm estimated spacing). These pad dimensions and row-centre datum are not specified by the public dimension drawing; this is an editable engineering estimate and must be checked against the actual module before fabrication.
 
 ### Keyfob PCB changes
 
@@ -1088,3 +1088,17 @@ cad/README.md now contains the full macOS FreeCAD 0.21+ procedure, including the
 ### Validation status
 
 FreeCAD is not installed in this execution environment, so the macro has not been run. No FCStd, STEP or STL output is claimed. No geometry validity, component fit, USB access, antenna clearance, motor coupling, battery safety or enclosure fit has been verified. The Keyfob shell remains 38 x 28 x 15.5 mm; carrier remains 33 x 23 mm. The USB/antenna orientation is a major open mechanical check.
+
+
+## 28. C3-Zero footprint row order and spacing corrected from Waveshare drawings — 2026-11-13
+
+Inspected the official Waveshare pinout and dimension images. The earlier draft footprint had the two pad rows reversed and used an over-wide row spacing. Corrected both the embedded U1 footprint in the PCB and the local custom footprint library:
+
+- Contact 1–9 are on the USB-facing left edge in the official top view, ordered from top to bottom.
+- Contact 18–10 are on the right edge, ordered from top to bottom.
+- Contact pitch is 2.54 mm.
+- The row-centre spacing is now a provisional 15.24 mm (±7.62 mm from the footprint origin), inferred from the official drawing; it is not explicitly dimensioned as a numeric row-spacing callout.
+- The module outline remains 18.0 x 23.5 mm.
+- Pad size remains provisional 1.8 x 1.5 mm and must be checked against the actual module.
+
+The PCB net assignments remain attached to pad numbers and were not changed. The 90-degree module rotation is unchanged. No KiCad parser/ERC/DRC or physical solder-fit check has been run.
