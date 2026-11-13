@@ -2,7 +2,7 @@
 
 Revision: 0.1 | Date: 2026-11-12 | Status: DRAFT — logical interfaces only; not a wiring release
 
-This document defines the Keyfob controller and low-voltage signal contract using the verified Waveshare board contact maps. It keeps the C3-Zero as the current evaluation option, with the S3-Zero as a documented alternative. The owner has not frozen the MCU choice. No physical module connector footprint, battery circuit or motor driver is released by this document.
+This document defines the Keyfob controller and low-voltage signal contract using the verified Waveshare board contact maps. It keeps the C3-Zero as the current evaluation option, with the S3-Zero as a documented alternative. The owner has not frozen the MCU choice. A provisional C3-Zero 2x9 castellated footprint and motor-driver block now exist in the native project; neither is a released manufacturing design.
 
 ## 1. Controller options
 
@@ -96,7 +96,7 @@ The C3-Zero 3V3 pin is the onboard regulator output. Its 5V pin is on the same n
 
 ## 6. Physical and PCB holds
 
-No connector footprint is released in this revision. Confirm the exact Waveshare board drawing, contact geometry, assembly height and physical orientation before designing the carrier footprint. Confirm the motor can's dimensions, lead exit, adhesive area and vibration coupling before placing it in the enclosure. Battery connector and USB-C charge receptacle remain TBD.
+The custom C3-Zero footprint is a draft: Waveshare publishes the 18.0 x 23.5 mm outline and 2.54 mm contact pitch, but the public dimension drawing does not dimension pad width or row-centre datum. The footprint uses provisional 1.8 x 1.5 mm pads and must be checked against the received module before fabrication. Confirm assembly height, USB overhang, exact orientation and antenna keepout. Confirm the motor can's dimensions, lead exit, adhesive area and vibration coupling before placing it in the enclosure. Battery connector and USB-C charge receptacle remain TBD.
 
 ## 7. Evidence
 
@@ -113,3 +113,4 @@ This is a design translation of existing evidence, not a new manufacturer verifi
 | Revision | Date | Change |
 |---|---|---|
 | 0.1 | 2026-11-12 | First Keyfob MCU and actuator logical interface contract. |
+| 0.2 | 2026-11-13 | Record provisional C3-Zero land pattern and motor-driver schematic implementation. |
