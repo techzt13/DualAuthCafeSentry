@@ -2,7 +2,7 @@
 
 Date: 2026-11-13
 Package revision: 0.4
-Project stage: native KiCad schematics are under active implementation; Pod schematic has MCU/module interfaces and a wired provisional NFC reset; Keyfob schematic now contains a provisional C3-Zero interface and protected motor-switch block. The Keyfob PCB now has a provisional upright C3-Zero 2x9 footprint, 37 x 25 mm carrier outline with an antenna relief notch, 22 assigned pad nets and top-side motor-driver passives; it remains unrouted and the land pattern/antenna clearance are unverified. The proposed Keyfob enclosure is 42 x 30 x 15.5 mm. The Pod PCB now has provisional S3-Zero, Adafruit 3886 and PN532 host footprints plus the NFC reset-stage placements; it remains unrouted and lacks charger/audio stages. FreeCAD macro exists but has not been run.
+Project stage: native KiCad schematics are under active implementation; Pod schematic has MCU/module interfaces and a wired provisional NFC reset; Keyfob schematic now contains a provisional C3-Zero interface and protected motor-switch block. The Keyfob PCB now has a provisional upright C3-Zero 2x9 footprint, 37 x 25 mm carrier outline with an antenna relief notch, 22 assigned pad nets and top-side motor-driver passives; it remains unrouted and the land pattern/antenna clearance are unverified. The proposed Keyfob enclosure is 44 x 30 x 15.5 mm. The Pod PCB now has provisional S3-Zero, Adafruit 3886 and PN532 host footprints plus the NFC reset-stage placements; it remains unrouted and lacks charger/audio stages. FreeCAD macro exists but has not been run.
 
 **Important live-state correction:** the older milestone notes below are historical. The live Keyfob schematic is NOT empty: it contains U1 ESP32-C3-Zero logical contacts, J1 motor wire pads, Q1 IRLML6344 low-side MOSFET, R1 100 Ω gate resistor, R2 100 kΩ gate pull-down, D1 flyback diode, C1 100 nF, C2 10 µF and SW1 active-low button. During this work D1 was changed from 1N4148W to Nexperia PMEG2010AEB,115 (20 V, 1 A, SOD-523); the schematic diode pin mapping and draft PCB footprint were updated. This is a paper-level correction, not an ERC/DRC or hardware validation.
 
@@ -1164,3 +1164,22 @@ The PN5321 MINI is now a top-side stack above the IMU breakout in the CAD study,
 Important Rev1.5 PN532 update: the official manual identifies host pin order 1 SCL, 2 SDA, 3 MISO, 4 SCK, 5 RST, 6 VCC (silkscreen 5V; accepts 3.3–5.0 V), 7 GND; default UART; bridge only the I2C solder pad with power removed. Rev1.5 says optional I2C pull-up footprints are unpopulated, while the online v1.1 docs say onboard pull-ups are present and specify a different input range. The schematic now preserves this as a hardware/document revision discrepancy; inspect the received module before deciding on R4/R5.
 
 The Pod packaging-study envelope is now 72 x 34 x 29 mm; the carrier is 49.5 x 28 mm. The battery-to-coil and piezo-to-coil horizontal clearances are 10.5 mm and 12.5 mm respectively. No FreeCAD run, KiCad ERC/DRC, routing, RF/acoustic test or physical fit check has occurred.
+
+
+## 33. Keyfob motor reference and enclosure update — 2026-11-13
+
+Resolved the earlier motor identity mismatch: Precision Microdrives 308-100 and Vybronics VCLP1020B002L are different parts. The Keyfob schematic and CAD now use VCLP1020B002L as the **preferred evaluation reference only**; O-13 remains open and no motor is finally selected.
+
+VCLP1020B002L datasheet A/1 (2020-07-01) specifies:
+- 3.0 V rated; 2.5–3.5 V operating.
+- 30 mA maximum rated current at 3.0 V.
+- 2.3 V maximum starting voltage; 80 mA maximum starting current under the stated 2.3 V start test (not a universal stall-current guarantee).
+- 0.75 G minimum vibration strength in the specified 100 g test jig at 3.0 V.
+- 10.0 ±0.1 mm diameter x 2.1 ±0.1 mm body; 9.0 mm diameter x 0.15 mm double-sided tape; 25 ±1 mm leads, red positive / blue negative.
+- Life test is 1 s ON / 1 s OFF for 100,000 cycles; continuous-alert duty is not qualified.
+
+Precision Microdrives 308-100 remains an alternate: 8 mm x 3.4 mm, 94 mA maximum rated and 124 mA maximum start. The existing IRLML6344 low-side MOSFET and PMEG2010AEB flyback stage is sized for the higher-current 308-100 reference on paper, but the battery/power path still requires validation.
+
+The Keyfob CAD envelope is enlarged from 42 x 30 x 15.5 mm to **44 x 30 x 15.5 mm** to provide clearance for the 10 mm motor. The motor body is now 10 x 2.1 mm with its 9 x 0.15 mm adhesive tape represented separately. The motor centre is at CAD (35.5,7.5), corresponding to PCB local (33,5); the body has 2 mm nominal clearance to the inner right wall and 1 mm nominal gap from the battery envelope. These are arithmetic clearances, not a fit check.
+
+Updated the Keyfob schematic J1 value/datasheet, CAD motor/tape solids, interface contract, PCB layout review, shortlist, project/mechanical dimensions and this handoff. No physical motor, battery, or enclosure test has been performed.
