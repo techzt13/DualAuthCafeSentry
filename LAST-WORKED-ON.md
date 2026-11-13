@@ -101,7 +101,7 @@ Full detail and evidence: [component shortlist](docs/g1-component-shortlist.md).
 | P-NFC, P-NFC-ANT | Elechouse PN5321 MINI, SKU NFC_EX_MINI, hardware V2, with its 10 x 25 mm antenna | Only documented PN532 module small enough to consider: 25 x 16.4 x 4.4 mm board | No schematic; no IRQ pin; 10 mm pack separation does not fit the Pod target |
 | P-IMU | Adafruit product 3886 | Identifiable maker, product number and PCB files | Out of stock; not a generic GY-521; MPU-6050 lifecycle lead |
 | P-BATTERY | Renata ICP521630PM-01, then Jauch LP502030JH+PCM+2 WIRES 50MM | Renata states 500 mA non-continuous discharge | No charge-voltage tolerance; no NTC; Renata thresholds unpublished |
-| K-BATTERY | Renata ICP402025PC-01, then Jauch LP402025JU+PCM+2 WIRES 50MM | Meets 150 mAh minimum; highest stated rating in class | Rating still 25 mA below the transmit peak; no NTC |
+| K-BATTERY | Renata ICP521630PM-01, then Jauch LP402025JU+PCM+2 WIRES 50MM | Meets 150 mAh minimum; highest stated rating in class | Rating still 25 mA below the transmit peak; no NTC |
 | P-CHARGER, K-CHARGER | TI BQ25185 at its 4.1 V setting, on a custom carrier | 4.1205 V maximum is below every battery limit; power path; NTC input | Not a specified charger family; no carrier stage authorised |
 | Power path | Option A: BQ25185 SYS through TI LM66100 to the Zero 5 V pad | Keeps the onboard regulator inside its stated limits | Native USB-C VBUS pins energised from the battery |
 | P-PIEZO | Same Sky CPT-2475-92T | Only part with verified level and conditions | 92 dB at 10 cm, not 105 dB; 24 mm diameter |
@@ -148,7 +148,7 @@ Detail: [compatibility matrix](docs/g1-battery-charger-compatibility.md).
   using the PN532 IC maximum, before the LED and siren driver.
 - Stated discharge limits: Jauch LP502030JH 250 mA; Renata ICP521630PM-01
   250 mA continuous and 500 mA non-continuous; Jauch LP402025JU 150 mA;
-  Renata ICP402025PC-01 155 mA and 310 mA; Varta 280 mA; PKCELL 150 mA.
+  Renata ICP521630PM-01 155 mA and 310 mA; Varta 280 mA; PKCELL 150 mA.
 - Every 150 to 200 mAh pack, and the Jauch 250 mAh pack, is below the
   transmit peak. This is a flag, not a measured failure (risk R-34).
 
@@ -973,7 +973,7 @@ Created two source-grounded design notes to move the Pod from abstract architect
 
 - Added hardware/sentry-pod/power-stage-review.md.
 - Recorded the current TI BQ25185 Rev. B pin map and conservative 4.1 V / 500 mA input-limit setting: 130 kΩ from ILIM/VSET to ground.
-- Calculated a candidate 4.7 kΩ ISET value (~63.8 mA typical) only as a Renata ICP402025PC-01 evaluation screen; no cell/charger pairing is approved.
+- Calculated a candidate 4.7 kΩ ISET value (~63.8 mA typical) only as a Renata ICP521630PM-01 evaluation screen; no cell/charger pairing is approved.
 - Added required IN, SYS and BAT bypass values, NTC requirement and open-drain status interface.
 - Corrected an important power-path assumption: BQ25185 SYS is a 4.5 V regulated output, not a 5 V source. An ideal diode does not boost it. The Zero shared USB VBUS/5V interface must remain HOLD until its actual input and regulator behaviour is verified.
 
