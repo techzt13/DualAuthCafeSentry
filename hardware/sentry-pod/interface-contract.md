@@ -1,12 +1,12 @@
 # Sentry Pod — MCU, NFC and IMU interface contract
 
-Revision: 0.4 | Date: 2026-11-12 | Status: DRAFT — low-voltage logic captured; not a wiring or fabrication release
+Revision: 0.5 | Date: 2026-11-13 | Status: DRAFT — provisional footprints and module placements added; not a wiring or fabrication release
 
 This document is the live interface contract for the first Sentry Pod KiCad schematic. It distinguishes verified module signal names from carrier-side net names and keeps the unfinished battery/power and acoustic circuits isolated.
 
 ## 1. Controller and scope
 
-Controller evaluation module: Waveshare classic no-header ESP32-S3-Zero, SKU 25081, ESP32-S3FH4R2. Manufacturer drawing gives an 18.00 x 23.50 mm outline, 2.54 mm contact pitch and 15.24 mm row spacing. The exact received board revision, plated-castellation land dimensions, antenna exclusion boundary and maximum assembled height remain TBD. No carrier footprint is assigned to U1 until those details are reconciled.
+Controller evaluation module: Waveshare classic no-header ESP32-S3-Zero, SKU 25081, ESP32-S3FH4R2. Manufacturer drawing gives an 18.00 x 23.50 mm outline, 2.54 mm contact pitch and 15.24 mm row spacing. The exact received board revision, plated-castellation land dimensions, antenna exclusion boundary and maximum assembled height remain TBD. A provisional local footprint is now assigned: 18 x 23.5 mm outline, 2.54 mm pitch and 15.24 mm row spacing. Pad dimensions are provisional; verify the received board before release.
 
 The custom carrier PCB is intended to host this Zero, the NFC reader interface, IMU interface, button and future power/actuator circuits. This revision captures the MCU and low-voltage sensor/reset circuit blocks only.
 
@@ -55,7 +55,7 @@ The manufacturer manual signal names for I2C mode are used instead of invented c
 
 The host address is 7-bit **0x24**. The module does **not** expose IRQ on this host interface; P15 contact 6 / GPIO10 is therefore NC and firmware must poll. RSTOUT_N is not a module host connector signal.
 
-**No physical 7-pin cable conductor order is asserted.** The manual names the signals but the current evidence does not provide a fully controlled pin-number-to-wire-colour map for the actual supplied cable. The schematic uses signal names as logical pins only. Before fitting a physical connector, match the actual module silkscreen, connector drawing and cable.
+**Rev. 1.5 physical host pin order is now documented:** 1 RX/SS/SCL, 2 TX/MOSI/SDA, 3 MISO, 4 SCK, 5 RST, 6 VCC (silkscreen 5V; Rev. 1.5 says 3.3–5.0 V input), 7 GND. The carrier J1 is a generic seven-pad solder row with signal-name pad numbers, not a selected mating connector. Verify cable continuity, end orientation and wire colours against the received cable before soldering.
 
 ### PN532 reset conditioning circuit
 
@@ -65,7 +65,7 @@ This inverts the control: GPIO11 high asserts the active-low module reset. The p
 
 ### I2C pull-ups
 
-R4 and R5 are optional 4.7 kΩ pull-ups to P_3V3_PERIPH_HOLD and are marked DNP by default. The current ELECHOUSE manual revision fetched directly describes onboard 3.3 V I2C pull-ups, while an earlier revision/evidence record describes unpopulated pull-up footprints. Treat this as a module revision discrepancy. Do not populate carrier pull-ups until the actual module is inspected and total parallel pull-up resistance is checked.
+R4 and R5 are optional 4.7 kΩ pull-ups to P_3V3_PERIPH_HOLD and are marked DNP by default. ELECHOUSE Rev. 1.5 (September 2026) says optional 0402 I2C pull-up footprints are unpopulated in production; online v1.1 documentation says onboard 3.3 V I2C pull-ups are present. Treat this as a module/document revision discrepancy. Do not populate carrier pull-ups until the actual module is inspected and total parallel pull-up resistance is checked.
 
 ## 4. IMU module interface — provisional candidate
 
@@ -84,7 +84,7 @@ The breakout's 1 x 6 header mapping from its published Eagle design is:
 
 The board also has STEMMA QT connectors; their standard signal order is GND, VIN, SDA, SCL. The six-pad header is the intended schematic interface in this draft. Use VIN as the supply input and never feed the 3Vo output. The breakout contains 3.3 V regulation/level shifting and I2C pull-ups. Its AD0 default pull-down is 10 kΩ, giving address 0x68; its solder jumper can select 0x69. INT polarity/drive must be configured deliberately in firmware. Do not add another pair of I2C pull-ups until the complete bus is assessed.
 
-No physical mating connector is fitted to the carrier PCB in this revision. The exact header orientation and assembly choice remain open.
+The carrier PCB now has a provisional 1x6 2.54 mm through-hole footprint derived from the official Adafruit Eagle board's JP3 header. The module is supported by the six header pins in this draft; the four module mounting holes are not used because the PN532 module is stacked above it. Verify the actual module/header and add a bracket if needed.
 
 ## 5. User and remaining logic interfaces
 
