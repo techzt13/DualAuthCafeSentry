@@ -1,62 +1,82 @@
 # Hardware design workspace
 
-Status: **implementation in progress**. Both KiCad project skeletons and provisional PCB outlines exist. The Sentry Pod now has its first populated logical schematic draft; the Pocket Keyfob schematic remains a starter sheet. Neither PCB is ready to fabricate.
+Status: **native KiCad schematic and placement drafts exist for both devices; neither PCB is routed or fabrication-ready. FreeCAD macro exists but has not been run.**
 
 ## Sentry Pod
 
 Files:
-- `sentry-pod.kicad_pro`
-- `sentry-pod.kicad_sch`
-- `sentry-pod.kicad_pcb`
-- `sentry-pod.kicad_sym`
-- `sym-lib-table`
-- `interface-contract.md`
+- sentry-pod.kicad_pro
+- sentry-pod.kicad_sch
+- sentry-pod.kicad_pcb
+- sentry-pod.kicad_sym
+- sym-lib-table
+- fp-lib-table
+- footprints.pretty/
+- interface-contract.md
+- packaging-review.md
+- pcb-layout-review.md
 
-The schematic contains:
+Current schematic content:
 - Waveshare ESP32-S3-Zero SKU 25081 P15 contact map.
-- Provisional ELECHOUSE PN5321 MINI I2C host interface, with no IRQ connection; polling is used.
-- Provisional Adafruit MPU-6050 breakout product 3886 six-pin header interface.
+- ELECHOUSE PN5321 MINI I2C host interface, active-low reset.
+- Adafruit MPU-6050 breakout product 3886 six-pin header interface.
 - Active-low failsafe button.
-- Provisional MMBT3904 reset inversion stage, 10 kΩ / 100 kΩ / 10 kΩ resistors.
-- Optional 4.7 kΩ I2C pull-ups marked DNP.
-- Named I2C, sensor, control and reserved power-hold nets.
+- Provisional MMBT3904 reset sink with 10 kΩ / 100 kΩ / 10 kΩ network.
+- Optional 4.7 kΩ I2C pull-ups marked DNP; PN532 module-revision discrepancy documented.
 
-The controller and module physical footprints remain unset. Exact cable conductor order for the PN5321 MINI is not inferred. The S3 carrier-pad footprint needs final alignment to the exact board drawing and received revision. Battery/charger, power path, tether protection and piezo/audio circuits remain separate unfinished blocks.
+Current PCB placements:
+- Provisional S3-Zero 18-contact castellated footprint.
+- Adafruit 3886 1x6 2.54 mm daughter-module footprint.
+- PN532 host-interface 7-pad solder row.
+- Q1 and R1/R2/R3 reset-stage placements.
+- 49.5 x 28 mm board outline with S3 antenna relief notch.
+
+Still missing from Pod PCB:
+- Charger, battery connector/NTC, USB VBUS isolation and ideal-diode path.
+- Piezo driver, transducer connector and acoustic circuitry.
+- Button footprint, test points, complete routing, copper/return paths and antenna keepout rules.
+
+Current Pod packaging-study envelope: 72 x 34 x 29 mm.
 
 ## Pocket Keyfob
 
 Files:
-- `pocket-keyfob.kicad_pro`
-- `pocket-keyfob.kicad_sch`
-- `pocket-keyfob.kicad_pcb`
-- `interface-contract.md`
+- pocket-keyfob.kicad_pro
+- pocket-keyfob.kicad_sch
+- pocket-keyfob.kicad_pcb
+- sym-lib-table
+- fp-lib-table
+- footprints.pretty/
+- interface-contract.md
+- pcb-layout-review.md
+- packaging-review.md
 
-The C3-Zero is the evaluation controller option, with S3-Zero alternative; the owner has not frozen this choice. Its schematic and board remain starter-level; motor, power and physical connectors are not yet captured.
+Current schematic content:
+- Waveshare ESP32-C3-Zero SKU 25452 evaluation controller.
+- Protected battery ADC and conditioned charge-status interfaces (power holds remain unresolved).
+- Active-low button interface.
+- IRLML6344 N-channel MOSFET low-side motor switch.
+- 100 Ω gate resistor, 100 kΩ hardware-off pull-down.
+- Nexperia PMEG2010AEB,115 SOD-523 flyback diode.
+- 100 nF and 10 µF motor-rail decoupling.
+- VCLP1020B002L is the preferred motor evaluation reference only; O-13 remains open and Precision Microdrives 308-100 is an alternate.
 
-## PCB and validation status
+Current PCB placements:
+- Provisional upright C3-Zero 2x9 castellated footprint.
+- Motor-wire solder pads, MOSFET, diode, gate resistors and motor-rail capacitors.
+- 37 x 25 mm carrier outline with antenna relief notch and 22 assigned pad nets.
 
-- Pod carrier board: provisional 49 x 24 mm outline only; no footprints, board placement, tracks, zones or routed copper yet.
-- Keyfob carrier board: provisional 27 x 20 mm outline only.
-- No Gerbers or drill files generated.
-- The schematic's S-expression structure was checked for balanced parentheses, unique UUIDs and matching embedded symbol IDs. KiCad CLI/Eeschema is unavailable in this execution environment; no KiCad load/parse, ERC or DRC is claimed.
-- Neither PCB is ready for ordering or fabrication.
+Still missing from Keyfob PCB:
+- Battery/charger, USB-C charging path, regulator/source isolation and ADC divider.
+- Physical button, battery connector and final motor retention.
+- Complete routing, copper/return paths, test points and antenna keepout rules.
 
+Current Keyfob packaging-study envelope: 44 x 30 x 15.5 mm.
 
- 
-## Current native design files (2026-11-13)
+## Release status
 
-### Pod
-- sentry-pod/sentry-pod.kicad_sch — main Pod interface and NFC reset schematic.
-- sentry-pod/pod-power-stage.kicad_sch — standalone BQ25185 non-energised evaluation block.
-- sentry-pod/pod-audio-stage.kicad_sch — standalone PAM8904E 1x-mode evaluation block.
-- sentry-pod/power-stage-review.md, sentry-pod/audio-stage-review.md, sentry-pod/packaging-review.md and sentry-pod/pcb-layout-review.md — design basis and open checks.
-
-### Pocket Keyfob
-- pocket-keyfob/pocket-keyfob.kicad_sch — C3-Zero interface, button and provisional motor switch.
-- pocket-keyfob/pocket-keyfob.kicad_pcb — 37 x 25 mm upright-module placement/net-assignment draft with antenna relief notch; unrouted.
-- pocket-keyfob/footprints.pretty/C3Zero_Castellated_2x9.kicad_mod — provisional upright custom 2x9 C3-Zero land pattern.
-- pocket-keyfob/footprints.pretty/MotorWirePads_2x.kicad_mod — motor solder-wire pads.
-- pocket-keyfob/fp-lib-table — local footprint library registration.
-- pocket-keyfob/interface-contract.md and pocket-keyfob/pcb-layout-review.md — interface and layout notes.
-
-All custom footprints and schematic blocks remain draft until opened and checked in the local KiCad version. No fabrication files are released.
+- Both schematics and PCBs are editable drafts.
+- Both PCBs remain unrouted.
+- Footprints are provisional and require physical-part/source-drawing checks.
+- No KiCad ERC/DRC, FreeCAD run, STEP/STL export, physical fit, RF, acoustic, battery or haptic validation is claimed.
+- Keep LAST-WORKED-ON.md current after each meaningful change.
