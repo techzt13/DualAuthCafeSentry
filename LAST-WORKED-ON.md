@@ -2,7 +2,7 @@
 
 Date: 2026-11-13
 Package revision: 0.4
-Project stage: native KiCad schematics are under active implementation; Pod schematic has MCU/module interfaces and a wired provisional NFC reset; Keyfob schematic now contains a provisional C3-Zero interface and protected motor-switch block. The Keyfob PCB now has a provisional upright C3-Zero 2x9 footprint, 37 x 25 mm carrier outline with an antenna relief notch, 22 assigned pad nets and top-side motor-driver passives; it remains unrouted and the land pattern/antenna clearance are unverified. The proposed Keyfob enclosure is 42 x 30 x 15.5 mm. The Pod PCB remains outline-only. FreeCAD macro exists but has not been run.
+Project stage: native KiCad schematics are under active implementation; Pod schematic has MCU/module interfaces and a wired provisional NFC reset; Keyfob schematic now contains a provisional C3-Zero interface and protected motor-switch block. The Keyfob PCB now has a provisional upright C3-Zero 2x9 footprint, 37 x 25 mm carrier outline with an antenna relief notch, 22 assigned pad nets and top-side motor-driver passives; it remains unrouted and the land pattern/antenna clearance are unverified. The proposed Keyfob enclosure is 42 x 30 x 15.5 mm. The Pod PCB now has provisional S3-Zero, Adafruit 3886 and PN532 host footprints plus the NFC reset-stage placements; it remains unrouted and lacks charger/audio stages. FreeCAD macro exists but has not been run.
 
 **Important live-state correction:** the older milestone notes below are historical. The live Keyfob schematic is NOT empty: it contains U1 ESP32-C3-Zero logical contacts, J1 motor wire pads, Q1 IRLML6344 low-side MOSFET, R1 100 Ω gate resistor, R2 100 kΩ gate pull-down, D1 flyback diode, C1 100 nF, C2 10 µF and SW1 active-low button. During this work D1 was changed from 1N4148W to Nexperia PMEG2010AEB,115 (20 V, 1 A, SOD-523); the schematic diode pin mapping and draft PCB footprint were updated. This is a paper-level correction, not an ERC/DRC or hardware validation.
 
@@ -1146,3 +1146,21 @@ The proposed layout places the battery at the left end, PN532 module on the unde
 Created hardware/sentry-pod/packaging-review.md with the component stack and remaining checks. Updated PROJECT_SPEC.md and docs/mechanical-requirements.md to identify 72 x 30 x 29 mm Pod and 42 x 30 x 15.5 mm Keyfob as current packaging-study envelopes only; neither is a final owner-approved size.
 
 No FreeCAD run, STEP/STL generation, KiCad ERC/DRC, acoustic test, RF test or physical fit check has been performed. Pod PCB remains outline-only. The 105 dB sound target is not met by the current 92 dB piezo candidate.
+
+
+## 32. Pod PCB module placements and interface footprints — 2026-11-13
+
+The Pod carrier outline is now 49.5 x 28 mm with a centre-bottom S3 antenna relief notch (8 mm wide, 7.5 mm deep; the assumed antenna region is 8 x 3.5 mm). The S3-Zero module is upright, USB at the top and antenna at the bottom. U1 uses a local SentryPod footprint with 18 P15 contacts: 1–9 down the right edge and 18–10 down the left edge. Pad size 1.8 x 1.5 mm and 15.24 mm row spacing remain provisional/inferred; verify the received board.
+
+Added board placements:
+- U1: ESP32-S3-Zero custom castellated footprint.
+- Q1: MMBT3904 SOT-23 draft footprint; R1/R2/R3 0603 draft footprints in the inter-module gap.
+- J2: Adafruit 3886 1x6 2.54 mm header/module footprint, based on the official Adafruit Eagle board geometry (25.4 x 17.78 mm; 1x6 JP3 row).
+- J1: PN5321 MINI host-interface 7-pad solder row, using signal-name pad numbers SCL/SDA/MISO/SCK/RST/VCC/GND. This is not a selected mating connector; cable continuity/orientation must be checked.
+- Mechanical envelope drawings for the Adafruit module and PN532 module.
+
+The PN5321 MINI is now a top-side stack above the IMU breakout in the CAD study, shifted toward the lower board edge to clear the IMU's 1x6 header and STEMMA QT connectors. The PN532 host cable routes to J1. This requires a spacer/bracket and physical access checks.
+
+Important Rev1.5 PN532 update: the official manual identifies host pin order 1 SCL, 2 SDA, 3 MISO, 4 SCK, 5 RST, 6 VCC (silkscreen 5V; accepts 3.3–5.0 V), 7 GND; default UART; bridge only the I2C solder pad with power removed. Rev1.5 says optional I2C pull-up footprints are unpopulated, while the online v1.1 docs say onboard pull-ups are present and specify a different input range. The schematic now preserves this as a hardware/document revision discrepancy; inspect the received module before deciding on R4/R5.
+
+The Pod packaging-study envelope is now 72 x 34 x 29 mm; the carrier is 49.5 x 28 mm. The battery-to-coil and piezo-to-coil horizontal clearances are 10.5 mm and 12.5 mm respectively. No FreeCAD run, KiCad ERC/DRC, routing, RF/acoustic test or physical fit check has occurred.
