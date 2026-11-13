@@ -75,6 +75,22 @@ def add_parametric_case(doc, prefix, outer_l, outer_w, outer_h, wall, base, lid_
         obj.Visibility = False
     return shell_body, lid_body
 
+
+def add_cutout_box(doc, body, name, label, length, width, height, x, y, z, note):
+    obj = doc.addObject("PartDesign::SubtractiveBox", name)
+    body.addObject(obj)
+    obj.Label = label
+    obj.Length = length
+    obj.Width = width
+    obj.Height = height
+    obj.Placement = App.Placement(App.Vector(x, y, z), App.Rotation())
+    obj.addProperty("App::PropertyString", "DesignStatus", "Project")
+    obj.addProperty("App::PropertyString", "EvidenceNote", "Project")
+    obj.DesignStatus = "DRAFT CUTOUT — dimensions require physical connector check"
+    obj.EvidenceNote = note
+    doc.recompute()
+    return obj
+
 def export_doc(doc, enclosure_objects, reference_objects, prefix):
     doc.recompute()
     fcstd = os.path.join(OUT, prefix + ".FCStd")
@@ -107,66 +123,67 @@ def make_pod():
     return doc
 
 def make_keyfob():
-    # Height remains provisional; the 33x23 carrier and bare-cell envelope
-    # still require a protected-pack and antenna/USB mechanical check.
+    # Revised mechanical evaluation layout: upright C3-Zero, antenna relief,
+    # accessible USB edge, and motor/battery separated laterally.
     doc = App.newDocument("PocketKeyfob")
-    shell, lid = add_parametric_case(doc, "Keyfob", 38.0, 28.0, 15.5, 1.5, 1.5, 1.5)
+    shell, lid = add_parametric_case(doc, "Keyfob", 42.0, 30.0, 15.5, 1.5, 1.5, 1.5)
     refs = []
 
-    # Carrier board is positioned at (2.5,2.5,7.0) and is 33x23x1.6 mm.
-    refs.append(add_ref_box(doc, "KeyfobCarrierPcb", "Keyfob carrier PCB — 33 x 23 x 1.6",
-                33.0, 23.0, 1.6, 2.5, 2.5, 7.0,
-                "Matches the current KiCad board outline. Stack-up, mounting features, copper clearance and enclosure tolerance remain unverified."))
+    # Carrier board: 37 x 25 x 1.6 mm, 1 mm nominal clearance in the case cavity.
+    refs.append(add_ref_box(doc, "KeyfobCarrierPcb", "Keyfob carrier PCB — 37 x 25 x 1.6",
+                37.0, 25.0, 1.6, 2.5, 2.5, 7.0,
+                "Matches the current KiCad outline with an 8 x 3.5 mm antenna relief notch. Stack-up, copper clearance, notch strength and enclosure tolerance remain unverified."))
 
-    # C3 module is rotated 90 degrees on the carrier: 23.5 x 18 mm outline.
+    # C3-Zero is now upright: 18 mm wide x 23.5 mm long, USB at the top end.
     refs.append(add_ref_box(doc, "C3ZeroModule", "Waveshare ESP32-C3-Zero module envelope",
-                23.5, 18.0, 1.2, 3.5, 4.5, 8.6,
-                "18 x 23.5 mm public board outline, rotated 90 degrees to match draft PCB placement. Castellated pad dimensions, USB-C overhang, component height and exact received revision are not fully dimensioned."))
+                18.0, 23.5, 1.2, 12.0, 3.75, 8.6,
+                "Public 18 x 23.5 mm outline. Upright placement matches the revised carrier footprint. Castellated pad dimensions, USB shell details and actual antenna keepout still require inspection."))
 
-    # Antenna zone location follows the current rotated module assumption only.
-    refs.append(add_ref_box(doc, "C3AntennaKeepout", "C3-Zero antenna keepout — orientation placeholder",
-                5.0, 18.0, 0.35, 3.5, 4.5, 8.6,
-                "ASSUMED END ONLY. Waveshare requires the ceramic antenna area to be clear of carrier PCB, metal and plastic. Exact end, dimensions and required clearance must be verified from the actual module before case or copper release."))
+    refs.append(add_ref_box(doc, "C3AntennaKeepout", "C3-Zero antenna relief / no-battery zone",
+                8.0, 3.5, 0.35, 17.0, 24.0, 8.6,
+                "Matches the provisional carrier-board notch. Waveshare antenna region is at the module end in this orientation; exact dimensions and required RF clearance must be checked against the actual board."))
 
-    # USB-C port envelope is intentionally shown as a rough block to force
-    # review of connector overhang and case-wall access; exact location TBD.
-    refs.append(add_ref_box(doc, "C3UsbEnvelope", "C3-Zero USB-C connector / access placeholder",
-                8.0, 8.0, 3.5, 26.5, 9.0, 8.6,
-                "Rough visual envelope only, not a connector drawing. Verify which end of the rotated module carries USB-C, connector shell height, insertion access and case-wall cutout. This placeholder may overlap other components by design to expose unresolved packaging."))
+    refs.append(add_ref_box(doc, "C3UsbEnvelope", "C3-Zero USB-C connector access envelope",
+                10.0, 5.0, 3.5, 16.0, 0.5, 8.6,
+                "Approximate visual envelope centred on the module USB edge. The lower-shell top-wall cutout is 10 x 4.8 mm; verify connector shell, plug access, insertion angle and case tolerances."))
 
-    refs.append(add_ref_box(doc, "KeyfobBatteryReference", "LP401730 bare-cell reference envelope",
-                31.0, 17.5, 4.3, 3.5, 4.5, 1.8,
-                "EEMB LP401730 bare-cell drawing reference only; not a selected protected pack. PCM, leads, connector, seals, swelling and insulation are excluded. Do not compress the pouch."))
+    # Cut through the top wall to expose the module USB-C connector.
+    add_cutout_box(doc, shell, "KeyfobUsbCutout", "USB-C access cutout — draft 10 x 4.8",
+                   10.0, 1.7, 4.8, 16.0, -0.1, 8.0,
+                   "Provisional opening through the y=0 case wall. Position is based on upright module placement, not a dimensioned USB connector drawing.")
 
-    # 308-100 is placed at PCB local coordinates (29,5), translated by the
-    # carrier origin (2.5,2.5). Cylinder axis is through the 3.4 mm thickness.
+    # Candidate protected pack envelope; leads and connector are not modelled.
+    refs.append(add_ref_box(doc, "KeyfobBatteryReference", "Renata ICP402025PC-01 protected-pack candidate",
+                27.5, 20.5, 4.3, 2.5, 3.5, 1.5,
+                "Candidate maximum envelope only: 27.5 x 20.5 x 4.3 mm. Pack connector, lead exit, adhesive, insulation, swelling allowance and actual vendor drawing must be checked. Not a final battery selection."))
+
+    # Motor at PCB local (32,5), translated by carrier origin (2.5,2.5).
     refs.append(add_ref_cylinder(doc, "KeyfobMotorReference", "Precision Microdrives 308-100 reference motor",
-                     4.0, 3.4, 31.5, 7.5, 8.6,
-                     "308-100 drawing envelope: 8 mm body diameter, 3.4 mm body length. Motor is still provisional; lead exit and vibration coupling are not modelled."))
+                     4.0, 3.4, 34.5, 7.5, 8.6,
+                     "308-100 envelope: 8 mm diameter x 3.4 mm body length. Motor remains provisional; verify lead exit, adhesive and vibration coupling."))
 
-    # Top-side component envelopes translated from the draft KiCad placement.
+    # Top-side component envelopes translated from the revised PCB positions.
     refs.append(add_ref_box(doc, "KeyfobQ1Envelope", "Q1 IRLML6344 SOT-23 envelope",
-                2.9, 2.5, 1.2, 28.75, 20.45, 8.6,
-                "Approximate package envelope at PCB local (27.7,19.2). Top-side placement is draft."))
+                2.9, 2.5, 1.2, 30.55, 20.45, 8.6,
+                "Approximate package envelope at PCB local (29.5,19.2)."))
     refs.append(add_ref_box(doc, "KeyfobD1Envelope", "D1 PMEG2010AEB SOD-523 envelope",
-                1.6, 1.0, 0.65, 32.7, 21.2, 8.6,
-                "Approximate SOD-523 package envelope at PCB local (31,19.2); verify land pattern."))
+                1.6, 1.0, 0.65, 34.7, 21.2, 8.6,
+                "Approximate package envelope at PCB local (33,19.2); verify manufacturer land pattern."))
     refs.append(add_ref_box(doc, "KeyfobR1Envelope", "R1 0603 gate resistor envelope",
-                1.6, 0.8, 0.6, 29.2, 24.1, 8.6,
-                "Approximate 0603 body envelope at PCB local (27.5,22)."))
+                1.6, 0.8, 0.6, 31.2, 24.1, 8.6,
+                "Approximate 0603 body envelope at PCB local (29.5,22)."))
     refs.append(add_ref_box(doc, "KeyfobR2Envelope", "R2 0603 gate pull-down envelope",
-                1.6, 0.8, 0.6, 32.2, 24.1, 8.6,
-                "Approximate 0603 body envelope at PCB local (30.5,22)."))
+                1.6, 0.8, 0.6, 34.2, 24.1, 8.6,
+                "Approximate 0603 body envelope at PCB local (32.5,22)."))
     refs.append(add_ref_box(doc, "KeyfobC1Envelope", "C1 0603 local bypass envelope",
-                1.6, 0.8, 0.8, 28.2, 13.6, 8.6,
-                "Approximate 0603 body envelope at PCB local (26.5,11.5)."))
+                1.6, 0.8, 0.8, 30.7, 13.6, 8.6,
+                "Approximate 0603 body envelope at PCB local (29,11.5)."))
     refs.append(add_ref_box(doc, "KeyfobC2Envelope", "C2 0805 local reservoir envelope",
-                2.0, 1.25, 1.0, 31.5, 13.375, 8.6,
-                "Approximate 0805 body envelope at PCB local (30,11.5)."))
-
+                2.0, 1.25, 1.0, 34.0, 13.375, 8.6,
+                "Approximate 0805 body envelope at PCB local (32.5,11.5)."))
     refs.append(add_ref_box(doc, "KeyfobMotorConnectorEnvelope", "J1 motor wire solder-pad region",
-                4.8, 3.6, 0.5, 29.1, 16.2, 8.6,
-                "Draft wire-pad region translated from PCB local (29,15.5); lead strain relief and motor wire routing are not modelled."))
+                4.8, 3.6, 0.5, 32.1, 16.2, 8.6,
+                "Draft wire-pad region at PCB local (32,15.5); lead strain relief and routing are not modelled."))
 
     export_doc(doc, [shell, lid], refs, "PocketKeyfob")
     return doc
@@ -176,6 +193,6 @@ keyfob_doc = make_keyfob()
 
 print("DRAFT parametric enclosure documents and reference assemblies saved to " + OUT)
 print("Pod outside envelope: 55 x 30 x 19.3 mm.")
-print("Keyfob outside envelope: 38 x 28 x 15.5 mm (provisional).")
-print("Keyfob carrier concept: 33 x 23 x 1.6 mm; module, motor, USB and passives are reference envelopes only.")
+print("Keyfob outside envelope: 42 x 30 x 15.5 mm (revised provisional layout).")
+print("Keyfob carrier concept: 37 x 25 x 1.6 mm with a provisional antenna relief notch; module, motor, USB and passives are reference envelopes only.")
 print("FreeCAD geometry has not been run or validated in this execution environment.")
