@@ -9,14 +9,14 @@ The previous 90-degree module placement put the USB-C access and antenna end int
 
 | Item | Current draft |
 |---|---:|
-| Keyfob outer enclosure | 42 x 30 x 15.5 mm |
-| Internal cavity (1.5 mm walls) | 39 x 27 x 12.5 mm |
+| Keyfob outer enclosure | 44 x 30 x 15.5 mm |
+| Internal cavity (1.5 mm walls) | 41 x 27 x 12.5 mm |
 | Carrier PCB | 37 x 25 x 1.6 mm |
 | C3-Zero module | 18 x 23.5 mm, upright |
 | Module footprint centre | (18.5, 13.0) on PCB |
 | Antenna relief notch | 8 x 3.5 mm at bottom-centre board edge |
 | USB-C case-wall cutout | 10 x 4.8 mm provisional |
-| Motor | 308-100, 8 mm diameter x 3.4 mm |
+| Motor | Vybronics VCLP1020B002L, 10 mm diameter x 2.1 mm, 9 mm x 0.15 mm tape |
 | Battery candidate envelope | 27.5 x 20.5 x 4.3 mm |
 
 These dimensions are a proposed mechanical evaluation direction, not a user-approved final size.
@@ -73,7 +73,7 @@ Motor circuit pad assignments are consistent with the schematic: J1 positive to 
 
 The current battery candidate is Renata ICP402025PC-01, maximum envelope 27.5 x 20.5 x 4.3 mm. The CAD macro places it below the carrier PCB with 1.2 mm nominal clearance to the board underside. This is a bare geometric envelope only: pack leads, connector, insulation, adhesive, swelling allowance and retention are not fully represented.
 
-The motor body and top-side components sit above the carrier board. The motor top remains below the provisional lid underside, but this must be checked in FreeCAD and against the actual motor lead exit.
+The VCLP motor body is 10 x 2.1 mm, with a separate 9 x 0.15 mm adhesive tape reference, above the carrier board. The motor body extends 1 mm beyond the right board edge but remains inside the case envelope. Full lead-exit envelope, adhesive retention, haptic coupling and clearance to the lid must be checked in FreeCAD and against the received motor.
 
 ## Remaining layout holds
 
