@@ -48,6 +48,6 @@ exec(open("/Users/REPLACE_WITH_MAC_USERNAME/Projects/DualAuthCafeSentry/cad/crea
 6. Perform a physical fit check with printed parts and the actual PCB/components.
 7. Export STEP/STL only after the geometry is inspected and revisioned.
 
-Current packaging-study envelopes in the macro: Sentry Pod 72 x 30 x 29 mm; Pocket Keyfob 42 x 30 x 15.5 mm. The Pod model includes battery, carrier, module, antenna and piezo reference solids; the Keyfob model includes upright C3-Zero, antenna relief, USB-C cutout, protected-pack and motor/driver references.
+Current packaging-study envelopes in the macro: Sentry Pod 72 x 34 x 29 mm; Pocket Keyfob 42 x 30 x 15.5 mm. The Pod model includes battery, 49.5 x 28 carrier, S3-Zero, Adafruit IMU, stacked PN532 module, antenna and piezo reference solids plus a USB-C wall cutout; the Keyfob model includes upright C3-Zero, antenna relief, USB-C cutout, protected-pack and motor/driver references.
 
 No FCStd, STEP or STL file is claimed to have been generated or checked in this assistant environment.
