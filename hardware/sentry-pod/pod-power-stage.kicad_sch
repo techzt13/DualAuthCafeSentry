@@ -160,7 +160,7 @@
   (symbol (lib_id "PodPower:C_0603") (at 230 130 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "b2518500-0000-4000-8000-000000000054")
     (property "Reference" "C2" (at 230 122 0) (effects (font (size 1.1 1.1))))
     (property "Value" "10uF SYS bypass" (at 230 138 0) (effects (font (size 0.95 0.95))))
-    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 230 130 0) (effects (font (size 0.95 0.95)) hide))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 230 130 0) (effects (font (size 0.95 0.95)) hide))
     (pin "1" (uuid "b2518500-0000-4000-8000-000000000055"))
     (pin "2" (uuid "b2518500-0000-4000-8000-000000000056"))
     (instances (project "pod-power-stage" (path "/" (reference "C2") (unit 1))))
