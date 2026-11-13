@@ -1,6 +1,6 @@
 # Pocket Keyfob — MCU and actuator interface contract
 
-Revision: 0.2 | Date: 2026-11-13 | Status: DRAFT — logical interfaces only; not a wiring release
+Revision: 0.3 | Date: 2026-11-13 | Status: DRAFT — logical interfaces only; not a wiring release
 
 This document defines the Keyfob controller and low-voltage signal contract using the verified Waveshare board contact maps. It keeps the C3-Zero as the current evaluation option, with the S3-Zero as a documented alternative. The owner has not frozen the MCU choice. A provisional C3-Zero 2x9 castellated footprint and motor-driver block now exist in the native project; neither is a released manufacturing design.
 
@@ -43,7 +43,7 @@ The contact numbers below are V2 board-symbol contact numbers. They are not a ph
 | 17 | GPIO20 / UART0 RX | K_UART_RX | Service/debug | Reserved |
 | 18 | GPIO21 / UART0 TX | K_UART_TX | Service/debug | Reserved |
 
-GPIO4-7 share external pad-JTAG functions; this allocation assumes native USB debugging rather than simultaneous pad-JTAG use. Do not repurpose strap or native USB contacts for application I/O.
+GPIO4-7 share external pad-JTAG functions; this allocation assumes native USB debugging rather than simultaneous pad-JTAG use. Do not repurpose strap or native USB contacts for application I/O. The native Keyfob schematic now explicitly labels contact 17 as `K_UART_RX` and contact 18 as `K_UART_TX`; the matching carrier PCB pads are assigned to those nets for optional service/debug access.
 
 ## 3. C3-Zero alternative interface allocation
 
@@ -114,6 +114,7 @@ This is a design translation of existing evidence, not a new manufacturer verifi
 |---|---|---|
 | 0.1 | 2026-11-12 | First Keyfob MCU and actuator logical interface contract. |
 | 0.2 | 2026-11-13 | Record provisional C3-Zero land pattern and motor-driver schematic implementation. |
+| 0.3 | 2026-11-13 | Connect C3 contacts 17/18 to service UART nets and document matching PCB pad assignments. |
 
 
 ## Mechanical layout revision 0.3 — 2026-11-13
