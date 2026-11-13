@@ -49,11 +49,7 @@ Repository: `techzt13/DualAuthCafeSentry` on GitHub (public), branch `master`.
 | `c193994` | 2026-11-13 | Recorded current source audit, README and validation utility in handoff |
 | `7d37006` | 2026-11-13 | Corrected historical Git-state notes and labelled the original research milestone as historical |
 
-The commit IDs above are abbreviated. The latest recorded handoff commit before this small correction was
-`c19399481e091f0ed96346f6ec622c8ef6bf14dc`; this current file is the newer
-`7d37006b37bddb7bec41202221a635599b08e279` commit on `master`. The current state must
-be read from the live files; earlier sections below are historical milestone
-records, not a substitute for the current status at the top of this file.
+The commit IDs above are abbreviated. The commit table records notable milestones rather than every file-level commit. Read the live files for the current state; earlier sections below are historical milestone records, not a substitute for the current status at the top of this file.
 
 `docs/datasheets/local/` contains local research documents and is ignored by Git.
 
