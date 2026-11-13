@@ -1067,3 +1067,24 @@ The PCB is now a populated placement/net-assignment draft, not a finished routed
 3. Add the physical button footprint after the switch choice and mechanical location are resolved.
 4. Route the Keyfob PCB only after U1 and the antenna clearance are confirmed.
 5. Continue the Pod PCB from the new isolated power/audio schematics and verify all custom schematic symbols in KiCad.
+
+
+## 27. CAD envelope macro updated to match the Keyfob PCB draft — 2026-11-13
+
+Updated cad/create_enclosures.FCMacro and cad/README.md.
+
+### Macro changes
+
+- The Keyfob motor reference cylinder now follows the PCB's current motor envelope position (PCB local 29,5 translated to CAD global 31.5,7.5).
+- Added transparent reference solids for Q1, D1, R1, R2, C1, C2 and J1 at positions translated from the draft PCB.
+- Added explicit C3-Zero antenna keepout and USB-C access placeholders. Their end/orientation is intentionally flagged for inspection; the USB placeholder may overlap other envelopes to reveal unresolved packaging.
+- Reference solids are retained in the FCStd document and in separate assembly-reference STEP/STL exports. Enclosure-only STEP/STL exports remain separate.
+- The battery remains a bare-cell reference envelope, not a protected pack.
+
+### Run instructions
+
+cad/README.md now contains the full macOS FreeCAD 0.21+ procedure, including the Python-console command and output folder ~/DualAuthCafeSentry-CAD.
+
+### Validation status
+
+FreeCAD is not installed in this execution environment, so the macro has not been run. No FCStd, STEP or STL output is claimed. No geometry validity, component fit, USB access, antenna clearance, motor coupling, battery safety or enclosure fit has been verified. The Keyfob shell remains 38 x 28 x 15.5 mm; carrier remains 33 x 23 mm. The USB/antenna orientation is a major open mechanical check.
