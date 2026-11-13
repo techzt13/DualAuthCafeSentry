@@ -374,3 +374,35 @@ hardware/design validation has been performed.
 | Revision | Date | Change |
 | --- | --- | --- |
 | 0.2 | 2026-11-11 | Initial manufacturer pinout register; preserved logical proposals, corrected C3 USB pad pair and recorded all unselected-interface holds |
+
+
+## 5. Pod module physical connector and footprint mappings
+
+### 5.1 ELECHOUSE PN5321 MINI host interface (Rev. 1.5)
+
+The Rev. 1.5 manual identifies the seven host contacts in this order:
+
+| Physical host pin | Module label / mode | Pod carrier net |
+|---:|---|---|
+| 1 | RX / SS / SCL | P_I2C_SCL |
+| 2 | TX / MOSI / SDA | P_I2C_SDA |
+| 3 | MISO | NC in I2C mode |
+| 4 | SCK | NC in I2C mode |
+| 5 | RST | P_NFC_RESET_N |
+| 6 | 5V-labelled supply input; Rev. 1.5 specifies 3.3–5.0 V | P_3V3_PERIPH_HOLD |
+| 7 | GND | GND |
+
+The host connector is 7-pin MX1.25; the optional cable is not yet physically inspected. The carrier J1 footprint uses signal-name pad numbers in the same pin order, but is a generic solder-pad row rather than a selected mating connector. Check cable continuity and orientation before soldering.
+
+Rev. 1.5 says the factory default is UART. With power removed, bridge only the I2C solder pad and leave SPI open. The I2C address is 0x24. No IRQ is exposed on the host connector; poll in firmware. Rev. 1.5 says optional 0402 I2C pull-up footprints are unpopulated in production, while online v1.1 documentation says onboard 3.3 V pull-ups are present and lists a different supply range. Inspect the actual received revision before populating carrier R4/R5.
+
+### 5.2 Adafruit MPU-6050 breakout product 3886
+
+The official Adafruit Eagle board source identifies a 25.40 x 17.78 mm board and a 1x6, 2.54 mm JP3 header row. The carrier footprint maps:
+1 VIN; 2 3Vo; 3 GND; 4 SCL; 5 SDA; 6 INT.
+
+The carrier footprint is placed at Pod board (36.5,14.0). The module's four mounting holes are not included in this carrier footprint; the draft relies on the 1x6 header pins and a separate mechanical restraint. The PN532 module is stacked above the IMU breakout, so check header access and support in the physical assembly.
+
+### 5.3 ESP32-S3-Zero carrier footprint
+
+The Pod footprint is 18 x 23.5 mm, USB at the top and antenna at the bottom. P15 contacts 1–9 run down the right edge; contacts 18–10 run down the left edge. The board includes an 8 x 7.5 mm centre-bottom carrier relief; the assumed antenna region is 8 x 3.5 mm. Castellated pad size 1.8 x 1.5 mm is provisional; verify the received board and keep copper, battery and other conductive parts out of the antenna region.
