@@ -55,7 +55,7 @@ The footprint and board instance now use the official top-view pad order. The mo
 - R2: 100 kΩ gate pull-down.
 - C1: 100 nF 0603 and C2: 10 µF 0805.
 - All motor-stage components are top-side placements.
-- The motor is at PCB local (32,5); J1 is at (32,15.5); Q1/D1/R1/R2/C1/C2 are positioned in the free right-hand board margin.
+- The motor is at PCB local (33,5); J1 is at (32,15.5); Q1/D1/R1/R2/C1/C2 are positioned in the free right-hand board margin.
 
 U1 contact assignments:
 - 1 -> K_5V_BOARD_HOLD.
@@ -65,7 +65,9 @@ U1 contact assignments:
 - 5 -> K_CHARGE_STATUS_N.
 - 7 -> K_MOTOR_PWM.
 - 8 -> K_BUTTON_N.
-- Remaining contacts are intentionally unassigned pending firmware/interface review.
+- 17 -> K_UART_RX (GPIO20 / UART0 RX service).
+- 18 -> K_UART_TX (GPIO21 / UART0 TX service).
+- Contacts 6, 9–16 are intentionally unassigned or reserved; in particular, GPIO9/BOOT, GPIO10/RGB and native USB contacts 15/16 are not repurposed.
 
 Motor circuit pad assignments are consistent with the schematic: J1 positive to K_3V3_MOTOR_HOLD, J1 negative to K_MOTOR_SW; Q1 gate/source/drain to K_MOTOR_GATE/K_GND/K_MOTOR_SW; D1 cathode/anode to K_3V3_MOTOR_HOLD/K_MOTOR_SW; R1 and R2 implement the gate network; C1/C2 decouple K_3V3_MOTOR_HOLD to K_GND.
 
