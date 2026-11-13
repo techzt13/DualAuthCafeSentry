@@ -37,7 +37,7 @@ The board now contains:
 - D1 PMEG2010AEB,115 SOD-523 flyback diode.
 - R1 100 Ω gate resistor.
 - R2 100 kΩ gate pull-down.
-- C1 100 nF 0603 and C2 10 µF 0805, bottom-side draft footprints.
+- C1 100 nF 0603 and C2 10 µF 0805, top-side draft footprints in the free carrier-board margin (PCB local y=11.5).
 
 Net assignments follow the Keyfob schematic:
 - U1 contact 1 -> K_5V_BOARD_HOLD.
@@ -53,7 +53,7 @@ Net assignments follow the Keyfob schematic:
 
 1. The module orientation is provisional; confirm USB-C overhang and antenna end against the actual module.
 2. Waveshare says the ceramic antenna region must remain clear of carrier PCB, metal and plastic. Its exact keepout dimensions are not given in the drawing.
-3. The motor and C1/C2 placement may need to move after antenna keepout is measured.
+3. The motor and C1/C2 placement may need to move after the USB-C envelope and antenna keepout are measured.
 4. SW1 has no footprint because the physical switch is not selected.
 5. Battery/charger, ADC divider, charge-status conditioning and power rails remain HOLD.
 6. No copper zones, tracks, vias, mounting holes or enclosure mounting features are released.
