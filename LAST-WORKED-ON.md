@@ -1212,3 +1212,25 @@ Re-fetched the committed Keyfob KiCad source files after the UART edit and ran a
 - Corrected a stale coordinate comment in the FreeCAD macro: the motor centre corresponds to PCB local (33,5), translated by the carrier origin (2.5,2.5).
 
 This is a source-text consistency check only. It is not a KiCad parser, ERC, DRC, connectivity/netlist comparison, 3D geometry validation or physical test. KiCad CLI and FreeCAD remain unavailable in the current execution environment.
+
+
+## 36. Repository entry point and source-check utility — 2026-11-13
+
+Added a root README with the two-device project overview, live design status, links to the native KiCad/FreeCAD workspaces, local validation steps and explicit DRAFT/HOLD/VALIDATED rules. Updated hardware/README.md to list the separate Pod charger/audio evaluation sheets and the latest Keyfob UART pad assignments.
+
+Added scripts/check_design_sources.py, a dependency-free Python 3 source sanity checker. It parses KiCad S-expressions, checks duplicate UUIDs and PCB net references, and checks selected critical Keyfob motor/UART and Pod NFC-reset pad mappings. Run from the repository root with:
+
+    python3 scripts/check_design_sources.py
+
+The script is not a replacement for KiCad ERC/DRC, netlist update, 3D inspection or physical tests. It has been added to the repository but has not been executed in a local project checkout during this session.
+
+### Source-level audit and UUID correction
+
+A text-level audit of the two main schematics, two PCBs and two standalone Pod schematics found balanced S-expressions. The first audit also caught duplicate UUIDs on the four newly added Keyfob UART wire/label objects because those IDs were already used by existing schematic annotation text. Reassigned the four new objects to unique IDs and repeated the audit:
+
+- All six KiCad schematic/PCB files: balanced parentheses and closed strings.
+- All six files: no duplicate UUIDs.
+- Keyfob PCB: U1.17 = K_UART_RX; U1.18 = K_UART_TX; motor driver and flyback net assignments remain as intended.
+- Both custom KiCad footprint files also pass the text-level balanced-expression check.
+
+This is not a KiCad-native parser run. KiCad CLI and FreeCAD are still unavailable in the assistant environment; no ERC/DRC, board routing, 3D geometry check or physical validation is claimed.
