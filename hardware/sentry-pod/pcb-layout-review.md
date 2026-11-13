@@ -74,6 +74,12 @@ The current CAD macro uses:
 
 This is an envelope and placement hypothesis only. It is not a verified assembly.
 
+## Separate evaluation schematics not yet on the Pod PCB
+
+- BQ25185 charger/power-path block exists as [pod-power-stage.kicad_sch](pod-power-stage.kicad_sch), standalone and non-energised.
+- PAM8904E 1x audio block exists as [pod-audio-stage.kicad_sch](pod-audio-stage.kicad_sch), standalone and non-energised.
+- Neither is yet integrated into the main Pod schematic as a hierarchical sheet or placed on the Pod PCB.
+
 ## Not yet on the Pod PCB
 
 - BQ25185 charger and protected battery connection.
