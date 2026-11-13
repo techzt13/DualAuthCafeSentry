@@ -194,19 +194,11 @@ What the documents support, and what they do not:
 | Vybronics VCLP1020B002L | Diameter 10 +/-0.1 x 2.1 +/-0.1 | 3.0 V; 30 mA maximum | 2.3 V maximum; 80 mA maximum | 2.5 to 3.5 V | D: A/1 (SRC-27) | L: in stock |
 | Vybronics VC0834B011F | Diameter 8.0 x 3.4 (L) | 3.0 V; 85 mA maximum (L) | 120 mA maximum (L) | 2.7 to 3.3 V | D for identity and voltage range: A/2, 2026-10-15 (SRC-47) | L: zero stock |
 
-**Recommended candidate: Precision Microdrives 308-100**, because an 8 mm
-body is the only diameter that passes the Keyfob plan screen. If the Keyfob
-is enlarged, the Vybronics VCLP1020B002L draws a third of the current.
+**Preferred evaluation candidate: Vybronics VCLP1020B002L**, because its 30 mA maximum rated current and 0.75 G minimum specified vibration strength are attractive for the Keyfob. Its 10 mm diameter requires the revised 44 x 30 x 15.5 mm case study. Precision Microdrives 308-100 remains the smaller 8 mm fallback but draws more current (94 mA max rated / 124 mA max start). This is an engineering recommendation only; owner decision O-13 remains open.
 
-Remaining uncertainties: no candidate documents continuous operation; the
-310-103 life test is 2 s on, 2 s off. Start current adds to the transmit
-peak. Driving from the 3.3 V rail keeps both recommended motors inside their
-voltage limits, but that rail may sag (power recommendation section 3.2) and
-the motor's 2.4 V start voltage margin under sag is unmeasured.
+Remaining uncertainties: no candidate qualifies indefinite continuous-alert duty. VCLP's life test is 1 s ON / 1 s OFF for 100,000 cycles; its 80 mA start-current limit is stated under a 2.3 V starting-voltage test and is not a universal stall-current maximum. Start current adds to the radio transmit peak. The 3.3 V motor rail is within the VCLP 2.5–3.5 V operating range, but rail sag and actual start in the assembled device remain unmeasured. Its 0.75 G minimum is measured in a 100 g test jig, not in the finished case.
 
-Driver candidates: onsemi MMBT2222ALT1G (above) with Diodes 1N4148W-7-F,
-SOD123 (D: DS30086 rev. 32-2, SRC-45), matching the specification's
-"transistor/diode" wording. Base resistor and off-bias values are TBD.
+Current native Keyfob schematic uses an IRLML6344 N-channel MOSFET low-side switch, 100 Ω gate resistor, 100 kΩ gate pull-down and Nexperia PMEG2010AEB,115 SOD-523 Schottky flyback diode. This is a provisional implementation, not final qualification. Confirm exact MOSFET pinout/land pattern, diode orientation, PWM frequency, motor rail source and battery pulse capability.
 
 <a id="switches"></a>
 ## 8. P-BUTTON, K-BUTTON, P-SWITCH, K-SWITCH
