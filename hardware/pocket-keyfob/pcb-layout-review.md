@@ -18,15 +18,15 @@ The official Waveshare dimension drawing identifies:
 Source: https://docs.waveshare.com/ESP32-C3-Zero
 
 The custom footprint uses a provisional 2x9 layout:
-- Pad numbers 1–9 down one long edge.
+- Pad numbers 1–9 down the USB-facing left edge in the module's documented top view.
 - Pad numbers 18–10 down the opposite edge.
-- 2.54 mm pitch.
+- 2.54 mm pitch, 15.24 mm estimated row spacing.
 - 1.8 x 1.5 mm carrier lands.
-- Row centres ±8.1 mm from footprint origin.
+- Row centres provisionally ±7.62 mm (15.24 mm row spacing), inferred from the official dimension drawing; the row datum is not explicitly dimensioned.
 - Module outline 18 x 23.5 mm.
 - U1 placed at (12.75, 11.5) and rotated 90 degrees on the 33 x 23 mm carrier.
 
-The outline and pitch are sourced; pad dimensions and row-centre datum are estimates because the public drawing does not dimension them. Verify the actual board revision and castellation geometry before ordering a PCB.
+The outline and 2.54 mm pitch are sourced. The 15.24 mm row spacing is inferred from the official drawing, not called out as a numeric dimension; pad size and exact row datum remain estimates. Verify the actual board revision and castellation geometry before ordering a PCB.
 
 ## Draft PCB population
 
