@@ -1,7 +1,7 @@
 # Dual-Auth Cafe Sentry — parametric enclosure and component-envelope generator
 # Run inside FreeCAD 0.21+ (PartDesign primitives are native editable features).
-# All dimensions are millimetres. All component solids remain DRAFT envelopes,
-# not fit, RF, thermal, acoustic, or battery-safety validation.
+# All dimensions are millimetres. Reference envelopes are DRAFT, not fit/RF/
+# thermal/acoustic/battery-safety validation. See cad/README.md before use.
 import FreeCAD as App
 import Part
 import PartDesign
@@ -41,7 +41,6 @@ def add_ref_cylinder(doc, name, label, radius, height, x, y, z, note):
 
 def add_parametric_case(doc, prefix, outer_l, outer_w, outer_h, wall, base, lid_t):
     lower_h = outer_h - lid_t
-
     shell_body = doc.addObject("PartDesign::Body", prefix + "LowerShellBody")
     shell_body.Label = prefix + " lower shell — parametric Part Design"
     outer = doc.addObject("PartDesign::AdditiveBox", prefix + "OuterBlank")
@@ -76,69 +75,107 @@ def add_parametric_case(doc, prefix, outer_l, outer_w, outer_h, wall, base, lid_
         obj.Visibility = False
     return shell_body, lid_body
 
-def export_doc(doc, objects, prefix):
+def export_doc(doc, enclosure_objects, reference_objects, prefix):
     doc.recompute()
     fcstd = os.path.join(OUT, prefix + ".FCStd")
     step = os.path.join(OUT, prefix + "_enclosure.step")
     stl = os.path.join(OUT, prefix + "_enclosure.stl")
+    asm_step = os.path.join(OUT, prefix + "_assembly_reference.step")
+    asm_stl = os.path.join(OUT, prefix + "_assembly_reference.stl")
     doc.saveAs(fcstd)
-    Part.export(objects, step)
-    Mesh.export(objects, stl)
+    Part.export(enclosure_objects, step)
+    Mesh.export(enclosure_objects, stl)
+    assembly_objects = list(enclosure_objects) + list(reference_objects)
+    Part.export(assembly_objects, asm_step)
+    Mesh.export(assembly_objects, asm_stl)
     print("Saved " + fcstd)
-    print("Exported DRAFT " + step + " and " + stl)
+    print("Exported enclosure-only: " + step + " and " + stl)
+    print("Exported reference assembly: " + asm_step + " and " + asm_stl)
 
 def make_pod():
     doc = App.newDocument("SentryPod")
     shell, lid = add_parametric_case(doc, "Pod", 55.0, 30.0, 19.3, 1.5, 1.5, 1.5)
+    refs = []
 
-    # Bare-cell reference envelope only; finished protected pack not selected.
-    add_ref_box(doc, "PodBatteryReference", "LP502030 bare-cell reference envelope",
+    refs.append(add_ref_box(doc, "PodBatteryReference", "LP502030 bare-cell reference envelope",
                 31.0, 20.5, 5.3, 1.5, 1.5, 1.5,
-                "EEMB LP502030 bare cell maximum body only. It is not a selected protected pack; PCM, leads, connector, seals and expansion allowance are absent.")
-
-    # Proposed antenna envelope; location/size remains provisional.
-    add_ref_box(doc, "PodNfcAntennaReference", "NFC antenna placeholder / RF keepout",
+                "EEMB LP502030 bare cell maximum body only. It is not a selected protected pack; PCM, leads, connector, seals and expansion allowance are absent."))
+    refs.append(add_ref_box(doc, "PodNfcAntennaReference", "NFC antenna placeholder / RF keepout",
                 25.0, 10.0, 1.0, 15.0, 10.0, 16.8,
-                "Placeholder only. Actual selected PN532 antenna, cable, coil boundary and RF tuning remain unknown. Preserve >=10 mm nearest-surface separation from battery as an owner requirement.")
-    export_doc(doc, [shell, lid], "SentryPod")
+                "Placeholder only. Actual selected PN532 antenna, cable, coil boundary and RF tuning remain unknown. Preserve >=10 mm nearest-surface separation from battery as an owner requirement."))
+    export_doc(doc, [shell, lid], refs, "SentryPod")
     return doc
 
 def make_keyfob():
-    # Height increased provisionally from 14.0 to 15.5 mm to create stack
-    # allowance for the C3 daughterboard, the carrier and reference battery.
+    # Height remains provisional; the 33x23 carrier and bare-cell envelope
+    # still require a protected-pack and antenna/USB mechanical check.
     doc = App.newDocument("PocketKeyfob")
     shell, lid = add_parametric_case(doc, "Keyfob", 38.0, 28.0, 15.5, 1.5, 1.5, 1.5)
+    refs = []
 
-    # Carrier board envelope matches the current 33 x 23 mm PCB concept.
-    add_ref_box(doc, "KeyfobCarrierPcb", "Keyfob carrier PCB — provisional 33 x 23 x 1.6",
+    # Carrier board is positioned at (2.5,2.5,7.0) and is 33x23x1.6 mm.
+    refs.append(add_ref_box(doc, "KeyfobCarrierPcb", "Keyfob carrier PCB — 33 x 23 x 1.6",
                 33.0, 23.0, 1.6, 2.5, 2.5, 7.0,
-                "Mechanical carrier envelope only. Module pad geometry, board stack-up, mounting features and clearances are not yet released.")
+                "Matches the current KiCad board outline. Stack-up, mounting features, copper clearance and enclosure tolerance remain unverified."))
 
-    # Waveshare module board sits on carrier; this does not include USB-C or
-    # maximum component height, and no castellated footprint is inferred.
-    add_ref_box(doc, "C3ZeroModule", "Waveshare ESP32-C3-Zero module envelope",
+    # C3 module is rotated 90 degrees on the carrier: 23.5 x 18 mm outline.
+    refs.append(add_ref_box(doc, "C3ZeroModule", "Waveshare ESP32-C3-Zero module envelope",
                 23.5, 18.0, 1.2, 3.5, 4.5, 8.6,
-                "PCB outline only from Waveshare drawing. Castellated land width/length, received revision, USB overhang and component heights not fully dimensioned. Ceramic antenna zone must remain clear; exact region is not yet dimensioned.")
+                "18 x 23.5 mm public board outline, rotated 90 degrees to match draft PCB placement. Castellated pad dimensions, USB-C overhang, component height and exact received revision are not fully dimensioned."))
 
-    # Battery shape is a bare-cell reference to show the intended under-board
-    # stack; not the protected pack, which will be larger and may not fit.
-    add_ref_box(doc, "KeyfobBatteryReference", "LP401730 bare-cell reference envelope",
+    # Antenna zone location follows the current rotated module assumption only.
+    refs.append(add_ref_box(doc, "C3AntennaKeepout", "C3-Zero antenna keepout — orientation placeholder",
+                5.0, 18.0, 0.35, 3.5, 4.5, 8.6,
+                "ASSUMED END ONLY. Waveshare requires the ceramic antenna area to be clear of carrier PCB, metal and plastic. Exact end, dimensions and required clearance must be verified from the actual module before case or copper release."))
+
+    # USB-C port envelope is intentionally shown as a rough block to force
+    # review of connector overhang and case-wall access; exact location TBD.
+    refs.append(add_ref_box(doc, "C3UsbEnvelope", "C3-Zero USB-C connector / access placeholder",
+                8.0, 8.0, 3.5, 26.5, 9.0, 8.6,
+                "Rough visual envelope only, not a connector drawing. Verify which end of the rotated module carries USB-C, connector shell height, insertion access and case-wall cutout. This placeholder may overlap other components by design to expose unresolved packaging."))
+
+    refs.append(add_ref_box(doc, "KeyfobBatteryReference", "LP401730 bare-cell reference envelope",
                 31.0, 17.5, 4.3, 3.5, 4.5, 1.8,
-                "EEMB LP401730 bare-cell drawing reference only; not a selected protected pack. PCM, leads, connector, seals, swelling and insulation are excluded. Do not compress the pouch.")
+                "EEMB LP401730 bare-cell drawing reference only; not a selected protected pack. PCM, leads, connector, seals, swelling and insulation are excluded. Do not compress the pouch."))
 
-    # Current motor in the schematic is a provisional 308-100 candidate.
-    add_ref_cylinder(doc, "KeyfobMotorReference", "Precision Microdrives 308-100 reference motor",
-                     4.0, 3.4, 31.3, 16.5, 8.6,
-                     "308-100 drawing envelope: 8 mm body diameter, 3.4 mm body length. Motor is not owner-frozen; candidate replacement and lead exit may change the envelope.")
+    # 308-100 is placed at PCB local coordinates (29,5), translated by the
+    # carrier origin (2.5,2.5). Cylinder axis is through the 3.4 mm thickness.
+    refs.append(add_ref_cylinder(doc, "KeyfobMotorReference", "Precision Microdrives 308-100 reference motor",
+                     4.0, 3.4, 31.5, 7.5, 8.6,
+                     "308-100 drawing envelope: 8 mm body diameter, 3.4 mm body length. Motor is still provisional; lead exit and vibration coupling are not modelled."))
 
-    export_doc(doc, [shell, lid], "PocketKeyfob")
+    # Top-side component envelopes translated from the draft KiCad placement.
+    refs.append(add_ref_box(doc, "KeyfobQ1Envelope", "Q1 IRLML6344 SOT-23 envelope",
+                2.9, 2.5, 1.2, 28.75, 20.45, 8.6,
+                "Approximate package envelope at PCB local (27.7,19.2). Top-side placement is draft."))
+    refs.append(add_ref_box(doc, "KeyfobD1Envelope", "D1 PMEG2010AEB SOD-523 envelope",
+                1.6, 1.0, 0.65, 32.7, 21.2, 8.6,
+                "Approximate SOD-523 package envelope at PCB local (31,19.2); verify land pattern."))
+    refs.append(add_ref_box(doc, "KeyfobR1Envelope", "R1 0603 gate resistor envelope",
+                1.6, 0.8, 0.6, 29.2, 24.1, 8.6,
+                "Approximate 0603 body envelope at PCB local (27.5,22)."))
+    refs.append(add_ref_box(doc, "KeyfobR2Envelope", "R2 0603 gate pull-down envelope",
+                1.6, 0.8, 0.6, 32.2, 24.1, 8.6,
+                "Approximate 0603 body envelope at PCB local (30.5,22)."))
+    refs.append(add_ref_box(doc, "KeyfobC1Envelope", "C1 0603 local bypass envelope",
+                1.6, 0.8, 0.8, 28.2, 13.6, 8.6,
+                "Approximate 0603 body envelope at PCB local (26.5,11.5)."))
+    refs.append(add_ref_box(doc, "KeyfobC2Envelope", "C2 0805 local reservoir envelope",
+                2.0, 1.25, 1.0, 31.5, 13.375, 8.6,
+                "Approximate 0805 body envelope at PCB local (30,11.5)."))
+
+    refs.append(add_ref_box(doc, "KeyfobMotorConnectorEnvelope", "J1 motor wire solder-pad region",
+                4.8, 3.6, 0.5, 29.1, 16.2, 8.6,
+                "Draft wire-pad region translated from PCB local (29,15.5); lead strain relief and motor wire routing are not modelled."))
+
+    export_doc(doc, [shell, lid], refs, "PocketKeyfob")
     return doc
 
 pod_doc = make_pod()
 keyfob_doc = make_keyfob()
 
-print("DRAFT parametric enclosure documents and envelope exports saved to " + OUT)
+print("DRAFT parametric enclosure documents and reference assemblies saved to " + OUT)
 print("Pod outside envelope: 55 x 30 x 19.3 mm.")
-print("Keyfob outside envelope: 38 x 28 x 15.5 mm (provisional height increase).")
-print("Keyfob carrier concept: 33 x 23 x 1.6 mm; C3 module and battery are reference envelopes only.")
+print("Keyfob outside envelope: 38 x 28 x 15.5 mm (provisional).")
+print("Keyfob carrier concept: 33 x 23 x 1.6 mm; module, motor, USB and passives are reference envelopes only.")
 print("FreeCAD geometry has not been run or validated in this execution environment.")
