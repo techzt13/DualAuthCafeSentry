@@ -1,6 +1,6 @@
 # Pocket Keyfob — MCU and actuator interface contract
 
-Revision: 0.1 | Date: 2026-11-12 | Status: DRAFT — logical interfaces only; not a wiring release
+Revision: 0.2 | Date: 2026-11-13 | Status: DRAFT — logical interfaces only; not a wiring release
 
 This document defines the Keyfob controller and low-voltage signal contract using the verified Waveshare board contact maps. It keeps the C3-Zero as the current evaluation option, with the S3-Zero as a documented alternative. The owner has not frozen the MCU choice. A provisional C3-Zero 2x9 castellated footprint and motor-driver block now exist in the native project; neither is a released manufacturing design.
 
@@ -67,8 +67,8 @@ The S3 contact table and restrictions are in `docs/verified-pinouts.md`, section
 - Draft circuit now exists in the native schematic: Q1 IRLML6344 N-MOSFET low-side switch; R1 100 Ω series gate resistor; R2 100 kΩ gate-to-source pull-down; J1 two solder-wire pads; C1 100 nF and C2 10 µF local motor-rail capacitors.
 - Q1 pin map is 1=gate, 2=source, 3=drain. The official data sheet guarantees RDS(on) ≤37 mΩ at VGS=2.5 V. A first-order conduction estimate at 124 mA is about 0.57 mW; switching and PCB thermal behaviour still require measurement.
 - D1 is now Nexperia PMEG2010AEB,115, 20 V / 1 A Schottky, SOD-523. Pin 1 cathode connects to K_3V3_MOTOR_HOLD; pin 2 anode connects to K_MOTOR_SW.
-- The 308-100 public data sheet gives 3 V nominal, 3.6 V maximum operating, 94 mA maximum rated current and 124 mA maximum start current. The motor rail remains a HOLD and must never be assumed to be raw cell or USB VBUS.
-- The motor candidate remains provisional: continuous-alert duty, start under rail sag, actual motor lead exit and in-case haptic performance remain unverified.
+- The current preferred evaluation reference is Vybronics VCLP1020B002L: 3.0 V rated, 2.5–3.5 V operating, 30 mA maximum rated current, 2.3 V maximum starting voltage, 80 mA maximum starting current under the stated 2.3 V start test, 0.75 G minimum in the specified 100 g test jig, 10 x 2.1 mm body, 9 x 0.15 mm tape and 25 mm leads. This is not final selection; O-13 remains open. Precision Microdrives 308-100 remains an alternate (3 V nominal, 3.6 V maximum, 94 mA maximum rated and 124 mA maximum start). The existing driver is provisionally sized against the higher-current 308-100 reference. The motor rail remains a HOLD and must never be assumed to be raw cell or USB VBUS.
+- The motor remains provisional: VCLP's 80 mA start figure is specified at the 2.3 V starting-voltage test and is not a universal stall-current maximum; continuous-alert duty, lead-exit envelope, adhesive retention, start under rail sag and in-case haptic performance remain unverified. Its life test is 1 s ON / 1 s OFF, not continuous operation.
 - PWM frequency, duty policy, maximum continuous vibration time and thermal behavior remain TBD.
 
 ### 4.2 User button
@@ -118,4 +118,4 @@ This is a design translation of existing evidence, not a new manufacturer verifi
 
 ## Mechanical layout revision 0.3 — 2026-11-13
 
-The C3-Zero is placed upright on the revised 37 x 25 mm carrier, with the USB-C connector facing the top case wall and an 8 x 3.5 mm centre-bottom antenna relief notch. The proposed Keyfob outer enclosure is 42 x 30 x 15.5 mm. The USB wall cutout is 10 x 4.8 mm in the CAD macro. These are evaluation dimensions only; antenna area, USB connector access, battery retention and fit remain to be checked against physical parts.
+The C3-Zero is placed upright on the revised 37 x 25 mm carrier, with the USB-C connector facing the top case wall and an 8 x 3.5 mm centre-bottom antenna relief notch. The proposed Keyfob outer enclosure is 44 x 30 x 15.5 mm. The USB wall cutout is 10 x 4.8 mm in the CAD macro. These are evaluation dimensions only; antenna area, USB connector access, battery retention and fit remain to be checked against physical parts.
