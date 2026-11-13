@@ -1,6 +1,6 @@
 # Hardware design workspace
 
-Status: **native KiCad schematic and placement drafts exist for both devices; neither PCB is routed or fabrication-ready. FreeCAD macro exists but has not been run.**
+Status: **native KiCad schematic and PCB placement drafts exist for both devices; neither PCB is routed or fabrication-ready. Standalone Pod power/audio evaluation sheets exist. FreeCAD macro exists but has not been run.**
 
 ## Sentry Pod
 
@@ -13,6 +13,10 @@ Files:
 - fp-lib-table
 - footprints.pretty/
 - interface-contract.md
+- power-stage-review.md
+- pod-power-stage.kicad_sch (standalone BQ25185 evaluation block)
+- audio-stage-review.md
+- pod-audio-stage.kicad_sch (standalone PAM8904E 1x evaluation block)
 - packaging-review.md
 - pcb-layout-review.md
 
@@ -54,6 +58,7 @@ Files:
 Current schematic content:
 - Waveshare ESP32-C3-Zero SKU 25452 evaluation controller.
 - Protected battery ADC and conditioned charge-status interfaces (power holds remain unresolved).
+- Service UART RX/TX mapped to C3 contacts 17/18 and matching PCB pads.
 - Active-low button interface.
 - IRLML6344 N-channel MOSFET low-side motor switch.
 - 100 Ω gate resistor, 100 kΩ hardware-off pull-down.
@@ -64,7 +69,7 @@ Current schematic content:
 Current PCB placements:
 - Provisional upright C3-Zero 2x9 castellated footprint.
 - Motor-wire solder pads, MOSFET, diode, gate resistors and motor-rail capacitors.
-- 37 x 25 mm carrier outline with antenna relief notch and 22 assigned pad nets.
+- 37 x 25 mm carrier outline with antenna relief notch and 24 assigned pad-to-net connections.
 
 Still missing from Keyfob PCB:
 - Battery/charger, USB-C charging path, regulator/source isolation and ADC divider.
@@ -80,3 +85,16 @@ Current Keyfob packaging-study envelope: 44 x 30 x 15.5 mm.
 - Footprints are provisional and require physical-part/source-drawing checks.
 - No KiCad ERC/DRC, FreeCAD run, STEP/STL export, physical fit, RF, acoustic, battery or haptic validation is claimed.
 - Keep LAST-WORKED-ON.md current after each meaningful change.
+
+
+## Source sanity checker
+
+From the repository root, run:
+
+    python3 scripts/check_design_sources.py
+
+This dependency-free script checks S-expression balance, PCB net references, duplicate identifiers and selected critical pad/net contracts. It does not replace KiCad ERC/DRC or physical validation.
+
+## Power/audio integration status
+
+The Pod BQ25185 and PAM8904E blocks are real, editable standalone KiCad schematic files. They remain isolated evaluation sheets, not hierarchical sheets in the main Pod schematic and not PCB placements. All their supply, battery, control and output rails remain HOLD.
