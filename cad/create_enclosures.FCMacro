@@ -160,7 +160,7 @@ def make_keyfob():
     # Revised mechanical evaluation layout: upright C3-Zero, antenna relief,
     # accessible USB edge, and motor/battery separated laterally.
     doc = App.newDocument("PocketKeyfob")
-    shell, lid = add_parametric_case(doc, "Keyfob", 42.0, 30.0, 15.5, 1.5, 1.5, 1.5)
+    shell, lid = add_parametric_case(doc, "Keyfob", 44.0, 30.0, 15.5, 1.5, 1.5, 1.5)
     refs = []
 
     # Carrier board: 37 x 25 x 1.6 mm, 1 mm nominal clearance in the case cavity.
@@ -188,13 +188,13 @@ def make_keyfob():
 
     # Candidate protected pack envelope; leads and connector are not modelled.
     refs.append(add_ref_box(doc, "KeyfobBatteryReference", "Renata ICP402025PC-01 protected-pack candidate",
-                27.5, 20.5, 4.3, 2.5, 3.5, 1.5,
+                27.5, 20.5, 4.3, 2.0, 3.5, 1.5,
                 "Candidate maximum envelope only: 27.5 x 20.5 x 4.3 mm. Pack connector, lead exit, adhesive, insulation, swelling allowance and actual vendor drawing must be checked. Not a final battery selection."))
 
     # Motor at PCB local (32,5), translated by carrier origin (2.5,2.5).
-    refs.append(add_ref_cylinder(doc, "KeyfobMotorReference", "Precision Microdrives 308-100 reference motor",
-                     4.0, 3.4, 34.5, 7.5, 8.6,
-                     "308-100 envelope: 8 mm diameter x 3.4 mm body length. Motor remains provisional; verify lead exit, adhesive and vibration coupling."))
+    refs.append(add_ref_cylinder(doc, "KeyfobMotorReference", "Vybronics VCLP1020B002L evaluation motor",
+                     5.0, 2.1, 35.5, 7.5, 8.6,
+                     "10 mm diameter x 2.1 mm body; 3 V nominal, 2.5–3.5 V operating, 30 mA max rated current, 80 mA max start current, 0.75 G minimum at 3 V, 25 mm leads. Evaluation candidate only; verify actual haptic feel, lead routing and adhesive retention. Precision Microdrives 308-100 remains a smaller 8 mm alternate."))
 
     # Top-side component envelopes translated from the revised PCB positions.
     refs.append(add_ref_box(doc, "KeyfobQ1Envelope", "Q1 IRLML6344 SOT-23 envelope",
@@ -227,6 +227,6 @@ keyfob_doc = make_keyfob()
 
 print("DRAFT parametric enclosure documents and reference assemblies saved to " + OUT)
 print("Pod outside envelope: 72 x 34 x 29 mm (packaging-study envelope; not final approval).")
-print("Keyfob outside envelope: 42 x 30 x 15.5 mm (revised provisional layout).")
+print("Keyfob outside envelope: 44 x 30 x 15.5 mm (revised provisional layout).")
 print("Keyfob carrier concept: 37 x 25 x 1.6 mm with a provisional antenna relief notch; module, motor, USB and passives are reference envelopes only.")
 print("FreeCAD geometry has not been run or validated in this execution environment.")
