@@ -2,7 +2,7 @@
 
 Date: 2026-11-13
 Package revision: 0.4
-Project stage: native KiCad schematics are under active implementation; Pod schematic has MCU/module interfaces and a wired provisional NFC reset; Keyfob schematic now contains a provisional C3-Zero interface and protected motor-switch block. The Keyfob PCB now has a provisional 2x9 C3-Zero castellated footprint, 22 assigned pad nets across U1 and the motor-driver passives, and draft C1/C2 footprints; it remains unrouted and the land pattern/antenna clearance are unverified. The Pod PCB remains outline-only. FreeCAD macro exists but has not been run.
+Project stage: native KiCad schematics are under active implementation; Pod schematic has MCU/module interfaces and a wired provisional NFC reset; Keyfob schematic now contains a provisional C3-Zero interface and protected motor-switch block. The Keyfob PCB now has a provisional upright C3-Zero 2x9 footprint, 37 x 25 mm carrier outline with an antenna relief notch, 22 assigned pad nets and top-side motor-driver passives; it remains unrouted and the land pattern/antenna clearance are unverified. The proposed Keyfob enclosure is 42 x 30 x 15.5 mm. The Pod PCB remains outline-only. FreeCAD macro exists but has not been run.
 
 **Important live-state correction:** the older milestone notes below are historical. The live Keyfob schematic is NOT empty: it contains U1 ESP32-C3-Zero logical contacts, J1 motor wire pads, Q1 IRLML6344 low-side MOSFET, R1 100 Ω gate resistor, R2 100 kΩ gate pull-down, D1 flyback diode, C1 100 nF, C2 10 µF and SW1 active-low button. During this work D1 was changed from 1N4148W to Nexperia PMEG2010AEB,115 (20 V, 1 A, SOD-523); the schematic diode pin mapping and draft PCB footprint were updated. This is a paper-level correction, not an ERC/DRC or hardware validation.
 
@@ -1111,3 +1111,19 @@ Moved Q1, D1, R1, R2, C1 and C2 to F.Cu. The battery sits directly below the car
 Corrected footprint drawing layers to F.SilkS/F.Fab/F.CrtYd and adjusted the hand-drawn capacitor land pads to approximate standard 0603/0805 dimensions. The Keyfob CAD macro now places the same component envelopes above the carrier PCB.
 
 This is still a placement study. The C3 USB-C connector access envelope may conflict with the motor position, and the antenna keepout location must be checked against the received module. No local KiCad or FreeCAD validation has been run.
+
+
+## 30. Keyfob upright-module layout revision — 2026-11-13
+
+The previous rotated 90-degree C3-Zero layout was not a satisfactory packaging direction because the USB-C connector and antenna end shared a congested carrier-board region. Reworked the Keyfob mechanical evaluation layout:
+
+- Carrier PCB increased to 37 x 25 mm.
+- C3-Zero is upright at PCB (18.5,13.0), 0-degree rotation; USB-C faces the top case wall and the ceramic antenna faces the opposite end.
+- Module contacts 1–9 are on the USB-facing left edge, top-to-bottom; 18–10 are on the right edge. This corrects the footprint to the official Waveshare top-view pinout.
+- Added an 8 x 3.5 mm centre-bottom Edge.Cuts relief notch under the assumed antenna area, preserving side land rails.
+- Added a provisional 10 x 4.8 mm USB-C wall cutout in the CAD macro.
+- Motor moved to PCB local (32,5), on the right-hand side, separated laterally from the protected-pack candidate.
+- Proposed Keyfob enclosure increased to 42 x 30 x 15.5 mm to provide 1 mm nominal clearance around the 37 x 25 carrier.
+- CAD battery envelope changed to Renata ICP402025PC-01 candidate dimensions 27.5 x 20.5 x 4.3 mm; pack leads/connector are not modelled.
+
+The exact antenna area, USB connector shell, recommended carrier pad dimensions and row datum still need confirmation against the physical module. The antenna notch and USB cutout are provisional. The plastic wall near the antenna requires RF testing. No FreeCAD or KiCad run, fit check, ERC/DRC, RF test or physical validation has occurred.
