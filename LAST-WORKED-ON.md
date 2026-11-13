@@ -40,17 +40,22 @@ Repository: `techzt13/DualAuthCafeSentry` on GitHub (public), branch `master`.
 | `13eb171` | 2026-11-12 | Revision 0.2 deliverables: 111-row registers, datasheet index, verified pinouts |
 | `577067c` | 2026-11-12 | Revision 0.2 completion handoff and recovery records |
 | `6149d7a` | 2026-11-12 | Saved validation evidence; fixed baseline for the 111 revision 0.2 rows |
-| Commit containing this file | 2026-11-12 | Revision 0.3: G1 candidate research, evidence-folder manifest and this handoff |
+| `56059ac` | 2026-11-13 | Corrected NFC reset endpoint audit and updated handoff |
+| `d552bab` / `9975491` | 2026-11-13 | Keyfob UART schematic/PCB edits (later UUID correction recorded below) |
+| `e6dbd9c` | 2026-11-13 | Updated top-level handoff for current schematic/PCB state |
+| `7293674` | 2026-11-13 | Keyfob source audit and CAD coordinate correction |
+| `5c844e5` | 2026-11-13 | Added dependency-free KiCad source sanity checker |
+| `ba38a5b` | 2026-11-13 | Corrected duplicate UUIDs on new Keyfob UART objects |
+| `c193994` | 2026-11-13 | Recorded current source audit, README and validation utility in handoff |
 
-At the start of this session `6149d7a` was `HEAD` and the live
-`origin/master`, and the working tree was clean. The previous revision of
-this file is in Git history: `git show 6149d7a:LAST-WORKED-ON.md`.
+The commit IDs above are abbreviated. The latest recorded handoff commit is
+`c19399481e091f0ed96346f6ec622c8ef6bf14dc` on `master`. The current state must
+be read from the live files; earlier sections below are historical milestone
+records, not a substitute for the current status at the top of this file.
 
-Empty local directories (`cad/`, `hardware/`, `firmware/`, `manufacturing/`,
-`scripts/`, `docs/reports/`) contain no files and are not tracked.
-`docs/datasheets/local/` holds research documents and is ignored by Git.
+`docs/datasheets/local/` contains local research documents and is ignored by Git.
 
-## 3. Work done in this session
+## 3. Historical G1 research milestone — 2026-11-12
 
 ### 3.1 Files created
 
