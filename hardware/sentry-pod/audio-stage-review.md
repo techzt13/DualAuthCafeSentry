@@ -1,7 +1,9 @@
 # Pod audio-stage design review
 
 Date: 2026-11-13  
-Status: **evaluation direction only; not a completed schematic or acoustic qualification**
+Status: **standalone editable KiCad schematic exists; isolated non-energised evaluation draft, not acoustic qualification**
+
+Native schematic: [pod-audio-stage.kicad_sch](pod-audio-stage.kicad_sch). It is a standalone sheet and has not yet been integrated into the main Pod project or passed through KiCad ERC.
 
 ## Owner criteria
 
