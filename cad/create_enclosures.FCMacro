@@ -109,16 +109,40 @@ def export_doc(doc, enclosure_objects, reference_objects, prefix):
     print("Exported reference assembly: " + asm_step + " and " + asm_stl)
 
 def make_pod():
+    # Larger packaging study envelope. The earlier 55 x 30 x 19.7 mm
+    # was only the protected-cell-to-NFC-coil stack lower bound.
     doc = App.newDocument("SentryPod")
-    shell, lid = add_parametric_case(doc, "Pod", 55.0, 30.0, 19.7, 1.5, 1.5, 1.5)
+    shell, lid = add_parametric_case(doc, "Pod", 70.0, 30.0, 29.0, 1.5, 1.5, 1.5)
     refs = []
 
-    refs.append(add_ref_box(doc, "PodBatteryReference", "Renata ICP521630PM-01 protected-pack candidate envelope",
-                31.5, 17.0, 5.7, 11.75, 6.5, 1.5,
+    refs.append(add_ref_box(doc, "PodCarrierPcb", "Pod carrier PCB — 49.5 x 24 x 1.6",
+                49.5, 24.0, 1.6, 10.0, 3.0, 8.0,
+                "Packaging-study placement only. The current KiCad Pod PCB is still outline-only; dimensions and placement are not yet released."))
+
+    refs.append(add_ref_box(doc, "PodBatteryReference", "Renata ICP521630PM-01 protected-pack candidate",
+                31.5, 17.0, 5.7, 2.0, 6.5, 1.5,
                 "Candidate maximum envelope only: 31.5 x 17.0 x 5.7 mm. Protection thresholds, charge-voltage tolerance, NTC, wire length, connector, restraint and swelling allowance remain unresolved."))
-    refs.append(add_ref_box(doc, "PodNfcAntennaReference", "NFC antenna placeholder / RF keepout",
-                25.0, 10.0, 1.0, 15.0, 10.0, 17.2,
-                "Placeholder only. Actual selected PN532 antenna, cable, coil boundary and RF tuning remain unknown. With the Renata pack envelope top at z=7.2 mm, this placement gives exactly 10 mm vertical separation to the antenna underside."))
+
+    refs.append(add_ref_box(doc, "PodS3ZeroModule", "Waveshare ESP32-S3-Zero module envelope",
+                23.5, 18.0, 1.2, 10.0, 6.0, 9.6,
+                "Public board outline reference. Actual castellated land dimensions, component heights and USB-C overhang must be checked against the received revision."))
+
+    refs.append(add_ref_box(doc, "PodImuModule", "Adafruit 3886 IMU breakout envelope",
+                26.0, 17.8, 4.6, 33.5, 6.0, 9.6,
+                "Published 26 x 17.8 x 4.6 mm envelope. Candidate only; product was out of stock in the latest register check and its board drawing/schematic have not been inspected."))
+
+    refs.append(add_ref_box(doc, "PodNfcModule", "Elechouse PN5321 MINI module envelope — underside",
+                25.0, 16.4, 4.4, 34.5, 6.0, 3.6,
+                "Published 25 x 16.4 x 4.4 mm candidate envelope mounted below the carrier board, adjacent to the battery. Exact mounting/connector drawing and mechanical fit remain to be validated."))
+
+    refs.append(add_ref_box(doc, "PodNfcAntennaReference", "PN532 antenna placeholder / RF keepout",
+                25.0, 10.0, 1.0, 43.5, 10.0, 26.0,
+                "10 x 25 mm antenna candidate oriented lengthwise. This placement gives 10 mm horizontal separation from the battery end and >10 mm from the piezo reference. Exact antenna thickness, cable and manufacturer keepout remain unknown."))
+
+    refs.append(add_ref_cylinder(doc, "PodPiezoReference", "CPT-2475-92T 24 mm piezo reference envelope",
+                     12.0, 7.5, 20.0, 15.0, 17.0,
+                     "24 mm diameter x 7.5 mm high. Published rating is 92 dB minimum at 10 cm, not the 105 dB target. This is a packaging reference only; sound cavity, vent and acoustic output are not validated."))
+
     export_doc(doc, [shell, lid], refs, "SentryPod")
     return doc
 
@@ -192,7 +216,7 @@ pod_doc = make_pod()
 keyfob_doc = make_keyfob()
 
 print("DRAFT parametric enclosure documents and reference assemblies saved to " + OUT)
-print("Pod outside envelope: 55 x 30 x 19.7 mm (battery-to-antenna stack lower bound only; excludes full PCB/module/sounder integration).")
+print("Pod outside envelope: 70 x 30 x 29 mm (packaging-study envelope; not final approval).")
 print("Keyfob outside envelope: 42 x 30 x 15.5 mm (revised provisional layout).")
 print("Keyfob carrier concept: 37 x 25 x 1.6 mm with a provisional antenna relief notch; module, motor, USB and passives are reference envelopes only.")
 print("FreeCAD geometry has not been run or validated in this execution environment.")
