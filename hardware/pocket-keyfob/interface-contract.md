@@ -114,3 +114,8 @@ This is a design translation of existing evidence, not a new manufacturer verifi
 |---|---|---|
 | 0.1 | 2026-11-12 | First Keyfob MCU and actuator logical interface contract. |
 | 0.2 | 2026-11-13 | Record provisional C3-Zero land pattern and motor-driver schematic implementation. |
+
+
+## Mechanical layout revision 0.3 — 2026-11-13
+
+The C3-Zero is placed upright on the revised 37 x 25 mm carrier, with the USB-C connector facing the top case wall and an 8 x 3.5 mm centre-bottom antenna relief notch. The proposed Keyfob outer enclosure is 42 x 30 x 15.5 mm. The USB wall cutout is 10 x 4.8 mm in the CAD macro. These are evaluation dimensions only; antenna area, USB connector access, battery retention and fit remain to be checked against physical parts.
