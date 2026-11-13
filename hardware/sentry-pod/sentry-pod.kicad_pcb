@@ -157,7 +157,7 @@
     (attr through_hole)
     (fp_rect (start -12.7 -8.89) (end 12.7 8.89) (stroke (width 0.08) (type default)) (fill none) (layer "F.Fab") (uuid "4a9a0000-0000-4000-8000-000000000201"))
     (fp_rect (start -13.2 -9.39) (end 13.2 9.39) (stroke (width 0.05) (type default)) (fill none) (layer "F.CrtYd") (uuid "4a9a0000-0000-4000-8000-000000000202"))
-    (pad "1" thru_hole circle (at -6.35 -6.35) (size 1.778 1.778) (drill 1.0) (layers "*.Cu" "*.Mask") (net 14 "P_3V3_PERIPH_HOLD") (uuid "4a9a0000-0000-4000-8000-000000000203"))
+    (pad "1" thru_hole circle (at -6.35 -6.35) (size 1.778 1.778) (drill 1.0) (layers "*.Cu" "*.Mask") (net 17 "P_3V3_PERIPH_HOLD") (uuid "4a9a0000-0000-4000-8000-000000000203"))
     (pad "2" thru_hole circle (at -3.81 -6.35) (size 1.778 1.778) (drill 1.0) (layers "*.Cu" "*.Mask") (net 0 "") (uuid "4a9a0000-0000-4000-8000-000000000204"))
     (pad "3" thru_hole circle (at -1.27 -6.35) (size 1.778 1.778) (drill 1.0) (layers "*.Cu" "*.Mask") (net 1 "GND") (uuid "4a9a0000-0000-4000-8000-000000000205"))
     (pad "4" thru_hole circle (at 1.27 -6.35) (size 1.778 1.778) (drill 1.0) (layers "*.Cu" "*.Mask") (net 11 "P_I2C_SCL") (uuid "4a9a0000-0000-4000-8000-000000000206"))
