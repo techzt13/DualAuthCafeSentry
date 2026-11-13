@@ -99,9 +99,7 @@ Sentry Pod and Pocket Keyfob.
   battery and connector access, NFC antenna keepout, piezo acoustic opening,
   motor mounting, cable routing and assembly instructions.
 - Existing dimensions are starting constraints, not a reason to stop CAD.
-  The Sentry Pod length direction is at least approximately 55 mm; 30 mm width
-  and 16 mm height remain provisional. The Keyfob 35 x 25 x 12 mm target is
-  also provisional and may be adjusted to achieve a buildable assembly.
+  The current packaging-study envelopes are 72 x 30 x 29 mm for the Sentry Pod and 42 x 30 x 15.5 mm for the Pocket Keyfob. These are evaluation dimensions from the 2026-11-13 CAD/layout work, not owner-approved final sizes. The earlier 55 mm Pod length and 35 x 25 x 12 mm Keyfob were lower-bound/starting constraints and are superseded for the current packaging study. See hardware/sentry-pod/packaging-review.md and hardware/pocket-keyfob/pcb-layout-review.md.
 - Unknown component details must be labelled and managed as provisional
   design inputs. They should not prevent independent work on board outlines,
   mechanical envelopes, interface placement and parametric enclosure structure.
