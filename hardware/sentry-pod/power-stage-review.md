@@ -33,7 +33,7 @@ The current Rev. B Table 6-1 maps:
 
 Use 130 kΩ as the conservative paper-evaluation value. Do not use 100 kΩ in this draft.
 
-For ISET, the data sheet gives I_CHG = K_ISET / R_ISET, with K_ISET typical 300 AΩ and min/max 285/315 AΩ for charge currents above 10 mA. If (and only if) the Renata ICP402025PC-01 remains the candidate pack, a 4.7 kΩ resistor gives approximately 63.8 mA typical and 67.0 mA using the maximum K factor; applying the stated ±10% charge-current accuracy gives a rough upper screen of 74.5 mA. This is near the pack's stated 77.5 mA normal charge current. This arithmetic does not approve that cell pairing; the pack's charge-voltage tolerance and thermal provisions remain unresolved.
+For ISET, the data sheet gives I_CHG = K_ISET / R_ISET, with K_ISET typical 300 AΩ and min/max 285/315 AΩ for charge currents above 10 mA. If (and only if) the Renata ICP521630PM-01 remains the candidate pack, a 4.7 kΩ resistor gives approximately 63.8 mA typical and 67.0 mA using the maximum K factor; applying the stated ±10% charge-current accuracy gives a rough upper screen of 74.5 mA. This remains below the pack's stated 125 mA normal charge current, but the pack pairing is not approved. This arithmetic does not approve that cell pairing; the pack's charge-voltage tolerance and thermal provisions remain unresolved.
 
 ### Required bypass components
 
