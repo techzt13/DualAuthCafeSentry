@@ -2,7 +2,7 @@
 
 Revision: 0.4 | Date: 2026-11-13 | Status: packaging study updated; physical freeze blocked
 
-Revision 0.4 note: G1 component screening remains in [G1 mechanical feasibility](g1-mechanical-feasibility.md). The current CAD packaging-study envelopes are 72 x 34 x 29 mm for the Pod and 42 x 30 x 15.5 mm for the Keyfob. These are provisional layout dimensions, not approved final sizes or fit certifications. See the Pod and Keyfob packaging review notes.
+Revision 0.4 note: G1 component screening remains in [G1 mechanical feasibility](g1-mechanical-feasibility.md). The current CAD packaging-study envelopes are 72 x 34 x 29 mm for the Pod and 44 x 30 x 15.5 mm for the Keyfob. These are provisional layout dimensions, not approved final sizes or fit certifications. See the Pod and Keyfob packaging review notes.
 
 All dimensions are in **millimetres**. This is not a CAD model, tolerance
 release or fit certification. Future models must be native, parametric FreeCAD
@@ -13,7 +13,7 @@ exports as required by [AGENTS.md](../AGENTS.md).
 
 | Requirement | Sentry Pod | Pocket Keyfob | Status |
 | --- | --- | --- | --- |
-| Proposed outside size | 72 x 34 x 29 | 42 x 30 x 15.5 | 2026-11-13 CAD packaging-study envelope only; fit not demonstrated |
+| Proposed outside size | 72 x 34 x 29 | 44 x 30 x 15.5 | 2026-11-13 CAD packaging-study envelope only; fit not demonstrated |
 | Body/lid | Two-tone industrial finish, matte dark charcoal or frosted/translucent body, flat NFC-marked lid | Coordinated industrial appearance proposed | Pod aesthetic S; Keyfob implementation P |
 | NFC window wall | <=1.5 directly over antenna coil | Not applicable | S; preserve after engraving, finish and manufacturing variation |
 | Battery-to-NFC separation | >=10 | Not applicable | S, not a manufacturer-certified RF allowance |
