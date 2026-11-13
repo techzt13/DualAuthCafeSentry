@@ -1,34 +1,14 @@
 # Last Worked On - Dual-Auth Cafe Sentry
 
-Date: 2026-11-12 (hackathon implementation authorised; PCB and CAD are required deliverables)
-Package revision: 0.3
-Project stage: G0 design basis complete; G1 candidate research documented;
-native KiCad projects and FreeCAD macro committed; Pod native schematic contains
-MCU/module interfaces and a wired provisional NFC reset stage; Keyfob schematic
-and routed PCB/CAD validation remain in progress
-Next stage: audit and extend the Keyfob schematic with a protected low-side motor
-driver, then continue Pod power/audio blocks and board/CAD integration
+Date: 2026-11-13
+Package revision: 0.4
+Project stage: native KiCad schematics are under active implementation; Pod schematic has MCU/module interfaces and a wired provisional NFC reset; Keyfob schematic now contains a provisional C3-Zero interface and protected motor-switch block. Both PCBs remain draft mechanical layouts without routed nets. FreeCAD macro exists but has not been run.
 
-**Native KiCad project files and a FreeCAD macro are present in the repository.
-The Pod schematic is no longer empty: it contains the ESP32-S3-Zero P15 logical
-interface, PN5321 MINI and Adafruit 3886 module interfaces, button, and a
-provisional MMBT3904 NFC reset circuit with R1/R2/R3 electrically wired by
-matching pin endpoints. The Keyfob schematic remains an empty starter sheet.
-Both PCB files remain outline-only. The FreeCAD macro has not been run in this
-environment. Nothing is purchased, fabricated or physically
-tested. O-01 enlarges the Pod to at least approximately 55 mm length as a
-working lower bound; width 30 mm and height 16 mm remain provisional, with
-the current 19.3 mm CAD envelope itself only an arithmetic starting point.
-O-02 BQ25185 at 4.1 V and O-03/O-05 Direction A remain evaluation choices,
-not frozen circuits. PAM8904E is a paper-screen candidate only. Battery
-connection, energised testing and fabrication orders remain separate and
-require their own review/approval.**
+**Important live-state correction:** the older milestone notes below are historical. The live Keyfob schematic is NOT empty: it contains U1 ESP32-C3-Zero logical contacts, J1 motor wire pads, Q1 IRLML6344 low-side MOSFET, R1 100 Ω gate resistor, R2 100 kΩ gate pull-down, D1 flyback diode, C1 100 nF, C2 10 µF and SW1 active-low button. During this work D1 was changed from 1N4148W to Nexperia PMEG2010AEB,115 (20 V, 1 A, SOD-523); the schematic diode pin mapping and draft PCB footprint were updated. This is a paper-level correction, not an ERC/DRC or hardware validation.
 
-Before the next task, read [PROJECT_SPEC.md](PROJECT_SPEC.md),
-[AGENTS.md](AGENTS.md), this file and the relevant `docs/` files. Some session
-instructions refer to a parent-level `../AGENTS.md`; that file does not exist,
-so the repository [AGENTS.md](AGENTS.md) governs. Neither governing file has
-been changed by any task recorded here.
+Pod power and audio blocks are still not complete. Battery/charger pairings and all power rails remain HOLD. O-01 Pod enlargement and O-02/O-03/O-05 evaluation choices are not component approvals. Neither board is fabrication-ready; no physical parts are purchased, built or tested. CAD remains draft envelope geometry and no fit check is claimed.
+
+Before continuing, read [PROJECT_SPEC.md](PROJECT_SPEC.md), [AGENTS.md](AGENTS.md), this file and relevant docs references. The repo is techzt13/DualAuthCafeSentry, branch master.
 
 ## 1. Current status
 
@@ -947,3 +927,39 @@ released.
    are source-grounded.
 5. Run KiCad parser/ERC/DRC locally when available; do not claim these checks
    have passed yet.
+
+
+## 23. Keyfob motor-driver schematic audit and flyback upgrade — 2026-11-13
+
+Inspected the live hardware/pocket-keyfob/pocket-keyfob.kicad_sch and found that the previous handoff's statement that the Keyfob sheet was empty was obsolete. The sheet already contained the controller interface, button and a complete provisional motor low-side switch block.
+
+### Live circuit
+
+- U1: Waveshare ESP32-C3-Zero SKU 25452 logical contact symbol. GPIO3 / contact 7 is K_MOTOR_PWM; GPIO4 / contact 8 is K_BUTTON_N. The 5 V and 3V3 board contacts remain HOLD labels.
+- Q1: Infineon IRLML6344TRPBF, N-channel SOT-23. Pin 1 gate, pin 2 source, pin 3 drain. The official data sheet specifies maximum RDS(on) 37 mΩ at VGS=2.5 V. At the motor's 124 mA maximum start current, a simple fully-enhanced conduction estimate is 0.57 mW (I²R); this is not a switching-loss or thermal validation.
+- R1: 100 Ω in series with the gate.
+- R2: 100 kΩ gate-to-source pull-down, establishing default OFF while the MCU pin is high impedance.
+- J1: two solder-wire pads; pin 1 red motor positive to K_3V3_MOTOR_HOLD, pin 2 blue motor negative to K_MOTOR_SW.
+- C1: 100 nF and C2: 10 µF between the held motor rail and ground. Their final values, voltage ratings and DC-bias derating remain to be checked.
+- D1: upgraded from Diodes 1N4148W to Nexperia PMEG2010AEB,115 Schottky, 20 V / 1 A, SOD-523. Pin 1 cathode is on the motor positive rail; pin 2 anode is on the MOSFET drain / switched motor-negative node. This is the correct flyback polarity for a brushed DC motor. The PCB's D1 draft footprint was changed to SOD-523 geometry and matching pin order.
+- SW1: active-low button from GPIO4 to ground; firmware must enable and debounce the MCU's internal pull-up.
+
+### Source checks
+
+- Precision Microdrives 308-100 official data: 3 V nominal; 3.6 V maximum operating; 94 mA maximum rated current; 124 mA maximum start current; 8 mm diameter and 3.4 mm body length. Continuous-alert duty remains undocumented in the reviewed source.
+- Infineon IRLML6344 official data: 30 V N-channel MOSFET, maximum RDS(on) 37 mΩ at VGS=2.5 V.
+- Nexperia PMEG2010AEB official data: 20 V reverse rating and 1 A forward-current class; SOD-523 pin 1 cathode and pin 2 anode.
+
+### Limitations
+
+The Keyfob PCB still lacks the MCU module's verified castellated land pattern, full netlist assignments, C1/C2 footprints, copper routing, ground return and antenna keepout. The existing 33 x 23 mm outline and component placement are mechanical placeholders only. The diode footprint is a draft representation of the SOD-523 package; check it against the current KiCad library and the manufacturer's land-pattern guidance before fabrication. No KiCad ERC/DRC, electrical simulation, bench test or enclosure fit test was run.
+
+The Keyfob battery/charger, K_3V3_MOTOR_HOLD, battery ADC and charge-status conditioning remain unresolved. Do not energise this block from an unreviewed cell or USB source.
+
+### Next work
+
+1. Continue the Pod power subsystem as a separately reviewable, non-energised schematic block; keep the battery and system outputs explicitly HOLD until the full regulator/USB path is reconciled.
+2. Add the isolated Pod piezo-driver evaluation block with drive voltage constrained by the piezo's 10 Vp-p rating; no 105 dB claim until measured at 10 cm with a defined weighting and waveform.
+3. Complete the Keyfob PCB netlist and module land pattern from verified board drawings, then place C1/C2 and route only after the antenna keepout is known.
+4. Extend the FreeCAD models using the real PCB and component envelopes, then run FreeCAD and KiCad locally for geometry, ERC and DRC checks.
+5. Keep this file current after each committed design milestone. Do not describe either PCB/CAD model as validated or fabrication-ready until the checks are actually run.
