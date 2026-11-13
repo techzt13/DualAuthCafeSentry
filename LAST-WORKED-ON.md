@@ -973,7 +973,7 @@ Created two source-grounded design notes to move the Pod from abstract architect
 
 - Added hardware/sentry-pod/power-stage-review.md.
 - Recorded the current TI BQ25185 Rev. B pin map and conservative 4.1 V / 500 mA input-limit setting: 130 kΩ from ILIM/VSET to ground.
-- Calculated a candidate 4.7 kΩ ISET value (~69.8 mA typical) only as a Renata ICP402025PC-01 evaluation screen; no cell/charger pairing is approved.
+- Calculated a candidate 4.7 kΩ ISET value (~63.8 mA typical) only as a Renata ICP402025PC-01 evaluation screen; no cell/charger pairing is approved.
 - Added required IN, SYS and BAT bypass values, NTC requirement and open-drain status interface.
 - Corrected an important power-path assumption: BQ25185 SYS is a 4.5 V regulated output, not a 5 V source. An ideal diode does not boost it. The Zero shared USB VBUS/5V interface must remain HOLD until its actual input and regulator behaviour is verified.
 
