@@ -49,7 +49,7 @@ The C3-Zero is the evaluation controller option, with S3-Zero alternative; the o
 - sentry-pod/sentry-pod.kicad_sch — main Pod interface and NFC reset schematic.
 - sentry-pod/pod-power-stage.kicad_sch — standalone BQ25185 non-energised evaluation block.
 - sentry-pod/pod-audio-stage.kicad_sch — standalone PAM8904E 1x-mode evaluation block.
-- sentry-pod/power-stage-review.md and sentry-pod/audio-stage-review.md — design basis and open checks.
+- sentry-pod/power-stage-review.md, sentry-pod/audio-stage-review.md and sentry-pod/packaging-review.md — design basis and open checks.
 
 ### Pocket Keyfob
 - pocket-keyfob/pocket-keyfob.kicad_sch — C3-Zero interface, button and provisional motor switch.
