@@ -53,8 +53,8 @@ The C3-Zero is the evaluation controller option, with S3-Zero alternative; the o
 
 ### Pocket Keyfob
 - pocket-keyfob/pocket-keyfob.kicad_sch — C3-Zero interface, button and provisional motor switch.
-- pocket-keyfob/pocket-keyfob.kicad_pcb — 33 x 23 mm placement/net-assignment draft; unrouted.
-- pocket-keyfob/footprints.pretty/C3Zero_Castellated_2x9.kicad_mod — provisional custom 2x9 C3-Zero land pattern.
+- pocket-keyfob/pocket-keyfob.kicad_pcb — 37 x 25 mm upright-module placement/net-assignment draft with antenna relief notch; unrouted.
+- pocket-keyfob/footprints.pretty/C3Zero_Castellated_2x9.kicad_mod — provisional upright custom 2x9 C3-Zero land pattern.
 - pocket-keyfob/footprints.pretty/MotorWirePads_2x.kicad_mod — motor solder-wire pads.
 - pocket-keyfob/fp-lib-table — local footprint library registration.
 - pocket-keyfob/interface-contract.md and pocket-keyfob/pcb-layout-review.md — interface and layout notes.
