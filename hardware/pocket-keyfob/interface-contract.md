@@ -64,10 +64,11 @@ The S3 contact table and restrictions are in `docs/verified-pinouts.md`, section
 
 - Net: `K_MOTOR_PWM`; C3 GPIO3 or S3 GPIO6.
 - MCU pin drives only a logic-level transistor/driver input, never the motor directly.
-- Provide a hardware-defined OFF state during reset, boot, brownout and MCU unpowered conditions.
-- Motor supply must be derived from a reviewed power rail and must not be assumed to equal either raw cell voltage or USB VBUS.
-- The motor needs a correctly rated low-side switch or dedicated driver, local decoupling and a flyback path appropriate to the selected motor technology.
-- The current 308-100 motor candidate is not a frozen selection; operating voltage, startup/stall current, continuous-duty limits and mounting remain to be verified from the exact datasheet.
+- Draft circuit now exists in the native schematic: Q1 IRLML6344 N-MOSFET low-side switch; R1 100 Ω series gate resistor; R2 100 kΩ gate-to-source pull-down; J1 two solder-wire pads; C1 100 nF and C2 10 µF local motor-rail capacitors.
+- Q1 pin map is 1=gate, 2=source, 3=drain. The official data sheet guarantees RDS(on) ≤37 mΩ at VGS=2.5 V. A first-order conduction estimate at 124 mA is about 0.57 mW; switching and PCB thermal behaviour still require measurement.
+- D1 is now Nexperia PMEG2010AEB,115, 20 V / 1 A Schottky, SOD-523. Pin 1 cathode connects to K_3V3_MOTOR_HOLD; pin 2 anode connects to K_MOTOR_SW.
+- The 308-100 public data sheet gives 3 V nominal, 3.6 V maximum operating, 94 mA maximum rated current and 124 mA maximum start current. The motor rail remains a HOLD and must never be assumed to be raw cell or USB VBUS.
+- The motor candidate remains provisional: continuous-alert duty, start under rail sag, actual motor lead exit and in-case haptic performance remain unverified.
 - PWM frequency, duty policy, maximum continuous vibration time and thermal behavior remain TBD.
 
 ### 4.2 User button
