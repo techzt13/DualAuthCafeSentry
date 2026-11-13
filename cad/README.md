@@ -32,10 +32,10 @@ exec(open("/Users/REPLACE_WITH_MAC_USERNAME/Projects/DualAuthCafeSentry/cad/crea
 
 - The macro does not create final USB-C, button, speaker, motor-lead, charging-port or fastener cutouts.
 - It does not yet add screw bosses, lid joints, gasket grooves, snap fits, PCB standoffs or tolerance allowances.
-- The Keyfob C3-Zero USB and antenna envelopes are explicitly placeholders. The antenna-end assumption and the USB-C side must be checked against the actual module orientation.
+- The Keyfob C3-Zero is now modelled upright with a provisional 10 x 4.8 mm USB-C wall cutout and an 8 x 3.5 mm carrier-board antenna relief notch. Verify both against the actual module; the antenna-side plastic wall still needs RF testing.
 - The battery models are bare-cell reference envelopes, not protected packs.
 - The Pod antenna, battery, and Keyfob motor/module/driver envelopes are not verified fits.
-- The Keyfob carrier is 33 x 23 x 1.6 mm in the current PCB draft; the custom C3-Zero land pattern still has estimated pad size and row datum.
+- The Keyfob carrier is 37 x 25 x 1.6 mm in the current PCB draft; the custom C3-Zero land pattern still has estimated pad size and row datum. The proposed Keyfob outer case is 42 x 30 x 15.5 mm.
 - All dimensions are millimetres. The current model is not a manufacturing release.
 
 ## Validation still required
