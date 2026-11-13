@@ -141,9 +141,9 @@ def make_pod():
                 26.0, 17.8, 4.6, 33.5, 8.1, 9.6,
                 "Published 26 x 17.8 x 4.6 mm envelope. Candidate only; product was out of stock in the latest register check and its board drawing/schematic have not been inspected."))
 
-    refs.append(add_ref_box(doc, "PodNfcModule", "Elechouse PN5321 MINI module envelope — underside",
+    refs.append(add_ref_box(doc, "PodNfcModule", "Elechouse PN5321 MINI module envelope — stacked above IMU",
                 25.0, 16.4, 4.4, 34.5, 8.8, 15.0,
-                "Published 25 x 16.4 x 4.4 mm candidate envelope mounted below the carrier board, adjacent to the battery. Exact mounting/connector drawing and mechanical fit remain to be validated."))
+                "Published 25 x 16.4 x 4.4 mm candidate envelope stacked above the Adafruit 3886 breakout. Provide a spacer/bracket and check host cable access, antenna cable routing and lid clearance."))
 
     refs.append(add_ref_box(doc, "PodNfcAntennaReference", "PN532 antenna placeholder / RF keepout",
                 25.0, 10.0, 1.0, 44.5, 12.0, 26.0,
