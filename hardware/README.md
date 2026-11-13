@@ -41,3 +41,22 @@ The C3-Zero is the evaluation controller option, with S3-Zero alternative; the o
 - The schematic's S-expression structure was checked for balanced parentheses, unique UUIDs and matching embedded symbol IDs. KiCad CLI/Eeschema is unavailable in this execution environment; no KiCad load/parse, ERC or DRC is claimed.
 - Neither PCB is ready for ordering or fabrication.
 
+
+ 
+## Current native design files (2026-11-13)
+
+### Pod
+- sentry-pod/sentry-pod.kicad_sch — main Pod interface and NFC reset schematic.
+- sentry-pod/pod-power-stage.kicad_sch — standalone BQ25185 non-energised evaluation block.
+- sentry-pod/pod-audio-stage.kicad_sch — standalone PAM8904E 1x-mode evaluation block.
+- sentry-pod/power-stage-review.md and sentry-pod/audio-stage-review.md — design basis and open checks.
+
+### Pocket Keyfob
+- pocket-keyfob/pocket-keyfob.kicad_sch — C3-Zero interface, button and provisional motor switch.
+- pocket-keyfob/pocket-keyfob.kicad_pcb — 33 x 23 mm placement/net-assignment draft; unrouted.
+- pocket-keyfob/footprints.pretty/C3Zero_Castellated_2x9.kicad_mod — provisional custom 2x9 C3-Zero land pattern.
+- pocket-keyfob/footprints.pretty/MotorWirePads_2x.kicad_mod — motor solder-wire pads.
+- pocket-keyfob/fp-lib-table — local footprint library registration.
+- pocket-keyfob/interface-contract.md and pocket-keyfob/pcb-layout-review.md — interface and layout notes.
+
+All custom footprints and schematic blocks remain draft until opened and checked in the local KiCad version. No fabrication files are released.
