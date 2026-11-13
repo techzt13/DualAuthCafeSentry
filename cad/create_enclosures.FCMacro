@@ -193,11 +193,11 @@ def make_keyfob():
 
     # Motor at PCB local (32,5), translated by carrier origin (2.5,2.5).
     refs.append(add_ref_cylinder(doc, "KeyfobMotorReference", "Vybronics VCLP1020B002L evaluation motor",
-                     5.0, 2.1, 35.5, 7.5, 8.6,
+                     5.0, 2.1, 35.5, 7.5, 8.75,
                      "10 mm diameter x 2.1 mm body; 3 V nominal, 2.5–3.5 V operating, 30 mA max rated current, 80 mA max start current, 0.75 G minimum at 3 V, 25 mm leads. Evaluation candidate only; verify actual haptic feel, lead routing and adhesive retention. Precision Microdrives 308-100 remains a smaller 8 mm alternate. The VCLP datasheet also specifies 9.0 mm diameter x 0.15 mm double-sided tape; full lead-exit envelope remains to be checked."))
 
     refs.append(add_ref_cylinder(doc, "KeyfobMotorTapeReference", "VCLP1020B002L adhesive tape reference",
-                     4.5, 0.15, 35.5, 7.5, 8.45,
+                     4.5, 0.15, 35.5, 7.5, 8.6,
                      "Nominal 9.0 mm diameter x 0.15 mm double-sided tape from motor datasheet. Adhesive thickness/placement and case coupling are not validated."))
 
     # Top-side component envelopes translated from the revised PCB positions.
