@@ -1,7 +1,9 @@
 # Pod power-stage design review
 
 Date: 2026-11-13  
-Status: **schematic design basis; not yet a wired or approved circuit**
+Status: **standalone editable KiCad schematic exists; non-energised evaluation draft, not approved**
+
+Native schematic: [pod-power-stage.kicad_sch](pod-power-stage.kicad_sch). It is a standalone sheet and has not yet been integrated into the main Pod project or passed through KiCad ERC.
 
 ## Objective
 
